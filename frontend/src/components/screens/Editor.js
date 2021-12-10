@@ -1,10 +1,12 @@
-import React from 'react';
-import NavBar from '../NavBar';
+import React from "react";
+import NavBar from "../NavBar";
 
-export const Editor = () => {
-    return (
-        <div>
-            <NavBar />
-        </div>
-    )
-}
+const Editor = () => {
+  return (
+    <div>
+      <NavBar />
+    </div>
+  );
+};
+
+export default Editor;
