@@ -13,6 +13,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
+import AssignmentIcon from "@mui/icons-material/Assignment";
 
 function Copyright(props) {
   return (
@@ -34,12 +35,13 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function LoginScreen() {
+export default function RegisterScreen() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
     console.log({
+      username: data.get("username"),
       email: data.get("email"),
       password: data.get("password"),
     });
@@ -78,10 +80,10 @@ export default function LoginScreen() {
             }}
           >
             <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              <LockOutlinedIcon />
+              <AssignmentIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              Sign Up
             </Typography>
             <Box
               component="form"
@@ -89,6 +91,16 @@ export default function LoginScreen() {
               onSubmit={handleSubmit}
               sx={{ mt: 1 }}
             >
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="username"
+                label="Username"
+                name="username"
+                autoComplete="username"
+                autoFocus
+              />
               <TextField
                 margin="normal"
                 required
@@ -120,25 +132,16 @@ export default function LoginScreen() {
                 sx={{ mt: 3, mb: 2 }}
                 onClick={() => navigate("/Editor")}
               >
-                Sign In
+                Register now
               </Button>
               <Grid container>
-                <Grid item xs>
-                  <Link
-                    href="#"
-                    variant="body2"
-                    onClick={() => navigate("/ForgotPasswordScreen")}
-                  >
-                    Forgot password?
-                  </Link>
-                </Grid>
                 <Grid item>
                   <Link
                     href="#"
                     variant="body2"
-                    onClick={() => navigate("/RegisterScreen")}
+                    onClick={() => navigate("/LoginScreen")}
                   >
-                    {"Don't have an account? Sign Up"}
+                    {"Already have an account? Login"}
                   </Link>
                 </Grid>
               </Grid>
