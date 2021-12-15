@@ -11,7 +11,7 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import Logo from "../assets/logo3.png";
+import Logo from "../assets/BurritoLogo.png";
 import { useNavigate } from "react-router-dom";
 
 const pages = ["Editor", "Single View", "Overview"];
@@ -38,7 +38,7 @@ const NavBar = () => {
   let navigate = useNavigate();
 
   return (
-    <AppBar position="static" style={{ background: "#2E3B55" }}>
+    <AppBar position="static" style={{ background: "#000000" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <img
