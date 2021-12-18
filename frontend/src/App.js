@@ -1,7 +1,13 @@
+import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
 function App() {
+
+  fetch('/users')
+  .then(response => response.text())
+  .then(data => console.log({data}));
+
   return (
     <div className="App">
       <header className="App-header">
