@@ -1,20 +1,17 @@
-const dotenv = require('dotenv').config({ path: './.env' })
+const dotenv = require('dotenv').config({ path: './.env' });
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-const statusRouter = require('./routes/status')
+const userRouter = require('./routes/user');
 
-const mongoDB = require('./database/connection')
+const mongoDB = require('./routes/user');
 
 const app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 app.use(logger('dev'));
@@ -23,15 +20,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, '..', 'frontend', 'build')));
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use((req, res, next) => {
-  res.sendFile(path.join(__dirname, '..', 'frontend', 'build', 'index.html'));
-});
-
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/status', statusRouter);
+app.use('/api/user', userRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

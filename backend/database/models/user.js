@@ -1,6 +1,6 @@
 //Database model to save Users to the MongoDB Database
 
-const Mongoose = Require("mongoose");
+const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
     username: {
@@ -19,7 +19,7 @@ const UserSchema = new mongoose.Schema({
         ],
     },
 
-    Password: {
+    password: {
         type: String,
         required: [true, "Please insert a password"],
         minlength: 8,
