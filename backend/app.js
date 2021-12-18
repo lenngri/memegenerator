@@ -1,14 +1,17 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const dotenv = require('dotenv').config({ path: './.env' })
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var statusRouter = require('./routes/status')
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const statusRouter = require('./routes/status')
 
-var app = express();
+const mongoDB = require('./database/connection')
+
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
