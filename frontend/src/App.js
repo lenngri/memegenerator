@@ -17,16 +17,20 @@ function App() {
 </nav> */}
 
       <Routes>
-        <Route path="/Editor" element={<Editor />} />
-        <Route path="/LoginScreen" element={<LoginScreen />} />
-        <Route path="/RegisterScreen" element={<RegisterScreen />} />
+        <Route exact path="/" element={<LoginScreen />} />
+        <Route exact path="/Editor" element={<Editor />} />
+        {/* <Route path="/LoginScreen" element={<LoginScreen />} /> */}
+        <Route exact path="/RegisterScreen" element={<RegisterScreen />} />
         <Route
+          exact
           path="/ForgotPasswordScreen"
           element={<ForgotPasswordScreen />}
         />
-        <Route path="/SingleViewScreen" element={<SingleViewScreen />} />
-        <Route path="/OverviewScreen" element={<OverviewScreen />} />
-        <Route path="/ProfileScreen" element={<ProfileScreen />} />
+        <Route exact path="/LoginScreen" element={<LoginScreen />} />
+
+        <Route exact path="/SingleViewScreen" element={<SingleViewScreen />} />
+        <Route exact path="/OverviewScreen" element={<OverviewScreen />} />
+        <Route exact path="/ProfileScreen" element={<ProfileScreen />} />
       </Routes>
     </Router>
   );
