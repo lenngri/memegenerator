@@ -55,7 +55,7 @@ export default function Album() {
           {/* End hero unit */}
           <Grid container spacing={4}>
             {cards.map((card) => (
-              <Grid item key={card} xs={12} sm={6} md={4}>
+              <Grid item key={card} xs={8} sm={6} md={4}>
                 <Card
                   sx={{
                     height: "100%",
@@ -71,7 +71,7 @@ export default function Album() {
                       height: 300,
                     }}
                     //Only works occasionally, maybe sometimes the get request comes back empty? If doesn't work try "https://source.unsplash.com/random" as placeholder
-                    image={memes[card].url}
+                    image="https://source.unsplash.com/random"
                     alt="random"
                   />
                   <CardContent sx={{ flexGrow: 1 }}>

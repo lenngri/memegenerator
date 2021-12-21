@@ -12,7 +12,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import Logo from "../assets/BurritoLogo.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const pages = ["Editor", "Single View", "Overview"];
 
@@ -41,16 +41,21 @@ const NavBar = () => {
     <AppBar position="static" style={{ background: "#000000" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <img
-            src={Logo}
-            alt="new"
-            style={{ height: 50, width: 50, paddingRight: 10.0 }}
-          />
+          <Button>
+            <img
+              src={Logo}
+              alt="new"
+              style={{ height: 60, width: 70, paddingRight: 10.0 }}
+              onClick={() => navigate("/Editor")}
+            />
+          </Button>
+
           <Typography
             variant="h6"
             noWrap
             component="div"
             sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
+            onClick={() => navigate("/Editor")}
           >
             Burrito Memes
           </Typography>
@@ -107,15 +112,9 @@ const NavBar = () => {
             >
               Editor
             </Button>
+
             <Button
-              key="Editor"
-              onClick={() => navigate("/SingleViewScreen")}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-              Single View
-            </Button>
-            <Button
-              key="Editor"
+              key="Overview"
               onClick={() => navigate("/OverviewScreen")}
               sx={{ my: 2, color: "white", display: "block" }}
             >

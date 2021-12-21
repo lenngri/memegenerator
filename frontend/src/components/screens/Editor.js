@@ -7,8 +7,13 @@ import Card from "@mui/material/Card";
 
 const Editor = () => {
   return (
-    <div>
+    <div
+      style={{
+        overflow: "hidden",
+      }}
+    >
       <NavBar />
+      <div></div>
     </div>
   );
 };

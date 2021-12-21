@@ -33,7 +33,7 @@ export default function ProfileScreen() {
       <NavBar />
 
       <ThemeProvider theme={theme}>
-        <Container component="main" maxWidth="xs">
+        <Container component="main">
           <CssBaseline />
           <Box
             sx={{
@@ -43,53 +43,62 @@ export default function ProfileScreen() {
               alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              <PersonIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Account Details
-            </Typography>
             <Box
-              component="form"
-              onSubmit={handleSubmit}
-              noValidate
-              sx={{ mt: 1 }}
+              sx={{
+                border: 1,
+                paddingTop: 2.0,
+                paddingBotton: 2.0,
+                paddingLeft: 5.0,
+                paddingRight: 5.0,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
             >
-              <Typography component="h6" variant="h6">
-                Username
-              </Typography>
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label=""
-                name="email"
-                autoComplete="email"
-                autoFocus
-              />
-              <Typography component="h6" variant="h6">
-                Email address
-              </Typography>
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label=""
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              />
-
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+              <Avatar
+                sx={{
+                  m: 1,
+                  bgcolor: "secondary.main",
+                }}
               >
-                Edit
-              </Button>
+                <PersonIcon />
+              </Avatar>
+              <Typography component="h1" variant="h5">
+                Account Details
+              </Typography>
+              <Box
+                component="form"
+                onSubmit={handleSubmit}
+                noValidate
+                sx={{ mt: 1 }}
+              >
+                <Typography component="h6" variant="h6">
+                  Username
+                </Typography>
+                <Typography
+                  component="h6"
+                  variant="subtitle1"
+                  style={{ paddingBottom: 20.0 }}
+                >
+                  John Doe
+                </Typography>
+
+                <Typography component="h6" variant="h6">
+                  Email address
+                </Typography>
+                <Typography component="h6" variant="subtitle1">
+                  johndoe@gmail.com
+                </Typography>
+
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  Edit
+                </Button>
+              </Box>
             </Box>
           </Box>
         </Container>
