@@ -1,6 +1,8 @@
 //Database model to save Users to the MongoDB Database
-
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+
+const saltRounds = 10;
 
 const UserSchema = new mongoose.Schema({
     username: {
@@ -26,7 +28,39 @@ const UserSchema = new mongoose.Schema({
     // resetPasswordExpire: Date,
 });
 
-// Blogpost explaining password hashing in mongoDB: https://www.mongodb.com/blog/post/password-authentication-with-mongoose-part-1
+// Blogpost explaining password hashing with mongoose: https://www.mongodb.com/blog/post/password-authentication-with-mongoose-part-1
+// Blogpost explaining password hashing with mongoose: https://coderrocketfuel.com/article/store-passwords-in-mongodb-with-node-js-mongoose-and-bcrypt#store-a-hashed-password-in-the-database
+
+
+// Mongoose "pre" middleware function
+UserSchema.pre('save', function(next) {
+    const user = this;
+
+    // Checks is password is modified or new. If not, password is not hashed again.
+    if(this.isModified('password') || this.isNew) {
+
+        // bcrypt function generates salt to prevent bruteforce and rainbow table attacks
+        bcrypt.genSalt(saltRounds, function(saltError, salt) {
+            if(saltError){
+                return next(saltError)
+            } else {
+
+                // bcryt hash function hashes password, using salt
+                bcrypt.hash(user.password, salt, function(hashError, hash) {
+                    if (hashError) {
+                        return next(hashErrror)
+                    }
+
+                    user.password = hash
+                    next()
+                })
+            }
+        })
+    } else {
+        return next()
+    }
+});
+
 // If the password is not remodified it is not rehashed
 // UserSchema.pre("save", async function (next) {
 //     if (!this.isModified("password")) {
