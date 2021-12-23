@@ -11,9 +11,11 @@ exports.register = async function(req, res, next) {
             email: email,
             password: password
         })
-        res.sendStatus(201)
+        res.status(201).send(`Created user with email ${email}`)
+        console.log(`Created user with email ${email}`)
     } catch(e) {
-        res.sendStatus(500)
+        res.status(500).send(e.message)
+        console.error(e.message)
     }
 };
 
