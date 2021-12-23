@@ -1,6 +1,11 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import LoginScreen from "./components/screens/LoginScreen";
+import Editor from "./components/screens/Editor";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import RegisterScreen from "./components/screens/RegisterScreen";
+import ForgotPasswordScreen from "./components/screens/ForgotPasswordScreen";
+import SingleViewScreen from "./components/screens/SingleViewScreen";
+import OverviewScreen from "./components/screens/OverviewScreen";
+import ProfileScreen from "./components/screens/ProfileScreen";
 
 function App() {
 
@@ -9,22 +14,30 @@ function App() {
   .then(data => console.log({data}));
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      {/* <nav>
+  <Link to="/Login">Login</Link>
+  <Link to="/Home">Home</Link>
+  <Link to="/ErrorPage">Error</Link>
+</nav> */}
+
+      <Routes>
+        <Route exact path="/" element={<LoginScreen />} />
+        <Route exact path="/Editor" element={<Editor />} />
+        {/* <Route path="/LoginScreen" element={<LoginScreen />} /> */}
+        <Route exact path="/RegisterScreen" element={<RegisterScreen />} />
+        <Route
+          exact
+          path="/ForgotPasswordScreen"
+          element={<ForgotPasswordScreen />}
+        />
+        <Route exact path="/LoginScreen" element={<LoginScreen />} />
+
+        <Route exact path="/SingleViewScreen" element={<SingleViewScreen />} />
+        <Route exact path="/OverviewScreen" element={<OverviewScreen />} />
+        <Route exact path="/ProfileScreen" element={<ProfileScreen />} />
+      </Routes>
+    </Router>
   );
 }
 
