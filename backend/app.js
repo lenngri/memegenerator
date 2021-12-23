@@ -3,17 +3,19 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const logger = require('morgan');
 
 const userRouter = require('./routes/user');
 
-const mongoDB = require('./routes/user');
+const mongoDB = require('./database/connection');
 
 const app = express();
 
 // view engine setup
 app.set('view engine', 'pug');
 
+app.use(bodyParser.json())
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
