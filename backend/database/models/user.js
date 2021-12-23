@@ -8,7 +8,7 @@ const UserSchema = new mongoose.Schema({
         required: [true, 'Please choose a username. A cool one.']
     },
 
-//this article explains the email verification "/^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/," https://stackoverflow.com/questions/15017052/understanding-email-validation-using-javascript
+// Stackoverflow entry explaining email matching regexe: https://stackoverflow.com/questions/15017052/understanding-email-validation-using-javascript
     email: {
         type: String,
         required: [true, 'You forgot to add an email address.'],
@@ -26,7 +26,8 @@ const UserSchema = new mongoose.Schema({
     // resetPasswordExpire: Date,
 });
 
-//If the password is not remodified it is not rehashed
+// Blogpost explaining password hashing in mongoDB: https://www.mongodb.com/blog/post/password-authentication-with-mongoose-part-1
+// If the password is not remodified it is not rehashed
 // UserSchema.pre("save", async function (next) {
 //     if (!this.isModified("password")) {
 //         next();

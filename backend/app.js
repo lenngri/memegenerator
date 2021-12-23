@@ -21,7 +21,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+// handles static routes and serves react frontend
 app.use(express.static(path.join(__dirname, '..', 'frontend', 'build')));
+
+// sets up api routes
 app.use('/api/user', userRouter);
 
 // catch 404 and forward to error handler

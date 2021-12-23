@@ -1,3 +1,4 @@
+// 
 const crypto = require("crypto"); // Cryptography Library. Source: https://www.npmjs.com/package/crypto-js
 const User = require('../database/models/user'); // Model for saving a user to the DB
 
@@ -11,11 +12,9 @@ exports.register = async function(req, res, next) {
             email: email,
             password: password
         })
-        res.status(201).send(`Created user with email ${email}`)
-        console.log(`Created user with email ${email}`)
-    } catch(e) {
-        res.status(500).send(e.message)
-        console.error(e.message)
+        res.status(201).send(`Created user with email: ${email}`)
+    } catch(error) {
+        res.status(500).send(error.message)
     }
 };
 
