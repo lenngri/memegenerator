@@ -35,7 +35,7 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function LoginScreen() {
+export default function LoginScreen({ authenticate }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -46,7 +46,12 @@ export default function LoginScreen() {
     });
   };
 
-  let navigate = useNavigate();
+  const navigate = useNavigate();
+  //auth button handler
+  const onClick = () => {
+    authenticate();
+    navigate("profile");
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -119,7 +124,7 @@ export default function LoginScreen() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                onClick={() => navigate("/Editor")}
+                onClick={onClick}
               >
                 Sign In
               </Button>

@@ -14,7 +14,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Logo from "../assets/BurritoLogo.png";
 import { useNavigate, Link } from "react-router-dom";
 
-const pages = ["Editor", "Single View", "Overview"];
+const pages = ["Editor", "Overview", "Logout"];
 
 const NavBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -115,6 +115,7 @@ const NavBar = () => {
 
             <Button
               key="Overview"
+              // onClick={() => navigate("/OverviewScreen")}
               onClick={() => navigate("/OverviewScreen")}
               sx={{ my: 2, color: "white", display: "block" }}
             >
@@ -150,9 +151,9 @@ const NavBar = () => {
               >
                 <Typography textAlign="center">Profile</Typography>
               </MenuItem>
-              <MenuItem key="Logout" onClick={() => navigate("/LoginScreen")}>
+              {/* <MenuItem key="Logout" onClick={() => navigate("/LoginScreen")}>
                 <Typography textAlign="center">Logout</Typography>
-              </MenuItem>
+              </MenuItem> */}
             </Menu>
           </Box>
         </Toolbar>

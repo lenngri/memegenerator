@@ -17,7 +17,7 @@ import NavBar from "../NavBar";
 
 const theme = createTheme();
 
-export default function ProfileScreen() {
+export default function ProfileScreen({ logout }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -41,6 +41,7 @@ export default function ProfileScreen() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
+              justifyContent: "center",
             }}
           >
             <Box
@@ -53,6 +54,7 @@ export default function ProfileScreen() {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
+                justifyContent: "center",
               }}
             >
               <Avatar
@@ -97,6 +99,15 @@ export default function ProfileScreen() {
                   sx={{ mt: 3, mb: 2 }}
                 >
                   Edit
+                </Button>
+                <Button
+                  onClick={logout}
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ color: "red", backgroundColor: "white" }}
+                >
+                  Logout
                 </Button>
               </Box>
             </Box>
