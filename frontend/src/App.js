@@ -4,7 +4,6 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Link,
   Navigate,
 } from "react-router-dom";
 import RegisterScreen from "./components/screens/RegisterScreen";
@@ -19,8 +18,6 @@ function App() {
     .then((data) => console.log({ data }));
 
   const [auth, setAuth] = useState(null);
-  const hello = "hello";
-  const print = () => console.log("hello");
 
   useEffect(() => {
     let user = localStorage.getItem("user");
