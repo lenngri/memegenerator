@@ -116,7 +116,7 @@ export default function ForgotPasswordScreen() {
                   <Link
                     href="#"
                     variant="body2"
-                    onClick={() => navigate("/LoginScreen")}
+                    onClick={() => navigate("/login")}
                   >
                     {"Already have an account? Login"}
                   </Link>

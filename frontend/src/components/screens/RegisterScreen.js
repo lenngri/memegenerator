@@ -130,7 +130,7 @@ export default function RegisterScreen() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                onClick={() => navigate("/Editor")}
+                onClick={() => navigate("/editor")}
               >
                 Register now
               </Button>
@@ -139,7 +139,7 @@ export default function RegisterScreen() {
                   <Link
                     href="#"
                     variant="body2"
-                    onClick={() => navigate("/LoginScreen")}
+                    onClick={() => navigate("/login")}
                   >
                     {"Already have an account? Login"}
                   </Link>

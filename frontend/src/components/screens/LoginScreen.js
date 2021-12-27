@@ -133,7 +133,7 @@ export default function LoginScreen({ authenticate }) {
                   <Link
                     href="#"
                     variant="body2"
-                    onClick={() => navigate("/ForgotPasswordScreen")}
+                    onClick={() => navigate("/forgotpassword")}
                   >
                     Forgot password?
                   </Link>
@@ -142,7 +142,7 @@ export default function LoginScreen({ authenticate }) {
                   <Link
                     href="#"
                     variant="body2"
-                    onClick={() => navigate("/RegisterScreen")}
+                    onClick={() => navigate("/register")}
                   >
                     {"Don't have an account? Sign Up"}
                   </Link>

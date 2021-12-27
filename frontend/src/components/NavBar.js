@@ -46,7 +46,7 @@ const NavBar = () => {
               src={Logo}
               alt="new"
               style={{ height: 60, width: 70, paddingRight: 10.0 }}
-              onClick={() => navigate("/Editor")}
+              onClick={() => navigate("/editor")}
             />
           </Button>
 
@@ -55,7 +55,7 @@ const NavBar = () => {
             noWrap
             component="div"
             sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
-            onClick={() => navigate("/Editor")}
+            onClick={() => navigate("/editor")}
           >
             Burrito Memes
           </Typography>
@@ -107,7 +107,7 @@ const NavBar = () => {
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Button
               key="Editor"
-              onClick={() => navigate("/Editor")}
+              onClick={() => navigate("/editor")}
               sx={{ my: 2, color: "white", display: "block" }}
             >
               Editor
@@ -115,8 +115,7 @@ const NavBar = () => {
 
             <Button
               key="Overview"
-              // onClick={() => navigate("/OverviewScreen")}
-              onClick={() => navigate("/OverviewScreen")}
+              onClick={() => navigate("/overview")}
               sx={{ my: 2, color: "white", display: "block" }}
             >
               Overview
@@ -147,11 +146,11 @@ const NavBar = () => {
             >
               <MenuItem
                 key="Profile"
-                onClick={() => navigate("/ProfileScreen")}
+                onClick={() => navigate("/profile")}
               >
                 <Typography textAlign="center">Profile</Typography>
               </MenuItem>
-              <MenuItem key="Logout" onClick={() => navigate("/LoginScreen")}>
+              <MenuItem key="Logout" onClick={() => navigate("/login")}>
                 <Typography textAlign="center">Logout</Typography>
               </MenuItem>
             </Menu>
