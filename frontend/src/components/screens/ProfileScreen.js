@@ -24,7 +24,7 @@ export default function ProfileScreen({ logout }) {
 
   return (
     <div>
-      <NavBar />
+      <NavBar logout={logout}/>
 
       <ThemeProvider theme={theme}>
         <Container component="main">
@@ -94,7 +94,7 @@ export default function ProfileScreen({ logout }) {
                 >
                   Edit
                 </Button>
-                <Button
+                {/* <Button
                   onClick={logout}
                   type="submit"
                   fullWidth
@@ -102,7 +102,7 @@ export default function ProfileScreen({ logout }) {
                   sx={{ color: "red", backgroundColor: "white" }}
                 >
                   Logout
-                </Button>
+                </Button> */}
               </Box>
             </Box>
           </Box>

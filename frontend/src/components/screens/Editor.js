@@ -1,14 +1,14 @@
 import React from "react";
 import NavBar from "../NavBar";
 
-const Editor = () => {
+const Editor = ({logout}) => {
   return (
     <div
       style={{
         overflow: "hidden",
       }}
     >
-      <NavBar />
+      <NavBar logout={logout}/>
     </div>
   );
 };

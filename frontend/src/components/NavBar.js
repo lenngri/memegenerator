@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 
 const pages = ["Editor", "Overview", "Logout"];
 
-const NavBar = () => {
+const NavBar = ( {logout} ) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -36,6 +36,11 @@ const NavBar = () => {
   };
 
   let navigate = useNavigate();
+
+  // const handleLogout = () => {
+  //   logout;
+  //   navigate("/login");
+  // }
 
   return (
     <AppBar position="static" style={{ background: "#000000" }}>
@@ -150,7 +155,7 @@ const NavBar = () => {
               >
                 <Typography textAlign="center">Profile</Typography>
               </MenuItem>
-              <MenuItem key="Logout" onClick={() => navigate("/login")}>
+              <MenuItem key="Logout" onClick={logout}>
                 <Typography textAlign="center">Logout</Typography>
               </MenuItem>
             </Menu>
