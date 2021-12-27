@@ -28,19 +28,21 @@ function App() {
     localStorage.setItem("user", auth);
   }, [auth]);
 
+  const logout = () => setAuth(false);
+
   return (
     <Router>
       <Routes>
         {!auth && (
           <>
             <Route
-              path="/loginscreen"
+              path="/login"
               element={<LoginScreen authenticate={() => setAuth(true)} />}
             />
-            <Route path="/registerscreen" element={<RegisterScreen />} />
+            <Route path="/register" element={<RegisterScreen />} />
 
             <Route
-              path="/forgotpasswordscreen"
+              path="/forgotpassword"
               element={<ForgotPasswordScreen />}
             />
           </>
@@ -49,16 +51,16 @@ function App() {
         {auth && (
           <>
             <Route
-              path="/profilescreen"
-              element={<ProfileScreen logout={() => setAuth(false)} />}
+              path="/profile"
+              element={<ProfileScreen logout={logout} />}
             />
-            <Route path="/editor" element={<Editor />} />
-            <Route path="/overviewscreen" element={<OverviewScreen />} />
+            <Route path="/editor" element={<Editor logout={logout}/>} />
+            <Route path="/overview" element={<OverviewScreen />} />
           </>
         )}
         <Route
           path="*"
-          element={<Navigate to={auth ? "/editor" : "/loginscreen"} />}
+          element={<Navigate to={auth ? "/editor" : "/login"} />}
         />
       </Routes>
     </Router>
