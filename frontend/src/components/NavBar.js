@@ -12,11 +12,11 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import Logo from "../assets/BurritoLogo.png";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const pages = ["Editor", "Single View", "Overview"];
+const pages = ["Editor", "Overview", "Logout"];
 
-const NavBar = () => {
+const NavBar = ( {logout} ) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -37,6 +37,11 @@ const NavBar = () => {
 
   let navigate = useNavigate();
 
+  // const handleLogout = () => {
+  //   logout;
+  //   navigate("/login");
+  // }
+
   return (
     <AppBar position="static" style={{ background: "#000000" }}>
       <Container maxWidth="xl">
@@ -46,7 +51,7 @@ const NavBar = () => {
               src={Logo}
               alt="new"
               style={{ height: 60, width: 70, paddingRight: 10.0 }}
-              onClick={() => navigate("/Editor")}
+              onClick={() => navigate("/editor")}
             />
           </Button>
 
@@ -55,7 +60,7 @@ const NavBar = () => {
             noWrap
             component="div"
             sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
-            onClick={() => navigate("/Editor")}
+            onClick={() => navigate("/editor")}
           >
             Burrito Memes
           </Typography>
@@ -107,7 +112,7 @@ const NavBar = () => {
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Button
               key="Editor"
-              onClick={() => navigate("/Editor")}
+              onClick={() => navigate("/editor")}
               sx={{ my: 2, color: "white", display: "block" }}
             >
               Editor
@@ -115,7 +120,7 @@ const NavBar = () => {
 
             <Button
               key="Overview"
-              onClick={() => navigate("/OverviewScreen")}
+              onClick={() => navigate("/overview")}
               sx={{ my: 2, color: "white", display: "block" }}
             >
               Overview
@@ -146,11 +151,11 @@ const NavBar = () => {
             >
               <MenuItem
                 key="Profile"
-                onClick={() => navigate("/ProfileScreen")}
+                onClick={() => navigate("/profile")}
               >
                 <Typography textAlign="center">Profile</Typography>
               </MenuItem>
-              <MenuItem key="Logout" onClick={() => navigate("/LoginScreen")}>
+              <MenuItem key="Logout" onClick={logout}>
                 <Typography textAlign="center">Logout</Typography>
               </MenuItem>
             </Menu>
