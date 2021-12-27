@@ -1,9 +1,9 @@
 import React from "react";
 import Typography from "@mui/material/Typography";
 import NavBar from "../NavBar";
-import StandardImageList from "../ImageList";
-import { fontWeight } from "@mui/system";
 import Album from "../screens/Album";
+// import StandardImageList from "../ImageList";
+// import { fontWeight } from "@mui/system";
 
 const OverviewScreen = () => {
   return (

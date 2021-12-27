@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+// import { useEffect, useState } from "react";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 export default function StandardImageList() {
-  let navigate = useNavigate();
+  // let navigate = useNavigate();
 
   //   const [memes, setMemes] = useState([]);
 

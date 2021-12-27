@@ -12,7 +12,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import Logo from "../assets/BurritoLogo.png";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const pages = ["Editor", "Overview", "Logout"];
 
@@ -151,9 +151,9 @@ const NavBar = () => {
               >
                 <Typography textAlign="center">Profile</Typography>
               </MenuItem>
-              {/* <MenuItem key="Logout" onClick={() => navigate("/LoginScreen")}>
+              <MenuItem key="Logout" onClick={() => navigate("/LoginScreen")}>
                 <Typography textAlign="center">Logout</Typography>
-              </MenuItem> */}
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>
