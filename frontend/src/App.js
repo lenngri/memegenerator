@@ -13,10 +13,6 @@ import ProfileScreen from "./components/screens/ProfileScreen";
 import React, { useState, useEffect } from "react";
 
 function App() {
-  fetch("/users")
-    .then((response) => response.text())
-    .then((data) => console.log({ data }));
-
   const [auth, setAuth] = useState(null);
 
   useEffect(() => {
