@@ -5,10 +5,8 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import Link from "@mui/material/Link";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import React, { useEffect, useState } from "react";
 
@@ -54,7 +52,7 @@ export default function Album() {
                       height: 300,
                     }}
                     //Only works occasionally, maybe sometimes the get request comes back empty? If doesn't work try "https://source.unsplash.com/random" as placeholder
-                    image="https://source.unsplash.com/random"
+                    image={{ memes }[card].url}
                     alt="random"
                   />
                   <CardContent sx={{ flexGrow: 1 }}>

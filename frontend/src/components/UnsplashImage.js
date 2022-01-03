@@ -7,7 +7,7 @@ const Img = styled.img`
   object-fit: cover;
 `;
 
-export const UnsplashImage = ({ url, key }) => {
+export const MemeImage = ({ url, key }) => {
   return (
     <>
       <Img key={key} src={url} alt="" />

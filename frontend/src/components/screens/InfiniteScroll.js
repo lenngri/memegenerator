@@ -1,67 +1,25 @@
-import React, { useState, useEffect, Image } from "react";
+import React, { useState, useEffect } from "react";
 import { Heading } from "../../components/Heading";
-import { UnsplashImage } from "../../components/UnsplashImage";
 import { Loader } from "../../components/Loader";
-import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
-
-import styled from "styled-components";
-import { createGlobalStyle } from "styled-components";
-import SkeletonImage from "antd/lib/skeleton/Image";
-
-// Style
-const GlobalStyle = createGlobalStyle`
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  body {
-    font-family: sans-serif;
-  }
-`;
-
-const WrapperImages = styled.section`
-  max-width: 70rem;
-  margin: 4rem auto;
-  display: grid;
-  grid-gap: 1em;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  grid-auto-rows: 300px;
-`;
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import CssBaseline from "@mui/material/CssBaseline";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 function InfiniteScroller() {
-  const [images, setImage] = useState([]);
   const [memes, setMemes] = useState([]);
-  const [memeIndex, setMemeIndex] = useState(0);
+  const theme = createTheme();
 
   useEffect(() => {
     fetchMemes();
   }, []);
-
-  const shuffleMemes = (array) => {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * i);
-      const temp = array[i];
-      array[i] = array[j];
-      array[j] = temp;
-    }
-  };
-
-  useEffect(() => {
-    fetchImages();
-  }, []);
-
-  const fetchImages = (count = 10) => {
-    const apiRoot = "https://api.unsplash.com";
-    const accessKey = process.env.REACT_APP_ACCESSKEY;
-
-    axios
-      .get(`${apiRoot}/photos/random?client_id=${accessKey}&count=${count}`)
-      .then((res) => {
-        setImage([...images, ...res.data]);
-      });
-  };
 
   const fetchMemes = () => {
     fetch("https://api.imgflip.com/get_memes").then((res) => {
@@ -73,7 +31,84 @@ function InfiniteScroller() {
   };
 
   return (
-    <div>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <main>
+        <Container sx={{ py: 2 }} maxWidth="xl">
+          <Heading />
+          <InfiniteScroll
+            dataLength={memes.length}
+            next={fetchMemes}
+            hasMore={true}
+            loader={<Loader />}
+          >
+            <Grid container spacing={4}>
+              {memes.map((meme) => (
+                <Grid item key={meme.id} xs={3} sm={3} md={3}>
+                  <Card
+                    sx={{
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      border: 2,
+                    }}
+                    style={{
+                      backgroundColor: "#D3D3D3",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      resizeMode: "contain",
+                    }}
+                  >
+                    <CardMedia
+                      component="img"
+                      sx={{
+                        // 16:9
+                        resizeMode: "stretch",
+                        height: 450,
+                        justifyContent: "center",
+                      }}
+                      style={{
+                        justifyContent: "center",
+                        resizeMode: "stretch",
+                        objectFit: "cover",
+                      }}
+                      //Only works occasionally, maybe sometimes the get request comes back empty? If doesn't work try "https://source.unsplash.com/random" as placeholder
+                      image={meme.url}
+                      alt="random"
+                      key={meme.id}
+                    />
+                    <CardContent sx={{ flexGrow: 1 }}>
+                      <Typography gutterBottom variant="h5" component="h2">
+                        {meme.name}
+                      </Typography>
+                      <Typography>
+                        This is a media card. You can use this section to
+                        describe the content.
+                      </Typography>
+                    </CardContent>
+                    <CardActions disableSpacing={true}>
+                      <Button size="small">View</Button>
+                      <Button size="small">Edit</Button>
+                      <Button size="small">Comment</Button>
+                      <Button size="small">Vote</Button>
+                      <Button size="small">Share</Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          </InfiniteScroll>
+        </Container>
+      </main>
+    </ThemeProvider>
+  );
+}
+
+export default InfiniteScroller;
+
+{
+  /* <div>
       <Heading />
       <p>{memes.length}</p>
 
@@ -87,14 +122,11 @@ function InfiniteScroller() {
         <WrapperImages>
           {memes.map((meme) => (
             <div style={{ padding: 10 }}>
-              <UnsplashImage url={meme.url} key={meme.id} />
+              <MemeImage url={meme.url} key={meme.id} />
               <p>{meme.name}</p>
             </div>
           ))}
         </WrapperImages>
       </InfiniteScroll>
-    </div>
-  );
+    </div> */
 }
-
-export default InfiniteScroller;
