@@ -41,10 +41,7 @@ function App() {
             />
             <Route path="/register" element={<RegisterScreen />} />
 
-            <Route
-              path="/forgotpassword"
-              element={<ForgotPasswordScreen />}
-            />
+            <Route path="/forgotpassword" element={<ForgotPasswordScreen />} />
           </>
         )}
 
@@ -54,8 +51,11 @@ function App() {
               path="/profile"
               element={<ProfileScreen logout={logout} />}
             />
-            <Route path="/editor" element={<Editor logout={logout}/>} />
-            <Route path="/overview" element={<OverviewScreen />} />
+            <Route path="/editor" element={<Editor logout={logout} />} />
+            <Route
+              path="/overview"
+              element={<OverviewScreen logout={logout} />}
+            />
           </>
         )}
         <Route
