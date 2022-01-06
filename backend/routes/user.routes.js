@@ -3,10 +3,10 @@ const router = express.Router();
 
 const {
     register,
-    login,
-    forgotpw,
-    resetpw
-} = require('../controller/user');
+    // login,
+    // forgotpw,
+    // resetpw
+} = require('../controller/user.controller');
 
 router.route('/register').post(register)
 

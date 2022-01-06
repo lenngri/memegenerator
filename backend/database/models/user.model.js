@@ -72,7 +72,7 @@ UserSchema.pre('save', function(next) {
 //     next();
 // });
 
-//The entered password is compoared with the password saved for the user in the database
+//The entered password is compared with the password saved for the user in the database
 // UserSchema.methods.matchPasswords = async function (password) {
 //     return await bcrypt.compare(password, this.password);
 // };
@@ -97,5 +97,4 @@ UserSchema.pre('save', function(next) {
 // };
 
 const User = mongoose.model("User", UserSchema);
-
 module.exports = User;

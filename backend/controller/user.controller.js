@@ -1,4 +1,4 @@
-const User = require('../database/models/user'); // Model for saving a user to the DB
+const User = require('../database/models/user.model'); // Model for saving a user to the DB
 
 exports.register = async function(req, res, next) {
 
