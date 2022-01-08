@@ -23,13 +23,10 @@ const Editor = () => {
         const memes = res.data.memes;
         console.log(memes);
         setMemes(memes);
+        const image = new Image();
+        image.src = memes[0].url;
+        image.onload = () => setCurrentImage(image);
       });
-  }, []);
-
-  useEffect(() => {
-    const image = new Image();
-    image.src = 'https://thiscatdoesnotexist.com/';
-    image.onload = () => setCurrentImage(image);
   }, []);
 
   useEffect(() => {
