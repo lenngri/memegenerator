@@ -1,41 +1,36 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useStoreState } from 'easy-peasy';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import { Button, TextField } from '@mui/material';
 
-const C_WITDH = 400;
-const Y_MARGIN = 80;
-const C_HEIGHT = 256 + Y_MARGIN;
+const C_WITDH = 500;
+const MARGIN = 40;
+const C_HEIGHT = 400 + MARGIN;
 
 const Editor = () => {
   // Source Editor Canvas: https://www.youtube.com/watch?v=-AwG8yF06Po
   const canvas = useRef(null);
-  const [memes, setMemes] = useState([]);
   const [memeIndex, setMemeIndex] = useState(0);
   const [topText, setTopText] = useState('');
   const [bottomText, setBottomText] = useState('');
   const [currentImage, setCurrentImage] = useState(null);
+  const imgflipTemplates = useStoreState((state) => state.imgflipTemplates);
 
   useEffect(() => {
-    fetch('https://api.imgflip.com/get_memes')
-      .then((res) => res.json())
-      .then((res) => {
-        const memes = res.data.memes;
-        console.log(memes);
-        setMemes(memes);
-        const image = new Image();
-        image.src = memes[0].url;
-        image.onload = () => setCurrentImage(image);
-      });
-  }, []);
+    if (imgflipTemplates.length) {
+      const image = new Image();
+      image.src = imgflipTemplates[0].url;
+      image.onload = () => setCurrentImage(image);
+    }
+  }, [imgflipTemplates]);
 
   useEffect(() => {
     if (currentImage && canvas) {
       const ctx = canvas.current.getContext('2d');
       ctx.fillStyle = 'black';
       ctx.fillRect(0, 0, C_WITDH, C_HEIGHT);
-      console.log(currentImage);
-      ctx.drawImage(currentImage, (C_WITDH - C_HEIGHT + Y_MARGIN) / 2, Y_MARGIN / 2);
+      ctx.drawImage(currentImage, (C_WITDH - C_HEIGHT + MARGIN) / 2, MARGIN / 2);
 
       ctx.font = '20px Comic Sans MS';
       ctx.fillStyle = 'white';
@@ -44,7 +39,7 @@ const Editor = () => {
       ctx.fillText(topText, C_WITDH / 2, C_HEIGHT * 0.1);
       ctx.fillText(bottomText, C_WITDH / 2, C_HEIGHT * 0.9);
     }
-  }, [currentImage, canvas, topText, bottomText, memes]);
+  }, [currentImage, canvas, topText, bottomText]);
 
   return (
     <div style={{ overflow: 'hidden' }}>
