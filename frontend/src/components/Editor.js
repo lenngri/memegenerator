@@ -4,9 +4,9 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import { Button, TextField } from '@mui/material';
 
-const C_WITDH = 500;
-const MARGIN = 40;
-const C_HEIGHT = 400 + MARGIN;
+// const C_WITDH = 500;
+// const MARGIN = 40;
+// const C_HEIGHT = 400 + MARGIN;
 
 const Editor = () => {
   // Source Editor Canvas: https://www.youtube.com/watch?v=-AwG8yF06Po
@@ -14,32 +14,35 @@ const Editor = () => {
   const [memeIndex, setMemeIndex] = useState(0);
   const [topText, setTopText] = useState('');
   const [bottomText, setBottomText] = useState('');
-  const [currentImage, setCurrentImage] = useState(null);
+  const [memeToEdit, setMemeToEdit] = useState(null);
   const imgflipTemplates = useStoreState((state) => state.imgflipTemplates);
 
   useEffect(() => {
     if (imgflipTemplates.length) {
-      const image = new Image();
-      image.src = imgflipTemplates[0].url;
-      image.onload = () => setCurrentImage(image);
+      const memeToEdit = new Image();
+      memeToEdit.src = imgflipTemplates[memeIndex].url;
+      memeToEdit.onload = () => setMemeToEdit(memeToEdit);
     }
-  }, [imgflipTemplates]);
+  }, [imgflipTemplates, memeIndex]);
 
   useEffect(() => {
-    if (currentImage && canvas) {
+    if (memeToEdit && canvas) {
+      const scaling = 0.5;
+      const editWidth = memeToEdit.naturalWidth * scaling;
+      const editHeight = memeToEdit.naturalHeight * scaling;
       const ctx = canvas.current.getContext('2d');
-      ctx.fillStyle = 'black';
-      ctx.fillRect(0, 0, C_WITDH, C_HEIGHT);
-      ctx.drawImage(currentImage, (C_WITDH - C_HEIGHT + MARGIN) / 2, MARGIN / 2);
+      // ctx.fillStyle = 'black';
+      // ctx.fillRect(0, 0, memeToEdit.naturalWidth, memeToEdit.naturalHeight);
+      ctx.drawImage(memeToEdit, 0, 0, editWidth, editHeight);
 
       ctx.font = '20px Comic Sans MS';
-      ctx.fillStyle = 'white';
+      ctx.fillStyle = 'black';
       ctx.textAlign = 'center';
 
-      ctx.fillText(topText, C_WITDH / 2, C_HEIGHT * 0.1);
-      ctx.fillText(bottomText, C_WITDH / 2, C_HEIGHT * 0.9);
+      ctx.fillText(topText, editWidth / 2, editHeight * 0.1);
+      ctx.fillText(bottomText, editWidth / 2, editHeight * 0.9);
     }
-  }, [currentImage, canvas, topText, bottomText]);
+  }, [memeToEdit, canvas, topText, bottomText]);
 
   return (
     <div style={{ overflow: 'hidden' }}>
@@ -53,7 +56,15 @@ const Editor = () => {
             justifyContent: 'center',
           }}
         >
-          <canvas ref={canvas} width={C_WITDH} height={C_HEIGHT}></canvas>
+          {memeToEdit ? (
+            <canvas
+              ref={canvas}
+              width={memeToEdit.naturalWidth * 0.5}
+              height={memeToEdit.naturalHeight * 0.5}
+            ></canvas>
+          ) : (
+            <></>
+          )}
           <TextField
             required
             id="outlined-required"
@@ -72,7 +83,6 @@ const Editor = () => {
             Generate
           </Button>
           <Button
-            disabled
             variant="contained"
             sx={{ mb: 2 }}
             onClick={() => {
