@@ -3,6 +3,16 @@ const Template = require('../database/models/template.model'); // Model for savi
 const multer  = require('multer')
 const upload = multer({ dest: 'uploads'})
 
+exports.retrieve = async function(req, res, next) {
+    try {
+        console.log('Hello World!')
+        const templates = await Template.find();
+        res.json(templates)
+    } catch (error) {
+        res.json({message: error});
+    }
+}
+
 exports.uploadSingle = async function(req, res, next) {
     try {
         const file = new Template ({
