@@ -1,12 +1,12 @@
-import { action, thunk } from 'easy-peasy';
+import { action, thunk, persist } from 'easy-peasy';
 
 const model = {
   // state
   imgflipTemplates: [],
-  userSession: {
+  userSession: persist({
     isLoggedIn: false,
     user: null,
-  },
+  }),
   // thunks
   fetchImgflip: thunk(async (actions) => {
     const res = await fetch('https://api.imgflip.com/get_memes');
