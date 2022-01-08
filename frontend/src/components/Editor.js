@@ -3,6 +3,10 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import { Button, TextField } from '@mui/material';
 
+const C_WITDH = 400;
+const Y_MARGIN = 80;
+const C_HEIGHT = 256 + Y_MARGIN;
+
 const Editor = () => {
   // Source Editor Canvas: https://www.youtube.com/watch?v=-AwG8yF06Po
   const canvas = useRef(null);
@@ -32,16 +36,16 @@ const Editor = () => {
     if (currentImage && canvas) {
       const ctx = canvas.current.getContext('2d');
       ctx.fillStyle = 'black';
-      ctx.fillRect(0, 0, 400, 256 + 80);
+      ctx.fillRect(0, 0, C_WITDH, C_HEIGHT);
       console.log(currentImage);
-      ctx.drawImage(currentImage, (400 - 256) / 2, 40);
+      ctx.drawImage(currentImage, (C_WITDH - C_HEIGHT + Y_MARGIN) / 2, Y_MARGIN / 2);
 
       ctx.font = '20px Comic Sans MS';
       ctx.fillStyle = 'white';
       ctx.textAlign = 'center';
 
-      ctx.fillText(topText, 400 / 2, 25);
-      ctx.fillText(bottomText, 400 / 2, 256 + 40 + 25);
+      ctx.fillText(topText, C_WITDH / 2, C_HEIGHT * 0.1);
+      ctx.fillText(bottomText, C_WITDH / 2, C_HEIGHT * 0.9);
     }
   }, [currentImage, canvas, topText, bottomText, memes]);
 
@@ -57,7 +61,7 @@ const Editor = () => {
             justifyContent: 'center',
           }}
         >
-          <canvas ref={canvas} width={400} height={256 + 80}></canvas>
+          <canvas ref={canvas} width={C_WITDH} height={C_HEIGHT}></canvas>
           <TextField
             required
             id="outlined-required"
