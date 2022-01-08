@@ -1,63 +1,49 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import { Button, TextField } from '@mui/material';
 
 const Editor = () => {
+  // Source Editor Canvas: https://www.youtube.com/watch?v=-AwG8yF06Po
+  const canvas = useRef(null);
   const [memes, setMemes] = useState([]);
   const [memeIndex, setMemeIndex] = useState(0);
-  const [captions, setCaptions] = useState([]);
-
-  const updateCaption = (e, index) => {
-    const text = e.target.value || '';
-    setCaptions(
-      captions.map((c, i) => {
-        if (index === i) {
-          return text;
-        } else {
-          return c;
-        }
-      })
-    );
-  };
-
-  // const generateMeme = () => {
-  //   const currentMeme = memes[memeIndex];
-  //   const formData = new FormData();
-
-  //   formData.append('username', 'derBolide');
-  //   formData.append('password', 'vpfCWA9Ah4XeX8w');
-  //   formData.append('template_id', currentMeme.id);
-  //   captions.forEach((c, index) => formData.append(`boxes[${index}][text]`, c));
-
-  //   fetch('https://api.imgflip.com/caption_image', {
-  //     method: 'POST',
-  //     body: formData,
-  //   }).then((res) => {
-  //     res.json().then((res) => {
-  //       console.log(res);
-  //     });
-  //   });
-  // };
+  const [topText, setTopText] = useState('');
+  const [bottomText, setBottomText] = useState('');
+  const [currentImage, setCurrentImage] = useState(null);
 
   useEffect(() => {
     fetch('https://api.imgflip.com/get_memes')
       .then((res) => res.json())
       .then((res) => {
         const memes = res.data.memes;
+        console.log(memes);
         setMemes(memes);
       });
   }, []);
 
   useEffect(() => {
-    if (memes.length) {
-      setCaptions(Array(memes[memeIndex].box_count).fill(''));
-    }
-  }, [memeIndex, memes]);
+    const image = new Image();
+    image.src = 'https://thiscatdoesnotexist.com/';
+    image.onload = () => setCurrentImage(image);
+  }, []);
 
   useEffect(() => {
-    console.log(captions);
-  }, [captions]);
+    if (currentImage && canvas) {
+      const ctx = canvas.current.getContext('2d');
+      ctx.fillStyle = 'black';
+      ctx.fillRect(0, 0, 400, 256 + 80);
+      console.log(currentImage);
+      ctx.drawImage(currentImage, (400 - 256) / 2, 40);
+
+      ctx.font = '20px Comic Sans MS';
+      ctx.fillStyle = 'white';
+      ctx.textAlign = 'center';
+
+      ctx.fillText(topText, 400 / 2, 25);
+      ctx.fillText(bottomText, 400 / 2, 256 + 40 + 25);
+    }
+  }, [currentImage, canvas, topText, bottomText, memes]);
 
   return (
     <div style={{ overflow: 'hidden' }}>
@@ -71,31 +57,26 @@ const Editor = () => {
             justifyContent: 'center',
           }}
         >
-          {memes.length ? (
-            <div>
-              <img
-                src={memes[memeIndex].url}
-                alt="meme"
-                style={{ maxHeight: 500, maxwidth: 500 }}
-              />
-            </div>
-          ) : (
-            <></>
-          )}
-          {captions.map((c, index) => (
-            <TextField
-              required
-              id="outlined-required"
-              label="Caption"
-              onChange={(e) => updateCaption(e, index)}
-              key={index}
-              sx={{ mt: 2, mb: 2 }}
-            />
-          ))}
-          <Button variant="contained" color="success" sx={{ mb: 2 }}>
+          <canvas ref={canvas} width={400} height={256 + 80}></canvas>
+          <TextField
+            required
+            id="outlined-required"
+            label="Caption"
+            onChange={(e) => setTopText(e.target.value)}
+            sx={{ mt: 2, mb: 2 }}
+          />
+          <TextField
+            required
+            id="outlined-required"
+            label="Caption"
+            onChange={(e) => setBottomText(e.target.value)}
+            sx={{ mt: 2, mb: 2 }}
+          />
+          <Button disabled variant="contained" color="success" sx={{ mb: 2 }}>
             Generate
           </Button>
           <Button
+            disabled
             variant="contained"
             sx={{ mb: 2 }}
             onClick={() => {
