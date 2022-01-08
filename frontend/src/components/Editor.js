@@ -35,7 +35,7 @@ const Editor = () => {
       // ctx.fillRect(0, 0, memeToEdit.naturalWidth, memeToEdit.naturalHeight);
       ctx.drawImage(memeToEdit, 0, 0, editWidth, editHeight);
 
-      ctx.font = '20px Comic Sans MS';
+      ctx.font = '32px Comic Sans MS';
       ctx.fillStyle = 'black';
       ctx.textAlign = 'center';
 
@@ -44,12 +44,20 @@ const Editor = () => {
     }
   }, [memeToEdit, canvas, topText, bottomText]);
 
+  // Source: https://developer.mozilla.org/de/docs/Web/API/HTMLCanvasElement/toDataURL (08.01.2021)
+  const downloadMeme = () => {
+    var link = document.createElement('a');
+    link.download = 'filename.png';
+    link.href = document.getElementById('canvas').toDataURL();
+    link.click();
+  };
+
   return (
     <div style={{ overflow: 'hidden' }}>
       <Container component="main">
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 4,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -58,6 +66,7 @@ const Editor = () => {
         >
           {memeToEdit ? (
             <canvas
+              id="canvas"
               ref={canvas}
               width={memeToEdit.naturalWidth * 0.5}
               height={memeToEdit.naturalHeight * 0.5}
@@ -79,9 +88,6 @@ const Editor = () => {
             onChange={(e) => setBottomText(e.target.value)}
             sx={{ mt: 2, mb: 2 }}
           />
-          <Button disabled variant="contained" color="success" sx={{ mb: 2 }}>
-            Generate
-          </Button>
           <Button
             variant="contained"
             sx={{ mb: 2 }}
@@ -89,7 +95,19 @@ const Editor = () => {
               setMemeIndex(memeIndex + 1);
             }}
           >
-            Skip
+            Next
+          </Button>
+          <Button
+            variant="contained"
+            sx={{ mb: 2 }}
+            onClick={() => {
+              setMemeIndex(memeIndex - 1);
+            }}
+          >
+            Previous
+          </Button>
+          <Button variant="contained" sx={{ mb: 2 }} onClick={downloadMeme}>
+            Download
           </Button>
         </Box>
       </Container>
