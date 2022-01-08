@@ -2,23 +2,11 @@ import React, { useEffect, useState } from 'react';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import { Button, TextField } from '@mui/material';
-import { useClipboard } from 'use-clipboard-copy';
 
 const Editor = () => {
   const [memes, setMemes] = useState([]);
   const [memeIndex, setMemeIndex] = useState(0);
   const [captions, setCaptions] = useState([]);
-  const [generatedUrl, setGeneratedUrl] = useState(null);
-  const [showsGenerated, setShowsGenerated] = useState(true);
-  const [copied, setCopied] = useState(false);
-
-  const clipboard = useClipboard();
-
-  const copyLink = () => {
-    clipboard.copy(generatedUrl);
-    setCopied(true);
-    alert('Link copied!', generatedUrl);
-  };
 
   const updateCaption = (e, index) => {
     const text = e.target.value || '';
@@ -33,32 +21,24 @@ const Editor = () => {
     );
   };
 
-  const generateMeme = () => {
-    const currentMeme = memes[memeIndex];
-    const formData = new FormData();
+  // const generateMeme = () => {
+  //   const currentMeme = memes[memeIndex];
+  //   const formData = new FormData();
 
-    formData.append('username', 'derBolide');
-    formData.append('password', 'vpfCWA9Ah4XeX8w');
-    formData.append('template_id', currentMeme.id);
-    captions.forEach((c, index) => formData.append(`boxes[${index}][text]`, c));
+  //   formData.append('username', 'derBolide');
+  //   formData.append('password', 'vpfCWA9Ah4XeX8w');
+  //   formData.append('template_id', currentMeme.id);
+  //   captions.forEach((c, index) => formData.append(`boxes[${index}][text]`, c));
 
-    fetch('https://api.imgflip.com/caption_image', {
-      method: 'POST',
-      body: formData,
-    }).then((res) => {
-      res.json().then((res) => {
-        console.log(res);
-        setGeneratedUrl(res.data.url);
-        setShowsGenerated(!showsGenerated);
-        setCopied(false);
-      });
-    });
-  };
-
-  const switchView = () => {
-    setShowsGenerated(!showsGenerated);
-    setGeneratedUrl(null);
-  };
+  //   fetch('https://api.imgflip.com/caption_image', {
+  //     method: 'POST',
+  //     body: formData,
+  //   }).then((res) => {
+  //     res.json().then((res) => {
+  //       console.log(res);
+  //     });
+  //   });
+  // };
 
   useEffect(() => {
     fetch('https://api.imgflip.com/get_memes')
@@ -94,7 +74,7 @@ const Editor = () => {
           {memes.length ? (
             <div>
               <img
-                src={generatedUrl ? generatedUrl : memes[memeIndex].url}
+                src={memes[memeIndex].url}
                 alt="meme"
                 style={{ maxHeight: 500, maxwidth: 500 }}
               />
@@ -112,31 +92,18 @@ const Editor = () => {
               sx={{ mt: 2, mb: 2 }}
             />
           ))}
-          {showsGenerated ? (
-            <Button variant="contained" color="success" sx={{ mb: 2 }} onClick={generateMeme}>
-              Generate
-            </Button>
-          ) : (
-            <Button variant="contained" color="success" sx={{ mb: 2 }} onClick={switchView}>
-              Create New
-            </Button>
-          )}
-          {copied ? (
-            <Button
-              variant="contained"
-              sx={{ mb: 2 }}
-              onClick={() => {
-                setMemeIndex(memeIndex + 1);
-                setGeneratedUrl(null);
-              }}
-            >
-              Skip
-            </Button>
-          ) : (
-            <Button variant="contained" sx={{ mb: 2 }} onClick={copyLink}>
-              Share
-            </Button>
-          )}
+          <Button variant="contained" color="success" sx={{ mb: 2 }}>
+            Generate
+          </Button>
+          <Button
+            variant="contained"
+            sx={{ mb: 2 }}
+            onClick={() => {
+              setMemeIndex(memeIndex + 1);
+            }}
+          >
+            Skip
+          </Button>
         </Box>
       </Container>
     </div>
