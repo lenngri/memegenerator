@@ -8,20 +8,12 @@ import { Button, TextField, Stack } from '@mui/material';
 // const MARGIN = 40;
 // const C_HEIGHT = 400 + MARGIN;
 
-const Editor = ({ templateUrl }) => {
+const Editor = ({ template }) => {
   // Source Editor Canvas: https://www.youtube.com/watch?v=-AwG8yF06Po
   const canvas = useRef(null);
   const [memeIndex, setMemeIndex] = useState(0);
   const [topText, setTopText] = useState('');
   const [bottomText, setBottomText] = useState('');
-  const [template, setTemplate] = useState(null);
-  console.log(templateUrl);
-
-  useEffect(() => {
-    const template = new Image();
-    template.src = templateUrl;
-    template.onload = () => setTemplate(template);
-  }, [templateUrl]);
 
   useEffect(() => {
     if (template && canvas) {

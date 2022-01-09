@@ -6,13 +6,13 @@ import { Container, ImageList, ImageListItem } from '@mui/material';
 import { useStoreState } from 'easy-peasy';
 
 const EditorScreen = ({ logout }) => {
-  const [templateUrl, setTemplateUrl] = useState(null);
+  const [template, setTemplate] = useState(null);
   const imgflipTemplates = useStoreState((state) => state.imgflipTemplates);
 
   return (
     <div style={{ overflow: 'hidden' }}>
       <NavBar logout={logout} />
-      <Editor templateUrl={templateUrl} />
+      <Editor template={template} />
       <Container sx={{ justifyContent: 'center', display: 'flex' }}>
         <Box>
           <ImageList variant="masonry" cols={3} gap={8}>
@@ -21,7 +21,7 @@ const EditorScreen = ({ logout }) => {
                 <img
                   src={item.url}
                   alt={item.name}
-                  onClick={(e) => setTemplateUrl(e.target.src)}
+                  onClick={(e) => setTemplate(e.target)}
                   loading="lazy"
                 />
               </ImageListItem>
