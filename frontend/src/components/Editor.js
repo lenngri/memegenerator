@@ -2,8 +2,9 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useStoreState } from 'easy-peasy';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
-import { Button, TextField, Stack, Typography } from '@mui/material';
+import { Button, TextField, Stack, Typography, IconButton, Tooltip } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
+import ControlCameraIcon from '@mui/icons-material/ControlCamera';
 
 // const C_WITDH = 500;
 // const MARGIN = 40;
@@ -12,8 +13,18 @@ import DownloadIcon from '@mui/icons-material/Download';
 const Editor = () => {
   // Source Editor Canvas: https://www.youtube.com/watch?v=-AwG8yF06Po
   const canvas = useRef(null);
+
+  // set top text state
   const [topText, setTopText] = useState('');
+  const [moveTopText, setMoveTopText] = useState(false);
+  const [topTextPosition, setTopTextPosition] = useState({ x: 100, y: 50 });
+
+  // set bottom text state
   const [bottomText, setBottomText] = useState('');
+  const [moveBottomText, setMoveBottomText] = useState(false);
+  const [bottomTextPosition, setBottomTextPosition] = useState({ x: 100, y: 100 });
+
+  // load template from store
   const template = useStoreState((state) => state.template);
 
   useEffect(() => {
@@ -30,10 +41,35 @@ const Editor = () => {
       ctx.fillStyle = 'black';
       ctx.textAlign = 'center';
 
-      ctx.fillText(topText, editWidth / 2, editHeight * 0.1);
-      ctx.fillText(bottomText, editWidth / 2, editHeight * 0.9);
+      // setTopTextPosition({ x: editWidth / 2, y: editHeight * 0.1 });
+      ctx.fillText(topText, topTextPosition.x, topTextPosition.y);
+      ctx.fillText(bottomText, bottomTextPosition.x, bottomTextPosition.y);
     }
-  }, [template, canvas, topText, bottomText]);
+  }, [
+    template,
+    canvas,
+    topText,
+    topTextPosition.x,
+    topTextPosition.y,
+    bottomTextPosition.x,
+    bottomText,
+    bottomTextPosition.y,
+  ]);
+
+  const moveText = (e) => {
+    if (moveTopText) {
+      setTopTextPosition({
+        x: e.clientX - e.target.offsetLeft,
+        y: e.clientY - e.target.offsetTop,
+      });
+    }
+    if (moveBottomText) {
+      setBottomTextPosition({
+        x: e.clientX - e.target.offsetLeft,
+        y: e.clientY - e.target.offsetTop,
+      });
+    }
+  };
 
   // Source: https://developer.mozilla.org/de/docs/Web/API/HTMLCanvasElement/toDataURL (08.01.2021)
   const downloadMeme = () => {
@@ -56,13 +92,19 @@ const Editor = () => {
           }}
         >
           {template ? (
-            <canvas
-              id="canvas"
-              ref={canvas}
-              width={template.naturalWidth * 0.5}
-              height={template.naturalHeight * 0.5}
-              onClick={(e) => console.log(e.clientX, e.clientY)}
-            ></canvas>
+            <Box boxShadow={2}>
+              <canvas
+                id="canvas"
+                style={{ cursor: 'crosshair' }}
+                ref={canvas}
+                width={template.naturalWidth * 0.5}
+                height={template.naturalHeight * 0.5}
+                onMouseMove={moveText}
+                onClick={(e) => {
+                  moveTopText ? setMoveTopText(false) : setMoveBottomText(false);
+                }}
+              ></canvas>
+            </Box>
           ) : (
             <>
               <Typography variant="body1" color="gray" gutterBottom component="div">
@@ -70,21 +112,31 @@ const Editor = () => {
               </Typography>
             </>
           )}
-          <Stack direction="row" spacing={1} sx={{ mt: 2, mb: 2 }}>
+          <Stack direction="row" spacing={1} sx={{ mt: 3, mb: 2 }}>
             <TextField
               disabled={!template ? true : false}
               required
               id="outlined-required"
-              label="Top Caption"
+              label="Caption 1"
               onChange={(e) => setTopText(e.target.value)}
             />
+            <Tooltip title="Move Caption 1" placement="top" arrow>
+              <IconButton onClick={() => setMoveTopText(true)}>
+                <ControlCameraIcon color={moveTopText ? 'primary' : 'gray'}></ControlCameraIcon>
+              </IconButton>
+            </Tooltip>
             <TextField
               disabled={!template ? true : false}
               required
               id="outlined-required"
-              label="Bottom Caption"
+              label="Caption 2"
               onChange={(e) => setBottomText(e.target.value)}
             />
+            <Tooltip title="Move Caption 2" placement="top" arrow>
+              <IconButton onClick={() => setMoveBottomText(true)}>
+                <ControlCameraIcon color={moveBottomText ? 'primary' : 'gray'}></ControlCameraIcon>
+              </IconButton>
+            </Tooltip>
             <Button
               disabled={!template ? true : false}
               variant="contained"
