@@ -3,6 +3,7 @@ import { useStoreState } from 'easy-peasy';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import { Button, TextField, Stack, Typography } from '@mui/material';
+import DownloadIcon from '@mui/icons-material/Download';
 
 // const C_WITDH = 500;
 // const MARGIN = 40;
@@ -37,7 +38,7 @@ const Editor = () => {
   // Source: https://developer.mozilla.org/de/docs/Web/API/HTMLCanvasElement/toDataURL (08.01.2021)
   const downloadMeme = () => {
     var link = document.createElement('a');
-    link.download = 'filename.png';
+    link.download = 'yourmeme.png';
     link.href = document.getElementById('canvas').toDataURL();
     link.click();
   };
@@ -60,6 +61,7 @@ const Editor = () => {
               ref={canvas}
               width={template.naturalWidth * 0.5}
               height={template.naturalHeight * 0.5}
+              onClick={(e) => console.log(e.clientX, e.clientY)}
             ></canvas>
           ) : (
             <>
@@ -88,6 +90,7 @@ const Editor = () => {
               variant="contained"
               sx={{ mb: 2 }}
               onClick={downloadMeme}
+              startIcon={<DownloadIcon />}
             >
               Download
             </Button>
