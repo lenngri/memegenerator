@@ -14,7 +14,6 @@ const Editor = () => {
   const [topText, setTopText] = useState('');
   const [bottomText, setBottomText] = useState('');
   const template = useStoreState((state) => state.template);
-  console.log(template);
 
   useEffect(() => {
     if (template && canvas) {

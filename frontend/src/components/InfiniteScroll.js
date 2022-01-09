@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useStoreActions } from 'easy-peasy';
 import { Heading } from './Heading';
 import { Loader } from './Loader';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -14,6 +16,8 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 function InfiniteScroller() {
+  const navigate = useNavigate();
+  const setTemplate = useStoreActions((actions) => actions.setTemplate);
   const [memes, setMemes] = useState([]);
   const theme = createTheme();
 
@@ -28,6 +32,14 @@ function InfiniteScroller() {
         setMemes(_memes);
       });
     });
+  };
+
+  const handleEdit = (event) => {
+    const button = event.target;
+    const cardBody = button.parentNode.parentNode;
+    const template = cardBody.childNodes[0];
+    setTemplate(template);
+    navigate('/editor');
   };
 
   return (
@@ -77,6 +89,7 @@ function InfiniteScroller() {
                       image={meme.url}
                       alt="random"
                       key={meme.id}
+                      id={meme.id}
                     />
                     <CardContent sx={{ flexGrow: 1 }}>
                       <Typography gutterBottom variant="h5" component="h2">
@@ -88,7 +101,9 @@ function InfiniteScroller() {
                     </CardContent>
                     <CardActions disableSpacing={true}>
                       <Button size="small">View</Button>
-                      <Button size="small">Edit</Button>
+                      <Button size="small" onClick={handleEdit}>
+                        Edit
+                      </Button>
                       <Button size="small">Comment</Button>
                       <Button size="small">Vote</Button>
                       <Button size="small">Share</Button>
