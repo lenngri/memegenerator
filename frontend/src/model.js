@@ -3,6 +3,7 @@ import { action, thunk, persist } from 'easy-peasy';
 const model = {
   // state
   imgflipTemplates: [],
+  template: null,
   userSession: persist({
     isLoggedIn: false,
     user: null,
@@ -16,6 +17,10 @@ const model = {
   // actions
   setImgflip: action((state, templates) => {
     state.imgflipTemplates = templates;
+  }),
+  setTemplate: action((state, template) => {
+    state.template = template;
+    console.log('New editor template set.');
   }),
   setLoggedIn: action((state, auth) => {
     state.userSession.isLoggedIn = auth;

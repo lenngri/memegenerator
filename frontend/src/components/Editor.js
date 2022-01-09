@@ -2,18 +2,19 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useStoreState } from 'easy-peasy';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
-import { Button, TextField, Stack } from '@mui/material';
+import { Button, TextField, Stack, Typography } from '@mui/material';
 
 // const C_WITDH = 500;
 // const MARGIN = 40;
 // const C_HEIGHT = 400 + MARGIN;
 
-const Editor = ({ template }) => {
+const Editor = () => {
   // Source Editor Canvas: https://www.youtube.com/watch?v=-AwG8yF06Po
   const canvas = useRef(null);
-  const [memeIndex, setMemeIndex] = useState(0);
   const [topText, setTopText] = useState('');
   const [bottomText, setBottomText] = useState('');
+  const template = useStoreState((state) => state.template);
+  console.log(template);
 
   useEffect(() => {
     if (template && canvas) {
@@ -62,40 +63,33 @@ const Editor = ({ template }) => {
               height={template.naturalHeight * 0.5}
             ></canvas>
           ) : (
-            <></>
+            <>
+              <Typography variant="body1" color="gray" gutterBottom component="div">
+                Please choose a template below.
+              </Typography>
+            </>
           )}
           <Stack direction="row" spacing={1} sx={{ mt: 2, mb: 2 }}>
             <TextField
+              disabled={!template ? true : false}
               required
               id="outlined-required"
               label="Top Caption"
               onChange={(e) => setTopText(e.target.value)}
             />
             <TextField
+              disabled={!template ? true : false}
               required
               id="outlined-required"
               label="Bottom Caption"
               onChange={(e) => setBottomText(e.target.value)}
             />
-          </Stack>
-          <Stack direction="row" spacing={1} sx={{ mt: 2, mb: 2 }}>
             <Button
+              disabled={!template ? true : false}
               variant="contained"
-              onClick={() => {
-                setMemeIndex(memeIndex + 1);
-              }}
+              sx={{ mb: 2 }}
+              onClick={downloadMeme}
             >
-              Next
-            </Button>
-            <Button
-              variant="contained"
-              onClick={() => {
-                setMemeIndex(memeIndex - 1);
-              }}
-            >
-              Previous
-            </Button>
-            <Button variant="contained" sx={{ mb: 2 }} onClick={downloadMeme}>
               Download
             </Button>
           </Stack>
