@@ -92,7 +92,7 @@ export default function ImgflipSelector() {
             label='Enter URL'
             onChange={handleChange}
             size='small'
-            sx={{ width: '80%' }}
+            sx={{ width: '80%', mt: 2 }}
           />
         </Grid>
         <Grid item xs={3}>
