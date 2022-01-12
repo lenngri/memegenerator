@@ -60,7 +60,7 @@ export default function ConnectedDevice() {
         }}
         sx={{ width: '80%' }}
       >
-        From Device
+        Use from Device
       </Button>
     </Box>
   );
