@@ -10,6 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
+import ImageUpload from './screens/ImageUpload';
 
 export default function ImgflipSelector() {
   const setTemplate = useStoreActions((actions) => actions.setTemplate);
@@ -32,6 +33,25 @@ export default function ImgflipSelector() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  function previewFile() {
+    const preview = document.querySelector('img');
+    const file = document.querySelector('input[type=file]').files[0];
+    const reader = new FileReader();
+
+    reader.addEventListener(
+      'load',
+      function () {
+        // convert image file to base64 string
+        preview.src = reader.result;
+      },
+      false
+    );
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  }
 
   const descriptionElementRef = React.useRef(null);
   React.useEffect(() => {
@@ -79,6 +99,8 @@ export default function ImgflipSelector() {
           onChange={handleChange}
           size='small'
         />
+
+        <ImageUpload></ImageUpload>
 
         <Dialog
           open={open}
