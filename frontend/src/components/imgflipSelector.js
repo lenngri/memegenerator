@@ -12,6 +12,7 @@ import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import ImageUpload from './screens/ImageUpload';
 import ListItem from '@mui/material/ListItem';
+import ConnectedDevice from './screens/ConnectedDevice';
 
 export default function ImgflipSelector() {
   const setTemplate = useStoreActions((actions) => actions.setTemplate);
@@ -67,7 +68,7 @@ export default function ImgflipSelector() {
   return (
     <div>
       <Grid container spacing={2} sx={{ m: 2 }}>
-        <Grid item xs={4}>
+        <Grid item xs={3}>
           <Button
             variant='contained'
             onClick={handleClickOpen('paper')}
@@ -76,7 +77,7 @@ export default function ImgflipSelector() {
             Select Template
           </Button>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={3}>
           <Button
             variant='contained'
             onClick={(e) => {
@@ -94,8 +95,11 @@ export default function ImgflipSelector() {
             sx={{ width: '80%' }}
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={3}>
           <ImageUpload></ImageUpload>
+        </Grid>
+        <Grid item xs={3}>
+          <ConnectedDevice></ConnectedDevice>
         </Grid>
       </Grid>
 
