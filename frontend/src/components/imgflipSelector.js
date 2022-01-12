@@ -11,6 +11,7 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import ImageUpload from './screens/ImageUpload';
+import ListItem from '@mui/material/ListItem';
 
 export default function ImgflipSelector() {
   const setTemplate = useStoreActions((actions) => actions.setTemplate);
@@ -65,15 +66,8 @@ export default function ImgflipSelector() {
 
   return (
     <div>
-      <Grid
-        container
-        spacing={0}
-        direction='column'
-        alignItems='center'
-        justifyContent='center'
-        style={{ minHeight: '20vh' }}
-      >
-        <Box sx={{ flexDirection: 'row', m: 4 }}>
+      <Grid container spacing={2} sx={{ m: 2 }}>
+        <Grid item xs={4}>
           <Button
             variant='contained'
             onClick={handleClickOpen('paper')}
@@ -81,84 +75,86 @@ export default function ImgflipSelector() {
           >
             Select Template
           </Button>
-
+        </Grid>
+        <Grid item xs={4}>
           <Button
             variant='contained'
             onClick={(e) => {
               setTemplate(image);
             }}
-            sx={{ my: 5, m: 2 }}
+            sx={{ width: '80%' }}
           >
             Use URL
           </Button>
-        </Box>
-
-        <TextField
-          id='outlined-basic'
-          label='Enter URL'
-          onChange={handleChange}
-          size='small'
-        />
-
-        <ImageUpload></ImageUpload>
-
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          scroll={scroll}
-          maxWidth={'xl'}
-          fullWidth={true}
-          // fullScreen={true}
-          aria-labelledby='scroll-dialog-title'
-          aria-describedby='scroll-dialog-description'
-        >
-          <DialogTitle id='scroll-dialog-title'>
-            Select a template from Imgflip.
-            <IconButton
-              aria-label='close'
-              onClick={handleClose}
-              sx={{
-                position: 'absolute',
-                right: 8,
-                top: 8,
-              }}
-            >
-              <CloseIcon />
-            </IconButton>
-          </DialogTitle>
-          <DialogContent dividers={scroll === 'paper'}>
-            <Container sx={{ justifyContent: 'center', display: 'flex' }}>
-              <Box>
-                <ImageList
-                  style={{ cursor: 'pointer' }}
-                  variant='masonry'
-                  cols={3}
-                  gap={8}
-                >
-                  {imgflipTemplates.map((item) => (
-                    <ImageListItem key={item.id}>
-                      <img
-                        src={item.url}
-                        alt={item.name}
-                        onClick={(e) => {
-                          setTemplate(e.target);
-                          handleClose();
-                        }}
-                        loading='lazy'
-                      />
-                    </ImageListItem>
-                  ))}
-                </ImageList>
-              </Box>
-            </Container>
-          </DialogContent>
-          <DialogActions>
-            <Button color={'error'} onClick={handleClose}>
-              Cancel
-            </Button>
-          </DialogActions>
-        </Dialog>
+          <TextField
+            id='outlined-basic'
+            label='Enter URL'
+            onChange={handleChange}
+            size='small'
+            sx={{ width: '80%' }}
+          />
+        </Grid>
+        <Grid item xs={4}>
+          <ImageUpload></ImageUpload>
+        </Grid>
       </Grid>
+
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        scroll={scroll}
+        maxWidth={'xl'}
+        fullWidth={true}
+        // fullScreen={true}
+        aria-labelledby='scroll-dialog-title'
+        aria-describedby='scroll-dialog-description'
+      >
+        <DialogTitle id='scroll-dialog-title'>
+          Select a template from Imgflip.
+          <IconButton
+            aria-label='close'
+            onClick={handleClose}
+            sx={{
+              position: 'absolute',
+              right: 8,
+              top: 8,
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent dividers={scroll === 'paper'}>
+          <Container sx={{ justifyContent: 'center', display: 'flex' }}>
+            <Box>
+              <ImageList
+                style={{ cursor: 'pointer' }}
+                variant='masonry'
+                cols={3}
+                gap={8}
+              >
+                {imgflipTemplates.map((item) => (
+                  <ImageListItem key={item.id}>
+                    <img
+                      src={item.url}
+                      alt={item.name}
+                      onClick={(e) => {
+                        setTemplate(e.target);
+                        handleClose();
+                      }}
+                      loading='lazy'
+                    />
+                  </ImageListItem>
+                ))}
+              </ImageList>
+            </Box>
+          </Container>
+        </DialogContent>
+        <DialogActions>
+          <Button color={'error'} onClick={handleClose}>
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

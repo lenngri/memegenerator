@@ -49,7 +49,7 @@ export default function ImageUpload() {
   };
 
   return (
-    <div>
+    <Box sx={{ flexDirection: 'column', m: 2 }}>
       <input type='file' onChange={onSelectFile} />
       {selectedFile && <img src={preview} />}
       <p>{preview}</p>
@@ -58,10 +58,10 @@ export default function ImageUpload() {
         onClick={(e) => {
           setTemplate(image);
         }}
-        sx={{ my: 5, m: 2 }}
+        sx={{ width: '80%' }}
       >
-        Use Template
+        Use Local File
       </Button>
-    </div>
+    </Box>
   );
 }
