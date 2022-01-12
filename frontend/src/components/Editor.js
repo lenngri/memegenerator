@@ -2,7 +2,14 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useStoreState } from 'easy-peasy';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
-import { Button, TextField, Stack, Typography, IconButton, Tooltip } from '@mui/material';
+import {
+  Button,
+  TextField,
+  Stack,
+  Typography,
+  IconButton,
+  Tooltip,
+} from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
 import ControlCameraIcon from '@mui/icons-material/ControlCamera';
 
@@ -22,39 +29,46 @@ const Editor = () => {
   // set bottom text state
   const [bottomText, setBottomText] = useState('');
   const [moveBottomText, setMoveBottomText] = useState(false);
-  const [bottomTextPosition, setBottomTextPosition] = useState({ x: 100, y: 100 });
+  const [bottomTextPosition, setBottomTextPosition] = useState({
+    x: 100,
+    y: 100,
+  });
 
   // load template from store
   const template = useStoreState((state) => state.template);
 
-  useEffect(() => {
-    if (template && canvas) {
-      const scaling = 0.5;
-      const editWidth = template.naturalWidth * scaling;
-      const editHeight = template.naturalHeight * scaling;
-      const ctx = canvas.current.getContext('2d');
-      // ctx.fillStyle = 'black';
-      // ctx.fillRect(0, 0, template.naturalWidth, template.naturalHeight);
-      ctx.drawImage(template, 0, 0, editWidth, editHeight);
+  useEffect(
+    () => {
+      if (template && canvas) {
+        const scaling = 0.5;
+        const editWidth = template.naturalWidth * scaling;
+        const editHeight = template.naturalHeight * scaling;
+        const ctx = canvas.current.getContext('2d');
+        // ctx.fillStyle = 'black';
+        // ctx.fillRect(0, 0, template.naturalWidth, template.naturalHeight);
+        ctx.drawImage(template, 0, 0, editWidth, editHeight);
 
-      ctx.font = '32px Comic Sans MS';
-      ctx.fillStyle = 'black';
-      ctx.textAlign = 'center';
+        ctx.font = '32px Comic Sans MS';
+        ctx.fillStyle = 'black';
+        ctx.textAlign = 'center';
 
-      // setTopTextPosition({ x: editWidth / 2, y: editHeight * 0.1 });
-      ctx.fillText(topText, topTextPosition.x, topTextPosition.y);
-      ctx.fillText(bottomText, bottomTextPosition.x, bottomTextPosition.y);
-    }
-  }, [
-    template,
-    canvas,
-    topText,
-    topTextPosition.x,
-    topTextPosition.y,
-    bottomTextPosition.x,
-    bottomText,
-    bottomTextPosition.y,
-  ]);
+        // setTopTextPosition({ x: editWidth / 2, y: editHeight * 0.1 });
+        ctx.fillText(topText, topTextPosition.x, topTextPosition.y);
+        ctx.fillText(bottomText, bottomTextPosition.x, bottomTextPosition.y);
+      }
+    },
+    [
+      template,
+      canvas,
+      topText,
+      topTextPosition.x,
+      topTextPosition.y,
+      bottomTextPosition.x,
+      bottomText,
+      bottomTextPosition.y,
+    ],
+    console.log(template)
+  );
 
   const moveText = (e) => {
     if (moveTopText) {
@@ -81,7 +95,7 @@ const Editor = () => {
 
   return (
     <div style={{ overflow: 'hidden' }}>
-      <Container component="main">
+      <Container component='main'>
         <Box
           sx={{
             marginTop: 4,
@@ -94,52 +108,63 @@ const Editor = () => {
           {template ? (
             <Box boxShadow={2}>
               <canvas
-                id="canvas"
+                id='canvas'
                 style={{ cursor: 'crosshair' }}
                 ref={canvas}
                 width={template.naturalWidth * 0.5}
                 height={template.naturalHeight * 0.5}
                 onMouseMove={moveText}
                 onClick={(e) => {
-                  moveTopText ? setMoveTopText(false) : setMoveBottomText(false);
+                  moveTopText
+                    ? setMoveTopText(false)
+                    : setMoveBottomText(false);
                 }}
               ></canvas>
             </Box>
           ) : (
             <>
-              <Typography variant="body1" color="gray" gutterBottom component="div">
+              <Typography
+                variant='body1'
+                color='gray'
+                gutterBottom
+                component='div'
+              >
                 Please choose a template below.
               </Typography>
             </>
           )}
-          <Stack direction="row" spacing={1} sx={{ mt: 3, mb: 2 }}>
+          <Stack direction='row' spacing={1} sx={{ mt: 3, mb: 2 }}>
             <TextField
               disabled={!template ? true : false}
               required
-              id="outlined-required"
-              label="Caption 1"
+              id='outlined-required'
+              label='Caption 1'
               onChange={(e) => setTopText(e.target.value)}
             />
-            <Tooltip title="Move Caption 1" placement="top" arrow>
+            <Tooltip title='Move Caption 1' placement='top' arrow>
               <IconButton onClick={() => setMoveTopText(true)}>
-                <ControlCameraIcon color={moveTopText ? 'primary' : 'gray'}></ControlCameraIcon>
+                <ControlCameraIcon
+                  color={moveTopText ? 'primary' : 'gray'}
+                ></ControlCameraIcon>
               </IconButton>
             </Tooltip>
             <TextField
               disabled={!template ? true : false}
               required
-              id="outlined-required"
-              label="Caption 2"
+              id='outlined-required'
+              label='Caption 2'
               onChange={(e) => setBottomText(e.target.value)}
             />
-            <Tooltip title="Move Caption 2" placement="top" arrow>
+            <Tooltip title='Move Caption 2' placement='top' arrow>
               <IconButton onClick={() => setMoveBottomText(true)}>
-                <ControlCameraIcon color={moveBottomText ? 'primary' : 'gray'}></ControlCameraIcon>
+                <ControlCameraIcon
+                  color={moveBottomText ? 'primary' : 'gray'}
+                ></ControlCameraIcon>
               </IconButton>
             </Tooltip>
             <Button
               disabled={!template ? true : false}
-              variant="contained"
+              variant='contained'
               sx={{ mb: 2 }}
               onClick={downloadMeme}
               startIcon={<DownloadIcon />}
