@@ -3,8 +3,8 @@ import { Stage, Layer, Image, Text } from 'react-konva'; // Source: https://konv
 import { useStoreState } from 'easy-peasy';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
-import { Button, TextField, Stack, Typography } from '@mui/material';
-import DownloadIcon from '@mui/icons-material/Download';
+import { TextField, Stack, Typography } from '@mui/material';
+import Download from './Download';
 
 const C_WIDTH = 600;
 const C_HEIGHT = 600;
@@ -35,17 +35,6 @@ const Editor = () => {
     }
   }, [template]);
 
-  // Source: https://developer.mozilla.org/de/docs/Web/API/HTMLCanvasElement/toDataURL (08.01.2021)
-  const downloadMeme = () => {
-    var link = document.createElement('a');
-    link.download = 'yourmeme.png';
-    console.log(stageRef.current.toJSON());
-    link.href = stageRef.current.toDataURL({
-      mimeType: 'image/png',
-      quality: 1.0,
-    });
-    link.click();
-  };
   // Source for cursor event handling: https://konvajs.org/docs/styling/Mouse_Cursor.html (13.01.2022)
   const grabCursor = () => {
     stageRef.current.container().style.cursor = 'grab';
@@ -125,15 +114,7 @@ const Editor = () => {
               label="Caption 2"
               onChange={(e) => setBottomText(e.target.value)}
             />
-            <Button
-              disabled={!template ? true : false}
-              variant="contained"
-              sx={{ mb: 2 }}
-              onClick={downloadMeme}
-              startIcon={<DownloadIcon />}
-            >
-              Download
-            </Button>
+            <Download template={template} stageRef={stageRef} />
           </Stack>
         </Box>
       </Container>
