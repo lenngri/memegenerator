@@ -1,6 +1,6 @@
 import React from 'react';
 import NavBar from '../NavBar';
-import Editor from '../KonvaEditor';
+import Editor from '../Editor';
 import ImgflipSelector from '../imgflipSelector';
 import { Container } from '@mui/material';
 

@@ -30,8 +30,19 @@ const Editor = () => {
   const downloadMeme = () => {
     var link = document.createElement('a');
     link.download = 'yourmeme.png';
-    link.href = document.getElementById('canvas').toDataURL();
+    link.href = stageRef.current.toDataURL({
+      mimeType: 'image/png',
+      quality: 1.0,
+    });
     link.click();
+  };
+
+  const grabCursor = () => {
+    stageRef.current.container().style.cursor = 'grab';
+  };
+
+  const defaultCursor = () => {
+    stageRef.current.container().style.cursor = 'default';
   };
 
   return (
@@ -56,21 +67,31 @@ const Editor = () => {
                     height={template.naturalHeight}
                   />
                   <Text
+                    x={template.naturalWidth * 0.5}
+                    y={template.naturalHeight * 0.1}
                     text={topText}
+                    align="center"
                     fontSize={30}
                     fontFamily="Verdana"
                     fontStyle="bold"
                     stroke="white"
                     strokeWidth={1}
+                    onMouseEnter={grabCursor}
+                    onMouseLeave={defaultCursor}
                     draggable
                   ></Text>
                   <Text
+                    x={template.naturalWidth * 0.5}
+                    y={template.naturalHeight * 0.9}
                     text={bottomText}
+                    align="center"
                     fontSize={30}
                     fontFamily="Verdana"
                     fontStyle="bold"
                     stroke="white"
                     strokeWidth={1}
+                    onMouseEnter={grabCursor}
+                    onMouseLeave={defaultCursor}
                     draggable
                   ></Text>
                 </Layer>
