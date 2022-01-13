@@ -71,6 +71,7 @@ export default function ImgflipSelector() {
                     <img
                       src={item.url}
                       alt={item.name}
+                      crossOrigin="Anonymous"
                       onClick={(e) => {
                         setTemplate(e.target);
                         handleClose();
