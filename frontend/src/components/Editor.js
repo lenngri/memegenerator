@@ -6,26 +6,40 @@ import Box from '@mui/material/Box';
 import { Button, TextField, Stack, Typography } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
 
+const C_WIDTH = 600;
+const C_HEIGHT = 600;
+
 const Editor = () => {
   // Source Editor Canvas: https://www.youtube.com/watch?v=-AwG8yF06Po
   const stageRef = useRef(null);
   const [topText, setTopText] = useState('');
   const [bottomText, setBottomText] = useState('');
+  const [editorDims, setEditorDims] = useState({ width: C_WIDTH, height: C_HEIGHT });
 
   // load template from store
   const template = useStoreState((state) => state.template);
 
   useEffect(() => {
     if (template) {
-      const stage = stageRef.current;
-      console.log(stage);
+      if (template.naturalWidth > C_WIDTH) {
+        setEditorDims({
+          width: C_WIDTH,
+          height: (template.naturalHeight * C_WIDTH) / template.naturalWidth,
+        });
+      } else {
+        setEditorDims({
+          width: template.naturalWidth,
+          height: template.naturalHeight,
+        });
+      }
     }
-  }, [template, stageRef]);
+  }, [template]);
 
   // Source: https://developer.mozilla.org/de/docs/Web/API/HTMLCanvasElement/toDataURL (08.01.2021)
   const downloadMeme = () => {
     var link = document.createElement('a');
     link.download = 'yourmeme.png';
+    console.log(stageRef.current.toJSON());
     link.href = stageRef.current.toDataURL({
       mimeType: 'image/png',
       quality: 1.0,
@@ -55,12 +69,12 @@ const Editor = () => {
         >
           {template ? (
             <Box boxShadow={2}>
-              <Stage ref={stageRef} width={template.width} height={template.height}>
+              <Stage ref={stageRef} width={editorDims.width} height={editorDims.height}>
                 <Layer>
-                  <Image image={template} width={template.width} height={template.height} />
+                  <Image image={template} width={editorDims.width} height={editorDims.height} />
                   <Text
-                    x={template.width * 0.5}
-                    y={template.height * 0.1}
+                    x={editorDims.width * 0.25}
+                    y={editorDims.height * 0.1}
                     text={topText}
                     align="center"
                     fontSize={30}
@@ -73,8 +87,8 @@ const Editor = () => {
                     draggable
                   ></Text>
                   <Text
-                    x={template.width * 0.5}
-                    y={template.height * 0.9}
+                    x={editorDims.width * 0.25}
+                    y={editorDims.height * 0.9}
                     text={bottomText}
                     align="center"
                     fontSize={30}

@@ -1,7 +1,7 @@
 import React from 'react';
 import NavBar from '../NavBar';
 import Editor from '../Editor';
-import ImgflipSelector from '../imgflipSelector';
+import ImgflipSelector from '../ImgflipSelector';
 import { Container } from '@mui/material';
 
 const EditorScreen = ({ logout }) => {
