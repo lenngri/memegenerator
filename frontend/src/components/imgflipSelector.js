@@ -71,7 +71,7 @@ export default function ImgflipSelector() {
                     <img
                       src={item.url}
                       alt={item.name}
-                      crossOrigin="Anonymous"
+                      crossOrigin="Anonymous" // Source: https://konvajs.org/docs/posts/Tainted_Canvas.html (13.01.2022)
                       onClick={(e) => {
                         setTemplate(e.target);
                         handleClose();

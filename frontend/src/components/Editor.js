@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Stage, Layer, Image, Text } from 'react-konva';
+import { Stage, Layer, Image, Text } from 'react-konva'; // Source: https://konvajs.org/ (13.01.2022)
 import { useStoreState } from 'easy-peasy';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
@@ -36,7 +36,7 @@ const Editor = () => {
     });
     link.click();
   };
-
+  // Source for cursor event handling: https://konvajs.org/docs/styling/Mouse_Cursor.html (13.01.2022)
   const grabCursor = () => {
     stageRef.current.container().style.cursor = 'grab';
   };
