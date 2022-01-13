@@ -6,10 +6,6 @@ import Box from '@mui/material/Box';
 import { Button, TextField, Stack, Typography } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
 
-// const C_WITDH = 500;
-// const MARGIN = 40;
-// const C_HEIGHT = 400 + MARGIN;
-
 const Editor = () => {
   // Source Editor Canvas: https://www.youtube.com/watch?v=-AwG8yF06Po
   const stageRef = useRef(null);
@@ -59,16 +55,12 @@ const Editor = () => {
         >
           {template ? (
             <Box boxShadow={2}>
-              <Stage ref={stageRef} width={template.naturalWidth} height={template.naturalHeight}>
+              <Stage ref={stageRef} width={template.width} height={template.height}>
                 <Layer>
-                  <Image
-                    image={template}
-                    width={template.naturalWidth}
-                    height={template.naturalHeight}
-                  />
+                  <Image image={template} width={template.width} height={template.height} />
                   <Text
-                    x={template.naturalWidth * 0.5}
-                    y={template.naturalHeight * 0.1}
+                    x={template.width * 0.5}
+                    y={template.height * 0.1}
                     text={topText}
                     align="center"
                     fontSize={30}
@@ -81,8 +73,8 @@ const Editor = () => {
                     draggable
                   ></Text>
                   <Text
-                    x={template.naturalWidth * 0.5}
-                    y={template.naturalHeight * 0.9}
+                    x={template.width * 0.5}
+                    y={template.height * 0.9}
                     text={bottomText}
                     align="center"
                     fontSize={30}
