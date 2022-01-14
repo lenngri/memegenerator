@@ -35,7 +35,7 @@ export default function ImgflipSelector() {
 
   return (
     <div>
-      <Button variant="contained" onClick={handleClickOpen('paper')} sx={{ my: 5 }}>
+      <Button variant="contained" onClick={handleClickOpen('paper')}>
         Select Template
       </Button>
       <Dialog

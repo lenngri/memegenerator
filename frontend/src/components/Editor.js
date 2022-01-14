@@ -1,10 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Stage, Layer, Image, Text } from 'react-konva'; // Source: https://konvajs.org/ (13.01.2022)
-import { useStoreState } from 'easy-peasy';
+import { useStoreState, useStoreActions } from 'easy-peasy';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import { TextField, Stack, Typography } from '@mui/material';
-import Download from './Download';
 
 const C_WIDTH = 600;
 const C_HEIGHT = 600;
@@ -12,8 +11,10 @@ const C_HEIGHT = 600;
 const Editor = () => {
   // Source Editor Canvas: https://www.youtube.com/watch?v=-AwG8yF06Po
   const stageRef = useRef(null);
+  const setStageRef = useStoreActions((actions) => actions.setStageRef);
   const [topText, setTopText] = useState('');
   const [bottomText, setBottomText] = useState('');
+  const [midText, setMidText] = useState('');
   const [editorDims, setEditorDims] = useState({ width: C_WIDTH, height: C_HEIGHT });
 
   // load template from store
@@ -33,7 +34,8 @@ const Editor = () => {
         });
       }
     }
-  }, [template]);
+    setStageRef(stageRef);
+  }, [template, setStageRef]);
 
   // Source for cursor event handling: https://konvajs.org/docs/styling/Mouse_Cursor.html (13.01.2022)
   const grabCursor = () => {
@@ -42,6 +44,18 @@ const Editor = () => {
 
   const defaultCursor = () => {
     stageRef.current.container().style.cursor = 'default';
+  };
+
+  const captionProps = {
+    align: 'center',
+    fontSize: 30,
+    fontFamily: 'Verdana',
+    fontStyle: 'bold',
+    stroke: 'white',
+    strokeWidth: 1.5,
+    onMouseEnter: grabCursor,
+    onMouseLeave: defaultCursor,
+    draggable: true,
   };
 
   return (
@@ -65,29 +79,19 @@ const Editor = () => {
                     x={editorDims.width * 0.25}
                     y={editorDims.height * 0.1}
                     text={topText}
-                    align="center"
-                    fontSize={30}
-                    fontFamily="Verdana"
-                    fontStyle="bold"
-                    stroke="white"
-                    strokeWidth={1}
-                    onMouseEnter={grabCursor}
-                    onMouseLeave={defaultCursor}
-                    draggable
+                    {...captionProps}
                   ></Text>
                   <Text
                     x={editorDims.width * 0.25}
                     y={editorDims.height * 0.9}
                     text={bottomText}
-                    align="center"
-                    fontSize={30}
-                    fontFamily="Verdana"
-                    fontStyle="bold"
-                    stroke="white"
-                    strokeWidth={1}
-                    onMouseEnter={grabCursor}
-                    onMouseLeave={defaultCursor}
-                    draggable
+                    {...captionProps}
+                  ></Text>
+                  <Text
+                    x={editorDims.width * 0.25}
+                    y={editorDims.height * 0.5}
+                    text={midText}
+                    {...captionProps}
                   ></Text>
                 </Layer>
               </Stage>
@@ -114,7 +118,13 @@ const Editor = () => {
               label="Caption 2"
               onChange={(e) => setBottomText(e.target.value)}
             />
-            <Download template={template} stageRef={stageRef} />
+            <TextField
+              disabled={!template ? true : false}
+              required
+              id="outlined-required"
+              label="Caption 3"
+              onChange={(e) => setMidText(e.target.value)}
+            />
           </Stack>
         </Box>
       </Container>

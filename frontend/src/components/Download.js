@@ -1,4 +1,5 @@
 import React from 'react';
+import { useStoreState } from 'easy-peasy';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -8,9 +9,11 @@ import DownloadIcon from '@mui/icons-material/Download';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 
-const Download = ({ template, stageRef }) => {
+const Download = () => {
   // Source: https://developer.mozilla.org/de/docs/Web/API/HTMLCanvasElement/toDataURL (08.01.2021)
   const [open, setOpen] = React.useState(false);
+  const stageRef = useStoreState((state) => state.stageRef);
+  const template = useStoreState((state) => state.template);
   const [sliderValue, setSliderValue] = React.useState(100);
 
   const handleClickOpen = () => {
@@ -22,10 +25,9 @@ const Download = ({ template, stageRef }) => {
   };
 
   const downloadMeme = () => {
-    console.log(sliderValue / 100);
     var link = document.createElement('a');
     link.download = 'thismeme.jpg';
-    console.log(stageRef.current.toJSON());
+    // console.log(stageRef.current.toJSON());
     link.href = stageRef.current.toDataURL({
       mimeType: 'image/jpeg',
       quality: sliderValue / 100,
@@ -49,7 +51,7 @@ const Download = ({ template, stageRef }) => {
   ];
 
   return (
-    <div>
+    <>
       <Button
         disabled={!template ? true : false}
         variant="contained"
@@ -66,7 +68,7 @@ const Download = ({ template, stageRef }) => {
       >
         <DialogTitle id="alert-dialog-title">{'Please select the quality in %.'}</DialogTitle>
         <DialogContent>
-          <Box width={300} sx={{ pt: 5, pr: 5, pl: 5 }}>
+          <Box width={300} sx={{ pt: 5, px: 5 }}>
             <Slider
               defaultValue={100}
               aria-label="Default"
@@ -92,7 +94,7 @@ const Download = ({ template, stageRef }) => {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
   );
 };
 
