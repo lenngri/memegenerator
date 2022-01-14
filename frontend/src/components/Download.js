@@ -33,6 +33,21 @@ const Download = ({ template, stageRef }) => {
     link.click();
   };
 
+  const marks = [
+    {
+      value: 100,
+      label: '100%',
+    },
+    {
+      value: 70,
+      label: '70%',
+    },
+    {
+      value: 10,
+      label: '10%',
+    },
+  ];
+
   return (
     <div>
       <Button
@@ -55,7 +70,8 @@ const Download = ({ template, stageRef }) => {
             <Slider
               defaultValue={100}
               aria-label="Default"
-              valueLabelDisplay="auto"
+              valueLabelDisplay="on"
+              marks={marks}
               onChange={(e) => {
                 setSliderValue(e.target.value);
               }}
