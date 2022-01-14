@@ -1,8 +1,9 @@
 import React from 'react';
 import NavBar from '../NavBar';
 import Editor from '../Editor';
-import ImgflipSelector from '../imgflipSelector';
-import { Container } from '@mui/material';
+import Download from '../Download';
+import ImgflipSelector from '../ImgflipSelector';
+import { Container, Stack } from '@mui/material';
 
 const EditorScreen = ({ logout }) => {
   return (
@@ -10,7 +11,10 @@ const EditorScreen = ({ logout }) => {
       <NavBar logout={logout} />
       <Editor />
       <Container sx={{ justifyContent: 'center', display: 'flex' }}>
-        <ImgflipSelector />
+        <Stack direction="row" spacing={1} sx={{ my: 3 }}>
+          <ImgflipSelector />
+          <Download />
+        </Stack>
       </Container>
     </div>
   );

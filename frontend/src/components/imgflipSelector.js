@@ -35,7 +35,7 @@ export default function ImgflipSelector() {
 
   return (
     <div>
-      <Button variant="contained" onClick={handleClickOpen('paper')} sx={{ my: 5 }}>
+      <Button variant="contained" onClick={handleClickOpen('paper')}>
         Select Template
       </Button>
       <Dialog
@@ -71,6 +71,7 @@ export default function ImgflipSelector() {
                     <img
                       src={item.url}
                       alt={item.name}
+                      crossOrigin="Anonymous" // Source: https://konvajs.org/docs/posts/Tainted_Canvas.html (13.01.2022)
                       onClick={(e) => {
                         setTemplate(e.target);
                         handleClose();
