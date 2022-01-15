@@ -14,11 +14,14 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Singleview from './Singleview';
 
 function InfiniteScroller() {
   const navigate = useNavigate();
   const setTemplate = useStoreActions((actions) => actions.setTemplate);
   const [memes, setMemes] = useState([]);
+  const [meme, setMeme] = useState(null);
+  const [openSingleView, setOpenSingleView] = useState(false);
   const theme = createTheme();
 
   useEffect(() => {
@@ -29,6 +32,7 @@ function InfiniteScroller() {
     fetch('https://api.imgflip.com/get_memes').then((res) => {
       res.json().then((res) => {
         const _memes = res.data.memes;
+        console.log(_memes);
         setMemes(_memes);
       });
     });
@@ -37,9 +41,19 @@ function InfiniteScroller() {
   const handleEdit = (event) => {
     const button = event.target;
     const cardBody = button.parentNode.parentNode;
-    const template = cardBody.childNodes[0];
-    setTemplate(template);
+    const meme = cardBody.childNodes[0];
+    setTemplate(meme);
     navigate('/editor');
+  };
+
+  const handleView = (event) => {
+    console.log('View clicked on meme:', event.target);
+    const button = event.target;
+    const cardBody = button.parentNode.parentNode;
+    const meme = cardBody.childNodes[0];
+    setMeme(meme);
+    setOpenSingleView(true);
+    console.log(openSingleView);
   };
 
   return (
@@ -87,7 +101,7 @@ function InfiniteScroller() {
                       }}
                       //Only works occasionally, maybe sometimes the get request comes back empty? If doesn't work try "https://source.unsplash.com/random" as placeholder
                       image={meme.url}
-                      alt="random"
+                      alt={meme.name}
                       key={meme.id}
                       id={meme.id}
                     />
@@ -100,7 +114,9 @@ function InfiniteScroller() {
                       </Typography>
                     </CardContent>
                     <CardActions disableSpacing={true}>
-                      <Button size="small">View</Button>
+                      <Button size="small" onClick={handleView}>
+                        View
+                      </Button>
                       <Button size="small" onClick={handleEdit}>
                         Edit
                       </Button>
@@ -114,33 +130,14 @@ function InfiniteScroller() {
             </Grid>
           </InfiniteScroll>
         </Container>
+        <Singleview
+          openSingleView={openSingleView}
+          setOpenSingleView={setOpenSingleView}
+          meme={meme}
+        />
       </main>
     </ThemeProvider>
   );
 }
 
 export default InfiniteScroller;
-
-{
-  /* <div>
-      <Heading />
-      <p>{memes.length}</p>
-
-      <GlobalStyle />
-      <InfiniteScroll
-        dataLength={memes.length}
-        next={fetchMemes}
-        hasMore={true}
-        loader={<Loader />}
-      >
-        <WrapperImages>
-          {memes.map((meme) => (
-            <div style={{ padding: 10 }}>
-              <MemeImage url={meme.url} key={meme.id} />
-              <p>{meme.name}</p>
-            </div>
-          ))}
-        </WrapperImages>
-      </InfiniteScroll>
-    </div> */
-}
