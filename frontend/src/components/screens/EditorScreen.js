@@ -6,6 +6,7 @@ import { Container } from '@mui/material';
 import LocalFileSelector from '../localfileselector';
 import { Box } from '@mui/system';
 import URLSelector from '../urlSelector';
+import LocalFileSelectorTest from '../localfileSelectorTest';
 
 const EditorScreen = ({ logout }) => {
   return (

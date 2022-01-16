@@ -9,7 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import Alert from '@mui/material/Alert';
 
-export default function LocalFileSelector({ ButtonText }) {
+export default function FormDialog() {
   const setTemplate = useStoreActions((actions) => actions.setTemplate);
   const imgflipTemplates = useStoreState((state) => state.imgflipTemplates);
   const [open, setOpen] = React.useState(false);
@@ -70,10 +70,10 @@ export default function LocalFileSelector({ ButtonText }) {
   return (
     <div>
       <Button variant='contained' onClick={handleClickOpen} sx={{ my: 5 }}>
-        {ButtonText}
+        Use Local File
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Select a local file</DialogTitle>
+        <DialogTitle>Subscribe</DialogTitle>
         <DialogContent>
           {alert ? <Alert severity='error'>Please choose a file</Alert> : null}
 
@@ -91,7 +91,7 @@ export default function LocalFileSelector({ ButtonText }) {
               }
             }}
           >
-            Use File
+            Use Local File
           </Button>
         </DialogActions>
       </Dialog>
