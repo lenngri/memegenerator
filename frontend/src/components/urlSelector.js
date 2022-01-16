@@ -39,9 +39,9 @@ export default function URLSelector() {
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Please insert an URL</DialogTitle>
-        <DialogContent sx={{ width: 400 }}>
-          {alert ? <Alert severity='error'>Please choose a file</Alert> : null}
+        {alert ? <Alert severity='error'>Please choose a file</Alert> : null}
 
+        <DialogContent sx={{ width: 400 }}>
           <TextField
             autoFocus
             margin='dense'
@@ -57,7 +57,7 @@ export default function URLSelector() {
           <Button
             variant='contained'
             onClick={
-              image.src === 'http://localhost:3000/undefined'
+              image.src !== 'http://localhost:3000/undefined'
                 ? (e) => {
                     setTemplate(image);
                     handleClose();
