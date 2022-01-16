@@ -4,16 +4,14 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useStoreState, useStoreActions } from 'easy-peasy';
+import { useStoreActions } from 'easy-peasy';
 import Alert from '@mui/material/Alert';
 
 export default function URLSelector() {
   const setTemplate = useStoreActions((actions) => actions.setTemplate);
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState();
-  const [imagesrc, setImagescr] = React.useState();
   const [alert, setAlert] = React.useState(false);
 
   const handleClickOpen = () => {

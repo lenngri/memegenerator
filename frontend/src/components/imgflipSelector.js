@@ -35,7 +35,11 @@ export default function ImgflipSelector() {
 
   return (
     <div>
-      <Button variant="contained" onClick={handleClickOpen('paper')} sx={{ my: 5 }}>
+      <Button
+        variant='contained'
+        onClick={handleClickOpen('paper')}
+        sx={{ my: 5 }}
+      >
         Select Template
       </Button>
       <Dialog
@@ -45,13 +49,13 @@ export default function ImgflipSelector() {
         maxWidth={'xl'}
         fullWidth={true}
         // fullScreen={true}
-        aria-labelledby="scroll-dialog-title"
-        aria-describedby="scroll-dialog-description"
+        aria-labelledby='scroll-dialog-title'
+        aria-describedby='scroll-dialog-description'
       >
-        <DialogTitle id="scroll-dialog-title">
+        <DialogTitle id='scroll-dialog-title'>
           Select a template from Imgflip.
           <IconButton
-            aria-label="close"
+            aria-label='close'
             onClick={handleClose}
             sx={{
               position: 'absolute',
@@ -65,7 +69,12 @@ export default function ImgflipSelector() {
         <DialogContent dividers={scroll === 'paper'}>
           <Container sx={{ justifyContent: 'center', display: 'flex' }}>
             <Box>
-              <ImageList style={{ cursor: 'pointer' }} variant="masonry" cols={3} gap={8}>
+              <ImageList
+                style={{ cursor: 'pointer' }}
+                variant='masonry'
+                cols={3}
+                gap={8}
+              >
                 {imgflipTemplates.map((item) => (
                   <ImageListItem key={item.id}>
                     <img
@@ -75,7 +84,7 @@ export default function ImgflipSelector() {
                         setTemplate(e.target);
                         handleClose();
                       }}
-                      loading="lazy"
+                      loading='lazy'
                     />
                   </ImageListItem>
                 ))}
