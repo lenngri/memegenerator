@@ -2,6 +2,7 @@ const { contentType } = require('express/lib/response');
 const Template = require('../database/models/template.model'); // Model for saving a user to the DB
 const multer  = require('multer')
 const upload = multer({ dest: 'uploads'})
+const { fileSizeFormatter } = require('../helpers/fileSizeFormatter.helper')
 
 exports.uploadSingle = async function(req, res, next) {
     try {
@@ -18,7 +19,7 @@ exports.uploadSingle = async function(req, res, next) {
     } catch (error) {
         res.status(400).send(error.message);
     }
-}
+};
 
 
 
