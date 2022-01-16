@@ -9,7 +9,8 @@ const cors = require('cors')
 
 const userRouter = require('./routes/user.routes');
 const templateRouter = require('./routes/template.routes');
-const privateRouter = require('./routes/private.routes')
+const memeRouter = require('./routes/meme.routes');
+const privateRouter = require('./routes/private.routes');
 
 const mongoDB = require('./database/connection');
 
