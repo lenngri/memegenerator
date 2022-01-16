@@ -56,14 +56,15 @@ export default function URLSelector() {
         <DialogActions>
           <Button
             variant='contained'
-            onClick={
-              image.src !== 'http://localhost:3000/undefined'
-                ? (e) => {
-                    setTemplate(image);
-                    handleClose();
-                  }
-                : null
-            }
+            onClick={(e) => {
+              if (name) {
+                setTemplate(image);
+                handleClose();
+                setAlert(false);
+              } else {
+                setAlert(true);
+              }
+            }}
             sx={{ width: '100%' }}
           >
             Use URL
