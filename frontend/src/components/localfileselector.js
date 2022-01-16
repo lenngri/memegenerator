@@ -4,14 +4,12 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useStoreState, useStoreActions } from 'easy-peasy';
+import { useStoreActions } from 'easy-peasy';
 import Alert from '@mui/material/Alert';
 
 export default function LocalFileSelector({ ButtonText }) {
   const setTemplate = useStoreActions((actions) => actions.setTemplate);
-  const imgflipTemplates = useStoreState((state) => state.imgflipTemplates);
   const [open, setOpen] = React.useState(false);
-  const scroll = 'paper';
 
   const descriptionElementRef = React.useRef(null);
   React.useEffect(() => {
@@ -25,7 +23,6 @@ export default function LocalFileSelector({ ButtonText }) {
 
   const [selectedFile, setSelectedFile] = React.useState();
   const [preview, setPreview] = React.useState();
-  const [localSource, setLocalSource] = React.useState();
   const [alert, setAlert] = React.useState(false);
 
   const image = new Image();
