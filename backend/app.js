@@ -9,6 +9,7 @@ const cors = require('cors')
 
 const userRouter = require('./routes/user.routes');
 const templateRouter = require('./routes/template.routes');
+const privateRouter = require('./routes/private.routes')
 
 const mongoDB = require('./database/connection');
 
@@ -30,6 +31,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 // sets up api routes
 app.use('/api/user', userRouter);
 app.use('/api/template', templateRouter);
+app.use('/api/private', privateRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

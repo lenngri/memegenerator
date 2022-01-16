@@ -1,7 +1,7 @@
 const crypto = require("crypto");
-const User = require("../database/models/user.model");
-const ErrorResponse = require("../helpers/errorResponse.helper");
-const sendEmail = require("../helpers/sendEmail.helper");
+const User = require("../database/models/User");
+const ErrorResponse = require("../utils/errorResponse");
+const sendEmail = require("../utils/sendEmail");
 
 exports.register = async (req, res, next) => {
     const { username, email, password } = req.body;
