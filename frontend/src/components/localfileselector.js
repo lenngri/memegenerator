@@ -91,7 +91,7 @@ export default function LocalFileSelector({ ButtonText }) {
               }
             }}
           >
-            Use File
+            {ButtonText}
           </Button>
         </DialogActions>
       </Dialog>
