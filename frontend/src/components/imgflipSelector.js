@@ -36,7 +36,7 @@ export default function ImgflipSelector() {
   return (
     <div>
       <Button variant="contained" onClick={handleClickOpen('paper')}>
-        Select Template
+        Imgflip Templates
       </Button>
       <Dialog
         open={open}
