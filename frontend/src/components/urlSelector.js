@@ -32,28 +32,28 @@ export default function URLSelector() {
 
   return (
     <div>
-      <Button variant='contained' onClick={handleClickOpen} sx={{ my: 5 }}>
+      <Button variant="contained" onClick={handleClickOpen}>
         Use URL
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Please insert an URL</DialogTitle>
-        {alert ? <Alert severity='error'>Please choose a file</Alert> : null}
+        {alert ? <Alert severity="error">Please choose a file</Alert> : null}
 
         <DialogContent sx={{ width: 400 }}>
           <TextField
             autoFocus
-            margin='dense'
-            id='name'
-            label='URL'
-            type='email'
+            margin="dense"
+            id="name"
+            label="URL"
+            type="email"
             fullWidth
-            variant='standard'
+            variant="standard"
             onChange={handleChange}
           />
         </DialogContent>
         <DialogActions>
           <Button
-            variant='contained'
+            variant="contained"
             onClick={(e) => {
               if (name) {
                 setTemplate(image);

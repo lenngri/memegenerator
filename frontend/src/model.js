@@ -4,6 +4,7 @@ const model = {
   // state
   imgflipTemplates: [],
   template: null,
+  stageRef: null,
   userSession: persist({
     isLoggedIn: false,
     user: null,
@@ -21,6 +22,10 @@ const model = {
   setTemplate: action((state, template) => {
     state.template = template;
     console.log('New editor template set.');
+  }),
+  setStageRef: action((state, stageRef) => {
+    state.stageRef = stageRef;
+    console.log('New stageRef set.');
   }),
   setLoggedIn: action((state, auth) => {
     state.userSession.isLoggedIn = auth;

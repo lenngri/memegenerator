@@ -64,15 +64,15 @@ export default function LocalFileSelector({ ButtonText }) {
 
   return (
     <div>
-      <Button variant='contained' onClick={handleClickOpen} sx={{ my: 5 }}>
+      <Button variant="contained" onClick={handleClickOpen}>
         {ButtonText}
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Select a local file</DialogTitle>
         <DialogContent>
-          {alert ? <Alert severity='error'>Please choose a file</Alert> : null}
+          {alert ? <Alert severity="error">Please choose a file</Alert> : null}
 
-          <input type='file' onChange={onSelectFile} />
+          <input type="file" onChange={onSelectFile} />
         </DialogContent>
         <DialogActions>
           <Button
