@@ -11,15 +11,16 @@ const EditorScreen = ({ logout }) => {
   return (
     <div style={{ overflow: 'hidden' }}>
       <NavBar logout={logout} />
-      <Editor />
       <Container sx={{ justifyContent: 'space-around', display: 'flex' }}>
-        <Stack direction="row" spacing={1} sx={{ my: 3 }}>
+        <Stack direction="row" spacing={1} sx={{ mt: 3 }}>
           <ImgflipSelector />
           <LocalFileSelector ButtonText={'Use local file'}></LocalFileSelector>
-          <LocalFileSelector ButtonText={'Use from Device'}></LocalFileSelector>
           <URLSelector></URLSelector>
-          <Download />
         </Stack>
+      </Container>
+      <Editor />
+      <Container sx={{ justifyContent: 'space-around', display: 'flex' }}>
+        <Download />
       </Container>
     </div>
   );
