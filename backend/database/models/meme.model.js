@@ -9,16 +9,16 @@ const Schema = mongoose.Schema;
 //Meme Schema
 const MemeSchema = new Schema({
     user: {
-        type: ID,
+        type: String,
         require: [true, 'Please add the user, who created this meme']
-    },
-    memeInfo: {
-        type: JSON,
-        required: [true: 'You cannot upload a Meme without meme info']
     },
     template: {
         type: String,
         required: [true, 'Please add source of the uploaded image']
+    },
+    memeInfo: {
+        type: Object,
+        required: [true, 'You cannot upload a Meme without meme info']
     },
     fileName: {
         type: String,

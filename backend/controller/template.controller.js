@@ -14,8 +14,13 @@ exports.uploadSingle = async function(req, res, next) {
             fileSize: fileSizeFormatter(req.file.size, 2),
             description: req.body.description
         })
-        await file.save();
-        res.status(201).send( file.fileSize + ' uploaded successfully with name ' + file.fileName);
+        await file.save( function(error, template) {
+            if(error){
+                console.log(error.message)
+            }
+            res.status(200).send(template)
+            console.log('Saved template with ID: ' + template.id)
+        })
     } catch (error) {
         res.status(400).send(error.message);
     }
