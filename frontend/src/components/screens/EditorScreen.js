@@ -1,10 +1,10 @@
 import React from 'react';
 import NavBar from '../NavBar';
 import Editor from '../Editor';
-import ImgflipSelector from '../imgflipSelector';
+import ImgflipSelector from '../ImgflipSelector';
 import { Container, Stack } from '@mui/material';
-import LocalFileSelector from '../localfileselector';
-import URLSelector from '../urlSelector';
+import LocalFileSelector from '../LocalFileSelector';
+import URLSelector from '../UrlSelector';
 import Download from '../Download';
 
 const EditorScreen = ({ logout }) => {
