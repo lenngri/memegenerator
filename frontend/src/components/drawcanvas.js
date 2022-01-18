@@ -14,6 +14,10 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 // import classNames from './index.css';
 
 export default class DrawCanvas extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   state = {
     color: '#ffc600',
     width: 400,
@@ -28,9 +32,9 @@ export default class DrawCanvas extends Component {
     ],
   };
 
-  useStoreActions(actions) {
-    actions.setTemplate();
-  }
+  click = () => {
+    this.props.parentMethod();
+  };
 
   render() {
     return (
@@ -38,11 +42,16 @@ export default class DrawCanvas extends Component {
         <Container>
           <div>
             <button
+              // onClick={() => {
+              //   localStorage.setItem(
+              //     'savedDrawing',
+              //     this.saveableCanvas.getSaveData()
+              //   );
+              //   this.props.parentMethod();
+              // }}
               onClick={() => {
-                localStorage.setItem(
-                  'savedDrawing',
-                  this.saveableCanvas.getSaveData()
-                );
+                this.props.parentMethod(this.saveableCanvas.getDataURL());
+                console.log(this.saveableCanvas.getDataURL());
               }}
             >
               Save

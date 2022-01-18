@@ -25,6 +25,7 @@ export default function DrawCanvasContainer({ ButtonText }) {
   const [selectedFile, setSelectedFile] = React.useState();
   const [preview, setPreview] = React.useState();
   const [alert, setAlert] = React.useState(false);
+  const [savedDrawing, setItem] = React.useState();
 
   const image = new Image();
   // image.src = `"${name}"`;
@@ -63,29 +64,41 @@ export default function DrawCanvasContainer({ ButtonText }) {
     setOpen(false);
   };
 
+  const someMethod = (input) => {
+    setPreview(input);
+  };
+
   return (
     <div>
       <Button variant='contained' onClick={handleClickOpen}>
         {ButtonText}
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Select a local file</DialogTitle>
+        <DialogTitle>Draw an image</DialogTitle>
         <DialogContent>
-          <DrawCanvas></DrawCanvas>
+          <DrawCanvas
+            parentMethod={someMethod}
+            savedDrawing={savedDrawing}
+            useStoreActions={useStoreActions}
+          ></DrawCanvas>
         </DialogContent>
         <DialogActions>
           <Button
+            // onClick={(e) => {
+            //   if (preview) {
+            //     setTemplate(image);
+            //     handleClose();
+            //     setAlert(false);
+            //   } else {
+            //     setAlert(true);
+            //   }
+            // }}
             onClick={(e) => {
-              if (preview) {
-                setTemplate(image);
-                handleClose();
-                setAlert(false);
-              } else {
-                setAlert(true);
-              }
+              // setTemplate(savedDrawing);
+              setTemplate(image);
             }}
           >
-            Use
+            Use template
           </Button>
         </DialogActions>
       </Dialog>
