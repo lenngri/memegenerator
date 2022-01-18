@@ -24,7 +24,6 @@ export default function DrawCanvasContainer({ ButtonText }) {
 
   const [preview, setPreview] = React.useState();
   const [alert, setAlert] = React.useState(false);
-  const [savedDrawing, setItem] = React.useState();
 
   const image = new Image();
   // image.src = `"${name}"`;
