@@ -1,21 +1,23 @@
 import React from 'react';
 import NavBar from '../NavBar';
 import Editor from '../Editor';
-import ImgflipSelector from '../ImgflipSelector';
+import ImgflipSelector from '../imgflipSelector';
 import { Container, Stack } from '@mui/material';
-import LocalFileSelector from '../LocalFileSelector';
-import URLSelector from '../UrlSelector';
+import LocalFileSelector from '../localfileselector';
+import URLSelector from '../urlSelector';
 import Download from '../Download';
+import CameraUpload from '../cameraupload';
 
 const EditorScreen = ({ logout }) => {
   return (
     <div style={{ overflow: 'hidden' }}>
       <NavBar logout={logout} />
       <Container sx={{ justifyContent: 'space-around', display: 'flex' }}>
-        <Stack direction="row" spacing={1} sx={{ mt: 3 }}>
+        <Stack direction='row' spacing={1} sx={{ mt: 3 }}>
           <ImgflipSelector />
           <LocalFileSelector ButtonText={'Use local file'}></LocalFileSelector>
           <URLSelector></URLSelector>
+          <CameraUpload></CameraUpload>
         </Stack>
       </Container>
       <Editor />
