@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CanvasDraw from 'react-canvas-draw';
 import { Container } from '@mui/material';
+import { SliderPicker } from 'react-color';
 
 export default class DrawCanvas extends Component {
   state = {
@@ -10,13 +11,13 @@ export default class DrawCanvas extends Component {
     brushRadius: 10,
     lazyRadius: 12,
     counter: 0,
+    background: '#ffc600',
   };
 
-  changeColor() {
-    this.setState({
-      color: '#' + Math.floor(Math.random() * 16777215).toString(16),
-    });
-  }
+  handleChangeComplete = (color) => {
+    this.setState({ background: color.hex });
+    this.setState({ color: color.hex });
+  };
 
   render() {
     return (
@@ -52,13 +53,6 @@ export default class DrawCanvas extends Component {
               }}
             >
               GetDataURL
-            </button>
-            <button
-              onClick={() => {
-                this.changeColor();
-              }}
-            >
-              Change color
             </button>
 
             <div>
@@ -113,6 +107,10 @@ export default class DrawCanvas extends Component {
                 }}
               />
             </div>
+            <SliderPicker
+              color={this.state.background}
+              onChangeComplete={this.handleChangeComplete}
+            />
           </div>
           <CanvasDraw
             ref={(canvasDraw) => (this.saveableCanvas = canvasDraw)}
