@@ -75,6 +75,12 @@ export default function DrawCanvasContainer({ ButtonText }) {
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Draw an image</DialogTitle>
+        {alert ? (
+          <Alert severity='error'>
+            Please save a drawn picture before proceeding
+          </Alert>
+        ) : null}
+
         <DialogContent>
           <DrawCanvas
             parentMethod={someMethod}
@@ -84,19 +90,19 @@ export default function DrawCanvasContainer({ ButtonText }) {
         </DialogContent>
         <DialogActions>
           <Button
-            // onClick={(e) => {
-            //   if (preview) {
-            //     setTemplate(image);
-            //     handleClose();
-            //     setAlert(false);
-            //   } else {
-            //     setAlert(true);
-            //   }
-            // }}
             onClick={(e) => {
-              // setTemplate(savedDrawing);
-              setTemplate(image);
+              if (preview) {
+                setTemplate(image);
+                handleClose();
+                setAlert(false);
+              } else {
+                setAlert(true);
+              }
             }}
+            // onClick={(e) => {
+            //   // setTemplate(savedDrawing);
+            //   setTemplate(image);
+            // }}
           >
             Use template
           </Button>
