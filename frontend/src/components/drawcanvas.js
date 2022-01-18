@@ -1,40 +1,22 @@
 import React, { Component } from 'react';
-import { render } from 'react-dom';
 import CanvasDraw from 'react-canvas-draw';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import { Box } from '@mui/system';
-import { Container, ImageList, ImageListItem, IconButton } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import { useStoreState, useStoreActions } from 'easy-peasy';
-
-// import classNames from './index.css';
+import { Container } from '@mui/material';
 
 export default class DrawCanvas extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   state = {
     color: '#ffc600',
     width: 400,
     height: 400,
     brushRadius: 10,
     lazyRadius: 12,
-    backgroundImg:
-      'https://upload.wikimedia.org/wikipedia/commons/a/a1/Nepalese_Mhapuja_Mandala.jpg',
-    imgs: [
-      'https://upload.wikimedia.org/wikipedia/commons/a/a1/Nepalese_Mhapuja_Mandala.jpg',
-      'https://i.imgur.com/a0CGGVC.jpg',
-    ],
+    counter: 0,
   };
 
-  click = () => {
-    this.props.parentMethod();
-  };
+  changeColor() {
+    this.setState({
+      color: '#' + Math.floor(Math.random() * 16777215).toString(16),
+    });
+  }
 
   render() {
     return (
@@ -42,13 +24,6 @@ export default class DrawCanvas extends Component {
         <Container>
           <div>
             <button
-              // onClick={() => {
-              //   localStorage.setItem(
-              //     'savedDrawing',
-              //     this.saveableCanvas.getSaveData()
-              //   );
-              //   this.props.parentMethod();
-              // }}
               onClick={() => {
                 this.props.parentMethod(this.saveableCanvas.getDataURL());
                 console.log(this.saveableCanvas.getDataURL());
@@ -78,6 +53,14 @@ export default class DrawCanvas extends Component {
             >
               GetDataURL
             </button>
+            <button
+              onClick={() => {
+                this.changeColor();
+              }}
+            >
+              Change color
+            </button>
+
             <div>
               <label>Width:</label>
               <input
@@ -118,6 +101,18 @@ export default class DrawCanvas extends Component {
                 }
               />
             </div>
+            <div>
+              Current color:{' '}
+              <div
+                style={{
+                  display: 'inline-block',
+                  width: '24px',
+                  height: '24px',
+                  backgroundColor: this.state.color,
+                  border: '1px solid #272727',
+                }}
+              />
+            </div>
           </div>
           <CanvasDraw
             ref={(canvasDraw) => (this.saveableCanvas = canvasDraw)}
@@ -127,35 +122,6 @@ export default class DrawCanvas extends Component {
             canvasWidth={this.state.width}
             canvasHeight={this.state.height}
           />
-
-          {/* <p>
-            The following is a disabled canvas with a hidden grid that we use to
-            load & show your saved drawing.
-          </p>
-          <button
-            onClick={() => {
-              this.loadableCanvas.loadSaveData(
-                localStorage.getItem('savedDrawing')
-              );
-            }}
-          >
-            Load what you saved previously into the following canvas. Either by
-            calling `loadSaveData()` on the component's reference or passing it
-            the `saveData` prop:
-          </button>
-          <CanvasDraw
-            disabled
-            hideGrid
-            ref={(canvasDraw) => (this.loadableCanvas = canvasDraw)}
-            saveData={localStorage.getItem('savedDrawing')}
-          />
-          <p>
-            The saving & loading also takes different dimensions into account.
-            Change the width & height, draw something and save it and then load
-            it into the disabled canvas. It will load your previously saved
-            masterpiece scaled to the current canvas dimensions.
-          </p>
-          <p></p> */}
         </Container>
       </div>
     );

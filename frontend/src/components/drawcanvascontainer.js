@@ -22,7 +22,6 @@ export default function DrawCanvasContainer({ ButtonText }) {
     }
   }, [open]);
 
-  const [selectedFile, setSelectedFile] = React.useState();
   const [preview, setPreview] = React.useState();
   const [alert, setAlert] = React.useState(false);
   const [savedDrawing, setItem] = React.useState();
@@ -30,31 +29,6 @@ export default function DrawCanvasContainer({ ButtonText }) {
   const image = new Image();
   // image.src = `"${name}"`;
   image.src = preview;
-
-  // create a preview as a side effect, whenever selected file is changed
-  React.useEffect(() => {
-    if (!selectedFile) {
-      setPreview(undefined);
-      return;
-    }
-
-    const objectUrl = URL.createObjectURL(selectedFile);
-    setPreview(objectUrl);
-
-    // free memory when ever this component is unmounted
-    return () => URL.revokeObjectURL(objectUrl);
-  }, [selectedFile]);
-
-  const onSelectFile = (e) => {
-    if (!e.target.files || e.target.files.length === 0) {
-      setSelectedFile(undefined);
-      return;
-    }
-
-    // I've kept this example simple by using the first image instead of multiple
-    setSelectedFile(e.target.files[0]);
-    console.log(e.target.files[0]);
-  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -84,7 +58,6 @@ export default function DrawCanvasContainer({ ButtonText }) {
         <DialogContent>
           <DrawCanvas
             parentMethod={someMethod}
-            savedDrawing={savedDrawing}
             useStoreActions={useStoreActions}
           ></DrawCanvas>
         </DialogContent>
@@ -99,10 +72,6 @@ export default function DrawCanvasContainer({ ButtonText }) {
                 setAlert(true);
               }
             }}
-            // onClick={(e) => {
-            //   // setTemplate(savedDrawing);
-            //   setTemplate(image);
-            // }}
           >
             Use template
           </Button>
