@@ -5,8 +5,11 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
+const cors = require('cors')
 
-const userRouter = require('./routes/user');
+const userRouter = require('./routes/user.routes');
+const templateRouter = require('./routes/template.routes');
+const privateRouter = require('./routes/private.routes')
 
 const mongoDB = require('./database/connection');
 
@@ -21,8 +24,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+// handles static routes and serves react frontend
 app.use(express.static(path.join(__dirname, '..', 'frontend', 'build')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
+
+// sets up api routes
 app.use('/api/user', userRouter);
+app.use('/api/template', templateRouter);
+app.use('/api/private', privateRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
