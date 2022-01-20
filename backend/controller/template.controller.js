@@ -4,6 +4,15 @@ const multer  = require('multer')
 const upload = multer({ dest: 'uploads'})
 const { fileSizeFormatter } = require('../helpers/fileSizeFormatter.helper')
 
+exports.retrieve = async function(req, res, next) {
+    try {
+        const templates = await Template.find();
+        res.json(templates)
+    } catch (error) {
+        res.json({message: error});
+    }
+}
+
 exports.uploadSingle = async function(req, res, next) {
     try {
         const file = new Template ({

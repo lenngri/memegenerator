@@ -4,6 +4,15 @@ const multer  = require('multer')
 const upload = multer({ dest: 'uploads'})
 const { fileSizeFormatter } = require('../helpers/fileSizeFormatter.helper')
 
+exports.retrieve = async function(req, res, next) {
+    try {
+        const memes = await Meme.find();
+        res.status(200).json(memes)
+    } catch (error) {
+        res.status(500).json({message: error});
+    }
+}
+
 exports.uploadSingle = async function(req, res, next) {
     try {
         const file = new Meme ({
