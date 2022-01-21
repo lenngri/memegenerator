@@ -39,14 +39,20 @@ exports.retrieveMany = async function(req, res, next) {
     }
     
     const query = removeEmpty(filters)
+    console.log("applying filters: " + JSON.stringify(query))
 
     try {
 
-        console.log("applying filters: " + JSON.stringify(query) + " and querying database")
+        console.log("querying database")
 
         const memes = await Meme.find(query)
-        console.log("returning " + memes.length + " according to query parameters")
-        res.status(200).json(memes)
+        console.log("found " + memes.length + " memes according to query parameters")
+
+        if(memes.length > 0) {
+            res.status(200).json(memes)
+        } else {
+            res.status(500).json({"message" : "no memes match your query"})
+        }
         
     } catch (error) {
         res.status(500).send(error.message)
