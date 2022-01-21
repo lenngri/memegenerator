@@ -26,7 +26,7 @@ const MemeSchema = new Schema({
     },
     memeCaptions: {
         type: String,
-        required: [true, 'You cannot upload a Meme without meme info']
+        required: [true, 'You cannot upload a Meme without captions']
     },
     fileName: {
         type: String,

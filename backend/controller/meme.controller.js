@@ -1,6 +1,7 @@
 const { contentType } = require('express/lib/response');
 const Meme = require('../database/models/meme.model'); // Model for saving a user to the DB
 const { fileSizeFormatter } = require('../helpers/fileSizeFormatter.helper')
+const { removeEmpty } = require('../helpers/removeEmpty')
 
 
 
@@ -30,27 +31,22 @@ exports.retrieveMany = async function(req, res, next) {
 
     console.log("getting many memes")
 
-    const userID = req.body.userID || undefined
-    const templateID = req.body.templateID || undefined
-    const title = req.body.title || undefined
-    const private = req.body.title || undefined
+    const filters = {
+        userID: req.body.userID,
+        templateID: req.body.templateID,
+        title: req.body.title,
+        private: req.body.private
+    }
+    
+    const query = removeEmpty(filters)
 
     try {
 
-        console.log("querying database")
+        console.log("applying filters: " + JSON.stringify(query) + " and querying database")
 
-        const memes = await Meme.find({
-            userID: userID,
-            templateID: templateID,
-            title: title,
-            private: private
-        })
-
-        if (memes.length === 0) {
-            res.status(500).send("No memes match your query")
-        } else {
-            res.status(200).json(memes)
-        }
+        const memes = await Meme.find(query)
+        console.log("returning " + memes.length + " according to query parameters")
+        res.status(200).json(memes)
         
     } catch (error) {
         res.status(500).send(error.message)
@@ -67,7 +63,11 @@ exports.retrieveAll = async function(req, res, next) {
     }
 };
 
+
+// Uploads single meme and saves it to the uploads directory, along with database
 exports.uploadSingle = async function(req, res, next) {
+
+    console.log("posting single meme")
 
     try {
 
@@ -79,28 +79,34 @@ exports.uploadSingle = async function(req, res, next) {
 
         } else {
 
+            console.log("constructing upload object")
+
             let file = req.files.meme
 
             const meme = new Meme ({
-                user:     req.body.user,
-                template: req.body.template,
-                memeInfo: req.body.memeInfo,
+                userID:     req.body.userID,
+                templateID: req.body.templateID,
+                title: req.body.title,
+                description: req.body.description,
+                memeCaptions: req.body.memeCaptions,
                 fileName: file.name,
                 filePath: "./uploads/meme/" + req.body.user + "/" + file.name,
                 fileType: file.mimetype,
                 fileSize: fileSizeFormatter(file.size, 2),
-                description: req.body.description,
-                memeInfo: req.body.memeInfo,
-                private: req.body.private
+                private: req.body.private,
+                likes: req.body.likes,
+                comments: req.body.comments
             })
+
+            console.log("contacting database")
 
             await meme.save( function(error, meme) {
                 if(error){
                     console.log(error.message)
                 }
                 res.status(200).send(meme)
-                file.mv("./uploads/meme/" + "/" + meme.user + "/" + meme.fileName)
-                console.log('Saved meme with ID: ' + meme.id)
+                file.mv("./uploads/meme/" + "/" + meme.userID + "/" + meme.fileName)
+                console.log("saved meme with ID: " + meme.id + " at " + meme.filePath)
             })
 
         }
