@@ -1,9 +1,12 @@
 const express = require('express');
-const { upload } = require('../middleware/upload.middleware')
-const { uploadSingle }  = require('../controller/template.controller')
 const router = express.Router();
 
-router.route('/uploadSingle').post(upload.single('file'), uploadSingle)
+const { 
+    retrieve,
+    uploadSingle
+}  = require('../controller/template.controller')
+
+router.route('/retrieve').get(retrieve),
+router.route('/uploadSingle').post(uploadSingle)
 
 module.exports = router
-
