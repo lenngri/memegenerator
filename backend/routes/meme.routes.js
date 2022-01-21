@@ -1,17 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-const { 
-    retrieveSingle,
-    retrieveMany,
-    retrieveAll,
+const {
+    retrieve,
     uploadSingle
 }  = require('../controller/meme.controller')
 
-router.route('/retrieveSingle').get(retrieveSingle);
-router.route('/retrieveMany').get(retrieveMany);
-router.route('/retrieveAll').get(retrieveAll);
-
+router.route('/retrieve').get(retrieve);
 router.route('/uploadSingle').post(uploadSingle);
 
 module.exports = router

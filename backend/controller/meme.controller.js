@@ -4,34 +4,13 @@ const { fileSizeFormatter } = require('../helpers/fileSizeFormatter.helper')
 const { removeEmpty } = require('../helpers/removeEmpty.helper')
 
 
-
-// gets single meme by ID
-exports.retrieveSingle = async function(req, res, next) {
-
-    console.log("getting single meme")
-    
-    // sets ID variable from http body
-    const _id = req.body.id;
-
-    console.log("meme id set to: " + _id)
-
-    // tries to query database and catches error
-    try {
-        console.log("querying database")
-        const meme = await Meme.findById(_id) // uses Meme model from db models directory
-        res.status(200).json(meme)
-    } catch (error) {
-        res.status(500).send(error.message)
-    }
-
-};
-
-exports.retrieveMany = async function(req, res, next) {
+exports.retrieve = async function(req, res, next) {
 
 
     console.log("getting many memes")
 
     const filters = {
+        _id: req.body._id,
         userID: req.body.userID,
         templateID: req.body.templateID,
         title: req.body.title,
@@ -59,16 +38,6 @@ exports.retrieveMany = async function(req, res, next) {
     }
     
 };
-
-exports.retrieveAll = async function(req, res, next) {
-    try {
-        const memes = await Meme.find();
-        res.status(200).json(memes)
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
-};
-
 
 // Uploads single meme and saves it to the uploads directory, along with database
 exports.uploadSingle = async function(req, res, next) {

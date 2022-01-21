@@ -5,53 +5,19 @@ const upload = multer({ dest: 'uploads'})
 const { fileSizeFormatter } = require('../helpers/fileSizeFormatter.helper')
 const { removeEmpty } = require('../helpers/removeEmpty.helper')
 
-
-// retrieves single template object by ID
-exports.retrieveSingle = async function(req, res, next) {
-
-    console.log("getting single template")
-
-    // sets ID variable from http body
-    const _id = req.body.id;
-
-    console.log("set template id to: " + _id)
-
-    // tries to query database and catches error
-    try {
-        console.log("querying database")
-        const template = await Template.findById(_id); // uses template model from database models directory
-        res.status(200).json(template)
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
-};
-
-// retrieves all templates on server
-exports.retrieveAll = async function(req, res, next) {
-
-    console.log("getting all templates")
-
-    try {
-        console.log("querying database")
-        const templates = await Template.find();
-        console.log("retrieved " + templates.length + " templates")
-        res.status(200).json(templates)
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
-}
-
-exports.retrieveMany = async function(req, res, next) {
+// allows retrieval of templates according to params sent in request body
+exports.retrieve = async function(req, res, next) {
 
 
     console.log("getting many templates")
 
     const filters = {
-        userID: req.body.userID,
-        source: req.body.source,
-        title: req.body.title,
-        private: req.body.private
-    }
+      _id: req.body._id,
+      userID: req.body.userID,
+      source: req.body.source,
+      title: req.body.title,
+      private: req.body.private,
+    };
     
     const query = removeEmpty(filters)
     console.log("applying filters: " + JSON.stringify(query))
@@ -92,13 +58,13 @@ exports.uploadSingle = async function(req, res, next) {
 
             const template = new Template ({
                 userID:     req.body.userID,
-                source: req.body.source,
-                fileName: file.name,
-                filePath: "./uploads/template/" + req.body.userID + "/" + file.name,
-                fileType: file.mimetype,
-                fileSize: fileSizeFormatter(file.size, 2),
+                source:     req.body.source,
+                fileName:   file.name,
+                filePath:   "./uploads/template/" + req.body.userID + "/" + file.name,
+                fileType:   file.mimetype,
+                fileSize:   fileSizeFormatter(file.size, 2),
                 description: req.body.description,
-                private: req.body.private
+                private:    req.body.private
             })
 
             await template.save( function(error, template) {
