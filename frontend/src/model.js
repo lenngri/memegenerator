@@ -3,6 +3,7 @@ import { action, thunk, persist } from 'easy-peasy';
 const model = {
   // state
   imgflipTemplates: [],
+  serverTemplates: [],
   template: null,
   stageRef: null,
   userSession: persist({
@@ -15,9 +16,18 @@ const model = {
     const templates = await res.json();
     actions.setImgflip(templates.data.memes);
   }),
+  fetchServerTemplates: thunk(async (actions) => {
+    const res = await fetch('/template/retrieve');
+    console.log('Fetched something from server', res);
+    const templates = await res.json();
+    actions.setImgflip(templates);
+  }),
   // actions
   setImgflip: action((state, templates) => {
     state.imgflipTemplates = templates;
+  }),
+  setServerTemplates: action((state, templates) => {
+    state.serverTemplates = templates;
   }),
   setTemplate: action((state, template) => {
     state.template = template;
