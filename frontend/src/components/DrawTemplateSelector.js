@@ -6,9 +6,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useStoreActions } from 'easy-peasy';
 import Alert from '@mui/material/Alert';
-import DrawCanvas from '../components/drawcanvas';
+import DrawCanvas from './DrawCanvas';
 
-export default function DrawCanvasContainer({ ButtonText }) {
+export default function DrawTemplateSelector({ ButtonText }) {
   const setTemplate = useStoreActions((actions) => actions.setTemplate);
   const [open, setOpen] = React.useState(false);
 
@@ -43,22 +43,17 @@ export default function DrawCanvasContainer({ ButtonText }) {
 
   return (
     <div>
-      <Button variant='contained' onClick={handleClickOpen}>
+      <Button variant="contained" onClick={handleClickOpen}>
         {ButtonText}
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Draw an image</DialogTitle>
         {alert ? (
-          <Alert severity='error'>
-            Please save a drawn picture before proceeding
-          </Alert>
+          <Alert severity="error">Please save a drawn picture before proceeding</Alert>
         ) : null}
 
         <DialogContent>
-          <DrawCanvas
-            parentMethod={someMethod}
-            useStoreActions={useStoreActions}
-          ></DrawCanvas>
+          <DrawCanvas parentMethod={someMethod} useStoreActions={useStoreActions}></DrawCanvas>
         </DialogContent>
         <DialogActions>
           <Button
