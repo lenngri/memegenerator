@@ -8,6 +8,10 @@ const Schema = mongoose.Schema;
 
 //Template Schema
 const TemplateSchema = new Schema({
+    user: {
+        type: String,
+        required: [true, 'Every template needs an originating user']
+    },
     source: {
         type: String,
         required: [true, 'Please add source of the uploaded image']
@@ -31,6 +35,11 @@ const TemplateSchema = new Schema({
     description: {
         type: String,
         required: false
+    },
+    private: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 }, {timestamps: true});
 

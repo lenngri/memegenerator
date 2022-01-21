@@ -8,16 +8,24 @@ const Schema = mongoose.Schema;
 
 //Meme Schema
 const MemeSchema = new Schema({
-    user: {
+    userID: {
         type: String,
         require: [true, 'Please add the user, who created this meme']
     },
-    template: {
+    templateID: {
         type: String,
         required: [true, 'Please add source of the uploaded image']
     },
-    memeInfo: {
-        type: Object,
+    title: {
+        type: String,
+        required: [true, 'Please add a title to this meme']
+    },
+    description: {
+        type: String,
+        required: false
+    },
+    memeCaptions: {
+        type: String,
         required: [true, 'You cannot upload a Meme without meme info']
     },
     fileName: {
@@ -36,9 +44,20 @@ const MemeSchema = new Schema({
         type: String,
         required: [true, 'File Size required']
     },
-    description: {
-        type: String,
-        required: false
+    private: {
+        type: Boolean,
+        required: true,
+        default: true
+    },
+    likes: {
+        type: Array,
+        required: true,
+        default: []
+    },
+    comments: {
+        type: Array,
+        required: true,
+        default: []
     }
 }, {timestamps: true});
 

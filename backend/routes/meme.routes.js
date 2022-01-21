@@ -1,9 +1,17 @@
 const express = require('express');
-const { upload } = require('../middleware/upload.middleware')
-const { uploadSingle, retrieve }  = require('../controller/meme.controller')
 const router = express.Router();
 
-router.route('/uploadSingle').post(upload.single('file'), uploadSingle)
-router.route('/retrieve').get(retrieve)
+const { 
+    retrieveSingle,
+    retrieveMany,
+    retrieveAll,
+    uploadSingle
+}  = require('../controller/meme.controller')
+
+router.route('/retrieveSingle').get(retrieveSingle);
+router.route('/retrieveMany').get(retrieveMany);
+router.route('/retrieveAll').get(retrieveAll);
+
+router.route('/uploadSingle').post(uploadSingle);
 
 module.exports = router
