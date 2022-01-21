@@ -1,7 +1,7 @@
 const { contentType } = require('express/lib/response');
 const Meme = require('../database/models/meme.model'); // Model for saving a user to the DB
 const { fileSizeFormatter } = require('../helpers/fileSizeFormatter.helper')
-const { removeEmpty } = require('../helpers/removeEmpty')
+const { removeEmpty } = require('../helpers/removeEmpty.helper')
 
 
 

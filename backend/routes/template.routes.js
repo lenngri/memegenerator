@@ -9,7 +9,7 @@ const {
 }  = require('../controller/template.controller')
 
 router.route('/retrieveSingle').get(retrieveSingle),
-// router.route('/retrieveMany').get(retrieveMany),
+router.route('/retrieveMany').get(retrieveMany),
 router.route('/retrieveAll').get(retrieveAll),
 router.route('/uploadSingle').post(uploadSingle)
 

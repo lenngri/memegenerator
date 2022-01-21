@@ -8,7 +8,7 @@ const Schema = mongoose.Schema;
 
 //Template Schema
 const TemplateSchema = new Schema({
-    user: {
+    userID: {
         type: String,
         required: [true, 'Every template needs an originating user']
     },
@@ -22,7 +22,7 @@ const TemplateSchema = new Schema({
     },
     filePath: {
         type: String,
-        required: [true, 'File Path required']
+        required: [false, 'File Path required']
     },
     fileType: {
         type: String,

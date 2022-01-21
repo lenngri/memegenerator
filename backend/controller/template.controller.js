@@ -1,8 +1,9 @@
 const { contentType } = require('express/lib/response');
-const Template = require('../database/models/template.model'); // Model for saving a user to the DB
+const Template = require('../database/models/template.model');
 const multer  = require('multer')
 const upload = multer({ dest: 'uploads'})
 const { fileSizeFormatter } = require('../helpers/fileSizeFormatter.helper')
+const { removeEmpty } = require('../helpers/removeEmpty.helper')
 
 
 // retrieves single template object by ID
@@ -40,15 +41,42 @@ exports.retrieveAll = async function(req, res, next) {
     }
 }
 
-// exports.retrieveMany = async function(req, res, next) {
-//     try {
-//         const templates = await Template.find();
-//         res.status(200).json(templates)
-//     } catch (error) {
-//         res.json({message: error});
-//     }
-// }
+exports.retrieveMany = async function(req, res, next) {
 
+
+    console.log("getting many templates")
+
+    const filters = {
+        userID: req.body.userID,
+        source: req.body.source,
+        title: req.body.title,
+        private: req.body.private
+    }
+    
+    const query = removeEmpty(filters)
+    console.log("applying filters: " + JSON.stringify(query))
+
+    try {
+
+        console.log("querying database")
+
+        const templates = await Template.find(query)
+        console.log("found " + templates.length + " templates according to query parameters")
+
+        if(templates.length > 0) {
+            res.status(200).json(templates)
+        } else {
+            res.status(500).json({"message" : "no templates match your query"})
+        }
+        
+    } catch (error) {
+        res.status(500).send(error.message)
+    }
+    
+};
+
+
+// uploads single file and saves it to the upload folder and database
 exports.uploadSingle = async function(req, res, next) {
     try {
 
@@ -63,24 +91,23 @@ exports.uploadSingle = async function(req, res, next) {
             let file = req.files.template
 
             const template = new Template ({
-                user:     req.body.user,
-                template: req.body.template,
+                userID:     req.body.userID,
+                source: req.body.source,
                 fileName: file.name,
-                filePath: "./uploads/template/" + req.body.user + "/" + file.name,
+                filePath: "./uploads/template/" + req.body.userID + "/" + file.name,
                 fileType: file.mimetype,
                 fileSize: fileSizeFormatter(file.size, 2),
                 description: req.body.description,
-                memeInfo: req.body.memeInfo,
                 private: req.body.private
             })
 
-            await meme.save( function(error, meme) {
+            await template.save( function(error, template) {
                 if(error){
                     console.log(error.message)
                 }
-                res.status(200).send(meme)
-                file.mv("./uploads/meme/" + "/" + meme.user + "/" + meme.fileName)
-                console.log('Saved meme with ID: ' + meme.id)
+                res.status(200).send(template)
+                file.mv("./uploads/template/" + template.userID + "/" + template.fileName)
+                console.log('Saved template with ID: ' + template.id + " at " + template.filePath)
             })
         }
 
