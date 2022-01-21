@@ -1,7 +1,5 @@
-const { contentType } = require('express/lib/response');
 const Template = require('../database/models/template.model');
-const multer  = require('multer')
-const upload = multer({ dest: 'uploads'})
+// helper functions
 const { fileSizeFormatter } = require('../helpers/fileSizeFormatter.helper')
 const { removeEmpty } = require('../helpers/removeEmpty.helper')
 
@@ -9,15 +7,17 @@ const { removeEmpty } = require('../helpers/removeEmpty.helper')
 exports.retrieve = async function(req, res, next) {
 
 
-    console.log("getting many templates")
+    console.log("getting templates")
 
     const filters = {
-      _id: req.body._id,
-      userID: req.body.userID,
-      source: req.body.source,
-      title: req.body.title,
-      private: req.body.private,
+      _id: req.body._id || "",
+      userID: req.body.userID || "",
+      source: req.body.source || "",
+      title: req.body.title || "",
+      private: req.body.private || ""
     };
+
+    console.log(filters)
     
     const query = removeEmpty(filters)
     console.log("applying filters: " + JSON.stringify(query))

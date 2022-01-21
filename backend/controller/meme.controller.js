@@ -1,5 +1,5 @@
-const { contentType } = require('express/lib/response');
-const Meme = require('../database/models/meme.model'); // Model for saving a user to the DB
+const Meme = require('../database/models/meme.model');
+// helper functions
 const { fileSizeFormatter } = require('../helpers/fileSizeFormatter.helper')
 const { removeEmpty } = require('../helpers/removeEmpty.helper')
 
@@ -7,14 +7,14 @@ const { removeEmpty } = require('../helpers/removeEmpty.helper')
 exports.retrieve = async function(req, res, next) {
 
 
-    console.log("getting many memes")
+    console.log("getting memes")
 
     const filters = {
-        _id: req.body._id,
-        userID: req.body.userID,
-        templateID: req.body.templateID,
-        title: req.body.title,
-        private: req.body.private
+        _id: req.body._id || "",
+        userID: req.body.userID || "",
+        templateID: req.body.templateID || "",
+        title: req.body.title || "",
+        private: req.body.private || ""
     }
     
     const query = removeEmpty(filters)
