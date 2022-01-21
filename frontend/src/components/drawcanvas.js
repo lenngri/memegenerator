@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import CanvasDraw from 'react-canvas-draw';
-import { Container } from '@mui/material';
+import { Container, Button, Stack } from '@mui/material';
 import { SliderPicker } from 'react-color';
 
 export default class DrawCanvas extends Component {
@@ -24,75 +24,71 @@ export default class DrawCanvas extends Component {
       <div>
         <Container>
           <div>
-            <button
-              onClick={() => {
-                this.props.parentMethod(this.saveableCanvas.getDataURL());
-                console.log(this.saveableCanvas.getDataURL());
-              }}
-            >
-              Save
-            </button>
-            <button
-              onClick={() => {
-                this.saveableCanvas.eraseAll();
-              }}
-            >
-              Erase
-            </button>
-            <button
-              onClick={() => {
-                this.saveableCanvas.undo();
-              }}
-            >
-              Undo
-            </button>
-            <button
+            <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  this.props.parentMethod(this.saveableCanvas.getDataURL());
+                  console.log(this.saveableCanvas.getDataURL());
+                }}
+              >
+                Save
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  this.saveableCanvas.eraseAll();
+                }}
+              >
+                Erase
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  this.saveableCanvas.undo();
+                }}
+              >
+                Undo
+              </Button>
+              {/* <Button
               onClick={() => {
                 console.log(this.saveableCanvas.getDataURL());
                 alert('DataURL written to console');
               }}
             >
               GetDataURL
-            </button>
-
+            </Button> */}
+            </Stack>
             <div>
-              <label>Width:</label>
+              <label>Width: </label>
               <input
-                type='number'
+                type="number"
                 value={this.state.width}
-                onChange={(e) =>
-                  this.setState({ width: parseInt(e.target.value, 10) })
-                }
+                onChange={(e) => this.setState({ width: parseInt(e.target.value, 10) })}
               />
             </div>
             <div>
-              <label>Height:</label>
+              <label>Height: </label>
               <input
-                type='number'
+                type="number"
                 value={this.state.height}
-                onChange={(e) =>
-                  this.setState({ height: parseInt(e.target.value, 10) })
-                }
+                onChange={(e) => this.setState({ height: parseInt(e.target.value, 10) })}
               />
             </div>
             <div>
-              <label>Brush-Radius:</label>
+              <label>Brush-Radius: </label>
               <input
-                type='number'
+                type="number"
                 value={this.state.brushRadius}
-                onChange={(e) =>
-                  this.setState({ brushRadius: parseInt(e.target.value, 10) })
-                }
+                onChange={(e) => this.setState({ brushRadius: parseInt(e.target.value, 10) })}
               />
             </div>
             <div>
-              <label>Lazy-Radius:</label>
+              <label>Lazy-Radius: </label>
               <input
-                type='number'
+                type="number"
                 value={this.state.lazyRadius}
-                onChange={(e) =>
-                  this.setState({ lazyRadius: parseInt(e.target.value, 10) })
-                }
+                onChange={(e) => this.setState({ lazyRadius: parseInt(e.target.value, 10) })}
               />
             </div>
             <div>
