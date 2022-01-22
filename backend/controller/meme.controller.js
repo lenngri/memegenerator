@@ -6,7 +6,6 @@ const { removeEmpty } = require('../helpers/removeEmpty.helper')
 
 exports.retrieve = async function(req, res, next) {
 
-
     console.log("getting memes")
 
     const filters = {
