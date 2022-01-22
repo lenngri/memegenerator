@@ -22,8 +22,9 @@ Text to speech: https://www.npmjs.com/package/text-to-speech-js
 To start the server in development mode on your local machine:
 
 1. Create a free [mongoDB Atlas account](https://www.mongodb.com)
-2. Create a .env file in the root directory
-3. Put in place the following environment variables, according to [common .env syntax](https://www.npmjs.com/package/dotenv)
+2. Navigate to the `/backend` directory
+3. Create a .env file in the root directory
+4. Put in place the following environment variables, according to [common .env syntax](https://www.npmjs.com/package/dotenv)
     * MONGO_URI
     * MONGO_USER
     * MONGO_PW
@@ -31,7 +32,6 @@ To start the server in development mode on your local machine:
     * PORT
     * JWT_SECRET
     * JWT_EXPIRE
-4. Navigate to the `/backend` directory
 5. Install npm packages, using the `npm install` command from the command line
 6. Start the development server by running the `npm start` command
 
