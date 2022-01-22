@@ -24,13 +24,13 @@ To start the server in development mode on your local machine:
 1. Create a free [mongoDB Atlas account](https://www.mongodb.com)
 2. Create a .env file in the root directory
 3. Put in place the following environment variables, according to [common .env syntax](https://www.npmjs.com/package/dotenv)
-    a. MONGO_URI
-    b. MONGO_USER
-    c. MONGO_PW
-    d. MONGO_DB
-    e. PORT
-    f. JWT_SECRET
-    g. JWT_EXPIRE
+    * MONGO_URI
+    * MONGO_USER
+    * MONGO_PW
+    * MONGO_DB
+    * PORT
+    * JWT_SECRET
+    * JWT_EXPIRE
 4. Navigate to the `/backend` directory
 5. Install npm packages, using the `npm install` command from the command line
 6. Start the development server by running the `npm start` command
