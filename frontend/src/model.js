@@ -15,12 +15,13 @@ const model = {
     const res = await fetch('https://api.imgflip.com/get_memes');
     const templates = await res.json();
     actions.setImgflip(templates.data.memes);
+    console.log('Fetched templates from imgflip with status code:', res.status)
   }),
   fetchServerTemplates: thunk(async (actions) => {
-    const res = await fetch('/template/retrieve');
-    console.log('Fetched something from server', res);
+    const res = await fetch('/api/template/retrieve');
     const templates = await res.json();
-    actions.setImgflip(templates);
+    actions.setServerTemplates(templates);
+    console.log('Fetched templates from server with status code:', res.status)
   }),
   // actions
   setImgflip: action((state, templates) => {

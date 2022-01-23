@@ -1,8 +1,9 @@
 import React from 'react';
+import { Container, Stack } from '@mui/material';
 import NavBar from '../NavBar';
 import Editor from '../Editor';
+import ServerTemplateSelector from '../ServerTemplateSelector';
 import ImgflipSelector from '../ImgflipSelector';
-import { Container, Stack } from '@mui/material';
 import LocalFileSelector from '../LocalFileSelector';
 import URLSelector from '../UrlSelector';
 import Download from '../Download';
@@ -13,6 +14,7 @@ const EditorScreen = ({ logout }) => {
       <NavBar logout={logout} />
       <Container sx={{ justifyContent: 'space-around', display: 'flex' }}>
         <Stack direction="row" spacing={1} sx={{ mt: 3 }}>
+          <ServerTemplateSelector />
           <ImgflipSelector />
           <LocalFileSelector ButtonText={'Use local file'}></LocalFileSelector>
           <URLSelector></URLSelector>
