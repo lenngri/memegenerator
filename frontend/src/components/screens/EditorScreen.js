@@ -6,6 +6,7 @@ import { Container, Stack } from '@mui/material';
 import LocalFileSelector from '../LocalFileSelector';
 import URLSelector from '../UrlSelector';
 import Download from '../Download';
+import DrawTemplateSelector from '../DrawTemplateSelector';
 
 const EditorScreen = ({ logout }) => {
   return (
@@ -16,6 +17,7 @@ const EditorScreen = ({ logout }) => {
           <ImgflipSelector />
           <LocalFileSelector ButtonText={'Use local file'}></LocalFileSelector>
           <URLSelector></URLSelector>
+          <DrawTemplateSelector ButtonText={'Draw Meme'}></DrawTemplateSelector>
         </Stack>
       </Container>
       <Editor />
