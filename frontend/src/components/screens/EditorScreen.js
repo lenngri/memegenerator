@@ -7,6 +7,7 @@ import LocalFileSelector from '../LocalFileSelector';
 import URLSelector from '../UrlSelector';
 import Download from '../Download';
 import CameraUpload from '../cameraupload';
+import DrawTemplateSelector from '../DrawTemplateSelector';
 
 const EditorScreen = ({ logout }) => {
   return (
@@ -18,6 +19,7 @@ const EditorScreen = ({ logout }) => {
           <LocalFileSelector ButtonText={'Use local file'}></LocalFileSelector>
           <URLSelector></URLSelector>
           <CameraUpload></CameraUpload>
+          <DrawTemplateSelector ButtonText={'Draw Meme'}></DrawTemplateSelector>
         </Stack>
       </Container>
       <Editor />
