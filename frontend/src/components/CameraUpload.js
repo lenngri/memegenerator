@@ -1,36 +1,27 @@
 import * as React from 'react';
+import { useStoreActions } from 'easy-peasy';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useStoreActions } from 'easy-peasy';
 import Alert from '@mui/material/Alert';
+import { Typography, IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import Webcam from 'react-webcam';
 
 // https://www.npmjs.com/package/react-webcam
 
 export default function CameraUpload({ ButtonText }) {
   const setTemplate = useStoreActions((actions) => actions.setTemplate);
+  const [preview, setPreview] = React.useState();
+  const [imgSrc, setImgSrc] = React.useState(null);
+  const [alert, setAlert] = React.useState(false);
   const [open, setOpen] = React.useState(false);
 
-  const descriptionElementRef = React.useRef(null);
-  React.useEffect(() => {
-    if (open) {
-      const { current: descriptionElement } = descriptionElementRef;
-      if (descriptionElement !== null) {
-        descriptionElement.focus();
-      }
-    }
-  }, [open]);
-
-  const [preview, setPreview] = React.useState();
-  const [alert, setAlert] = React.useState(false);
   const webcamRef = React.useRef(null);
-  const [imgSrc, setImgSrc] = React.useState(null);
 
   const image = new Image();
-  // image.src = `"${name}"`;
   image.src = preview;
 
   const handleClickOpen = () => {
@@ -55,6 +46,17 @@ export default function CameraUpload({ ButtonText }) {
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Select a local file</DialogTitle>
+        <IconButton
+          aria-label="close"
+          onClick={handleClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
         <DialogContent>
           {alert ? <Alert severity="error">Please take a photo first</Alert> : null}
           <Webcam
@@ -64,17 +66,31 @@ export default function CameraUpload({ ButtonText }) {
             height={400}
             width={400}
           />
-          {imgSrc && <img src={imgSrc} alt={'Cannot be displayed'} />}
+          {imgSrc ? (
+            <>
+              <Typography>Preview:</Typography>
+              <img src={imgSrc} alt={'Cannot be displayed'} />
+            </>
+          ) : (
+            <></>
+          )}
         </DialogContent>
-        <button onClick={capture}>Capture photo</button>
-
         <DialogActions>
+          <Button onClick={handleClose} color="error">
+            Cancel
+          </Button>
+          <Button variant="contained" onClick={capture}>
+            Capture photo
+          </Button>
           <Button
+            variant="contained"
             onClick={(e) => {
               if (preview) {
                 setTemplate(image);
-                handleClose();
+                setImgSrc(null);
+                setPreview(null);
                 setAlert(false);
+                handleClose();
               } else {
                 setAlert(true);
               }
