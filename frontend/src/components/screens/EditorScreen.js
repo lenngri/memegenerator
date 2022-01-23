@@ -7,7 +7,7 @@ import ImgflipSelector from '../ImgflipSelector';
 import LocalFileSelector from '../LocalFileSelector';
 import URLSelector from '../UrlSelector';
 import Download from '../Download';
-import CameraUpload from '../cameraupload';
+import CameraUpload from '../CameraUpload';
 import DrawTemplateSelector from '../DrawTemplateSelector';
 
 const EditorScreen = ({ logout }) => {
