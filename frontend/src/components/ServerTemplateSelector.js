@@ -67,26 +67,23 @@ export default function ServerTemplateSelector() {
             <Box>
               <ImageList style={{ cursor: 'pointer' }} variant="masonry" cols={3} gap={8}>
                 {serverTemplates ? (
-                  serverTemplates.map((item) => {
-                    console.log(item);
-                    const src =
-                      'http://localhost:3000' + item.filePath.substr(1, item.filePath.length - 1);
-                    console.log(src);
-                    return (
-                      <ImageListItem key={item._id}>
-                        <img
-                          src={src}
-                          alt={item.fileName}
-                          crossOrigin="Anonymous" // Source: https://konvajs.org/docs/posts/Tainted_Canvas.html (13.01.2022)
-                          onClick={(e) => {
-                            setTemplate(e.target);
-                            handleClose();
-                          }}
-                          loading="lazy"
-                        />
-                      </ImageListItem>
-                    );
-                  })
+                  serverTemplates.map((item) => (
+                    <ImageListItem key={item._id}>
+                      <img
+                        src={
+                          'http://localhost:3000' +
+                          item.filePath.substr(1, item.filePath.length - 1)
+                        }
+                        alt={item.fileName}
+                        crossOrigin="Anonymous" // Source: https://konvajs.org/docs/posts/Tainted_Canvas.html (13.01.2022)
+                        onClick={(e) => {
+                          setTemplate(e.target);
+                          handleClose();
+                        }}
+                        loading="lazy"
+                      />
+                    </ImageListItem>
+                  ))
                 ) : (
                   <></>
                 )}
