@@ -11,9 +11,11 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 function App() {
   const isLoggedIn = useStoreState((state) => state.userSession.isLoggedIn);
   const fetchImgflip = useStoreActions((actions) => actions.fetchImgflip);
+  const fetchServerTemplates = useStoreActions((actions) => actions.fetchServerTemplates);
 
   useEffect(() => {
     fetchImgflip();
+    fetchServerTemplates();
     // eslint-disable-next-line
   }, []);
 
