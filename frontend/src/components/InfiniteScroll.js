@@ -23,6 +23,7 @@ function InfiniteScroller() {
   const [meme, setMeme] = useState(null);
   const [openSingleView, setOpenSingleView] = useState(false);
   const theme = createTheme();
+  let [counter, setCounter] = useState(0);
 
   useEffect(() => {
     fetchMemes();
@@ -31,11 +32,16 @@ function InfiniteScroller() {
   const fetchMemes = () => {
     fetch('https://api.imgflip.com/get_memes').then((res) => {
       res.json().then((res) => {
-        const _memes = res.data.memes;
+        const _memes = res.data.memes.slice(0, counter + 8);
         console.log(_memes);
         setMemes(_memes);
       });
     });
+  };
+
+  const incrementCounter = () => {
+    setCounter((counter = counter + 8));
+    fetchMemes();
   };
 
   const handleEdit = (event) => {
@@ -60,11 +66,11 @@ function InfiniteScroller() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <main>
-        <Container sx={{ py: 2 }} maxWidth="xl">
+        <Container sx={{ py: 2 }} maxWidth='xl'>
           <Heading />
           <InfiniteScroll
             dataLength={memes.length}
-            next={fetchMemes}
+            next={incrementCounter}
             hasMore={true}
             loader={<Loader />}
           >
@@ -87,7 +93,7 @@ function InfiniteScroller() {
                     }}
                   >
                     <CardMedia
-                      component="img"
+                      component='img'
                       sx={{
                         // 16:9
                         resizeMode: 'stretch',
@@ -106,23 +112,24 @@ function InfiniteScroller() {
                       id={meme.id}
                     />
                     <CardContent sx={{ flexGrow: 1 }}>
-                      <Typography gutterBottom variant="h5" component="h2">
+                      <Typography gutterBottom variant='h5' component='h2'>
                         {meme.name}
                       </Typography>
                       <Typography>
-                        This is a media card. You can use this section to describe the content.
+                        This is a media card. You can use this section to
+                        describe the content.
                       </Typography>
                     </CardContent>
                     <CardActions disableSpacing={true}>
-                      <Button size="small" onClick={handleView}>
+                      <Button size='small' onClick={handleView}>
                         View
                       </Button>
-                      <Button size="small" onClick={handleEdit}>
+                      <Button size='small' onClick={handleEdit}>
                         Edit
                       </Button>
-                      <Button size="small">Comment</Button>
-                      <Button size="small">Vote</Button>
-                      <Button size="small">Share</Button>
+                      <Button size='small'>Comment</Button>
+                      <Button size='small'>Vote</Button>
+                      <Button size='small'>Share</Button>
                     </CardActions>
                   </Card>
                 </Grid>
