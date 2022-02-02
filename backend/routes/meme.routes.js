@@ -17,4 +17,11 @@ const {
 // comment routes
 router.route('/comment/add').put(addComment)
 
+const {
+    addLike
+} = require('../controller/like.controller')
+
+// like routes
+router.route('/like/add').put(addLike)
+
 module.exports = router

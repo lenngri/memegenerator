@@ -49,11 +49,20 @@ const MemeSchema = new Schema({
         required: true,
         default: true
     },
-    likes: {
-        type: Array,
-        required: true,
-        default: []
-    },
+    likes: [{
+        _id: {
+            type: Schema.Types.ObjectId,
+            required: [true, "comments require a unique ObjectID"]
+        },
+        userID: {
+            type: String,
+            required: [true, 'comments require a userID']
+        },
+        createdAt: {
+            type: Date,
+            required: [true, 'likes require a creation date']
+        }
+}],
     comments: [{
         _id: {
             type: Schema.Types.ObjectId,
@@ -69,7 +78,8 @@ const MemeSchema = new Schema({
             required: [true, 'comments require a comment text']
         },
         createdAt: {
-            type: Date
+            type: Date,
+            required: [true, 'comments require a creation date']
         },
         updatedAt: {
             type: Date

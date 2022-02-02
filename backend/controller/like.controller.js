@@ -2,12 +2,12 @@ const mongoose = require('mongoose')
 const Meme = require('../database/models/meme.model');
 
 
-exports.addComment = async function(req, res, next) {
+exports.addLike = async function(req, res, next) {
 
-    console.log('running addComment route')
+    console.log('running addLike route')
 
     // guard clause to make sure meme id is set
-    if (!req.body.memeID || !req.body.userID || !req.body.commentText) res.status(400).send('request missing comment info')
+    if (!req.body.memeID || !req.body.userID ) res.status(400).send('request missing like info')
     
     // stores memeID in filter variable to query database
     const filter = { _id: req.body.memeID }
@@ -15,42 +15,41 @@ exports.addComment = async function(req, res, next) {
 
     // queries meme objects to retrieve meme with ID from filter
     const meme = await Meme.findOne(filter)
-    if(!meme) res.status(400).send("could not retrieve meme with id: " + meme._id)
+    if(!meme) res.status(400).send("could not retrieve meme with id: " + req.body.memeID)
     console.log('successfully retrieved meme with ID: ' + meme._id)
 
-    // stores memes in comments variable
-    const comments = meme.comments
-    if(!comments) res.status(404).send('Meme comments could not be retrieved')
-    console.log('successfully retrieved ' + comments.length + ' comment(s)')
+    // stores memes in likes variable
+    const likes = meme.likes
+    if(!likes) res.status(404).send('Meme likes could not be retrieved')
+    console.log('successfully retrieved ' + likes.length + ' like(s)')
 
     // creates update object from request body
-    const newComment = {
+    const newLike = {
         _id: new mongoose.Types.ObjectId(),
         userID: req.body.userID,
-        commentText: req.body.commentText,
         createdAt: Date.now(),
     }
 
-    // guard clause against missing or badly transcribed comment info
-    if (!newComment._id || !newComment.userID || !newComment.commentText || !newComment.createdAt) res.status(404).send('comment could not be added, because comment info was missing')
-    console.log('adding new comment to staging area: ' + JSON.stringify(newComment))
-    comments.push(newComment)
+    // guard clause against missing or badly transcribed like info
+    if (!newLike._id || !newLike.userID || !newLike.createdAt) res.status(404).send('like could not be added, because like info was missing')
+    console.log('adding new like to staging area: ' + JSON.stringify(newLike))
+    likes.push(newLike)
     
-    // creates update variable and pushes new comment
-    const update = { comments: comments }
+    // creates update variable and pushes new like
+    const update = { likes: likes }
 
-    // guard clause to make sure comment was pushed to update variable
-    if(!update.comments.some(element => element._id === newComment._id)) res.status(404).send('adding comment failed')
-    console.log("successfully staged comment for commit")
+    // guard clause to make sure like was pushed to update variable
+    if(!update.likes.some(element => element._id === newLike._id)) res.status(404).send('adding like failed because it was not found in staging area')
+    console.log("successfully staged like for commit")
 
-    // find meme according to filter variable and update with comments array
+    // find meme according to filter variable and update with likes array
     // source: https://mongoosejs.com/docs/tutorials/findoneandupdate.html
     Meme.findOneAndUpdate(filter, update, {new: true, strict: true}, function(error, meme){
         if(error){
             res.status(404).send(error)
         }
         res.status(200).send(meme)
-        console.log('successfully updated meme and added comment with id: ' + newComment._id)
+        console.log('successfully updated meme with id: ' + meme._id +', and added like with id: ' + newLike._id)
     })
 };
 
