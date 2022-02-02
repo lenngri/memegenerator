@@ -52,40 +52,45 @@ const MemeSchema = new Schema({
     likes: [{
         _id: {
             type: Schema.Types.ObjectId,
-            required: [true, "comments require a unique ObjectID"]
         },
         userID: {
             type: String,
-            required: [true, 'comments require a userID']
         },
         createdAt: {
             type: Date,
-            required: [true, 'likes require a creation date']
         }
-}],
+    }],
     comments: [{
         _id: {
             type: Schema.Types.ObjectId,
-            required: [true, "comments require a unique ObjectID"]
         },
         userID: {
             type: String,
-            required: [true, 'comments require a userID']
-
         },
         commentText: {
             type: String,
-            required: [true, 'comments require a comment text']
         },
         createdAt: {
             type: Date,
-            required: [true, 'comments require a creation date']
         },
         updatedAt: {
             type: Date
         }
     }]
 }, {timestamps: true});
+
+MemeSchema.pre('save', async function (next) {
+    if (this.isNew && 0 === this.comments.length) {
+      this.comments = [];                                                                                                                                   
+    }
+
+    if (this.isNew && 0 === this.likes.length) {
+        this.likes = [];                                                                                                                                   
+      }
+
+    next();
+})
+
 
 const Meme = mongoose.model("meme", MemeSchema);
 module.exports = Meme;
