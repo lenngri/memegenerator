@@ -54,11 +54,27 @@ const MemeSchema = new Schema({
         required: true,
         default: []
     },
-    comments: {
-        type: Array,
-        required: true,
-        default: []
-    }
+    comments: [{
+        _id: {
+            type: Schema.Types.ObjectId,
+            required: [true, "comments require a unique ObjectID"]
+        },
+        userID: {
+            type: String,
+            required: [true, 'comments require a userID']
+
+        },
+        commentText: {
+            type: String,
+            required: [true, 'comments require a comment text']
+        },
+        createdAt: {
+            type: Date
+        },
+        updatedAt: {
+            type: Date
+        }
+    }]
 }, {timestamps: true});
 
 const Meme = mongoose.model("meme", MemeSchema);

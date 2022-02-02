@@ -9,4 +9,12 @@ const {
 router.route('/retrieve').get(retrieve);
 router.route('/uploadSingle').post(uploadSingle);
 
+
+const {
+    addComment
+} = require('../controller/comment.controller')
+
+// comment routes
+router.route('/comment/add').put(addComment)
+
 module.exports = router
