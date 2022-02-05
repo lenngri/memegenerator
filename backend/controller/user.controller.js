@@ -5,7 +5,7 @@ const sendEmail = require('../helpers/sendEmail.helper');
 
 exports.register = async (req, res, next) => {
   const { username, email, password } = req.body;
-  console.log('registering user');
+
   try {
     const user = await User.create({
       username,
@@ -15,9 +15,7 @@ exports.register = async (req, res, next) => {
 
     sendToken(user, 200, res);
   } catch (error) {
-    //   next(error);
-    console.log(error);
-    res.status(500).send(error);
+    next(error);
   }
 };
 
