@@ -23,19 +23,26 @@ function InfiniteScroller() {
   const [meme, setMeme] = useState(null);
   const [openSingleView, setOpenSingleView] = useState(false);
   const theme = createTheme();
+  let [counter, setCounter] = useState(0);
 
   useEffect(() => {
     fetchMemes();
+    //eslint-disable-next-line
   }, []);
 
   const fetchMemes = () => {
     fetch('https://api.imgflip.com/get_memes').then((res) => {
       res.json().then((res) => {
-        const _memes = res.data.memes;
+        const _memes = res.data.memes.slice(0, counter + 2);
         console.log(_memes);
         setMemes(_memes);
       });
     });
+  };
+
+  const incrementCounter = () => {
+    setCounter((counter = counter + 2));
+    fetchMemes();
   };
 
   const handleEdit = (event) => {
@@ -60,17 +67,17 @@ function InfiniteScroller() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <main>
-        <Container sx={{ py: 2 }} maxWidth="xl">
+        <Container maxWidth='md'>
           <Heading />
           <InfiniteScroll
             dataLength={memes.length}
-            next={fetchMemes}
+            next={incrementCounter}
             hasMore={true}
             loader={<Loader />}
           >
-            <Grid container spacing={4}>
+            <Grid container>
               {memes.map((meme) => (
-                <Grid item key={meme.id} xs={8} sm={5} md={3}>
+                <Grid item key={meme.id} xs={12} sm={12} md={12} sx={{ mb: 4 }}>
                   <Card
                     sx={{
                       height: '100%',
@@ -78,6 +85,7 @@ function InfiniteScroller() {
                       flexDirection: 'column',
                       justifyContent: 'center',
                       border: 2,
+                      boxShadow: 4,
                     }}
                     style={{
                       backgroundColor: '#D3D3D3',
@@ -87,11 +95,11 @@ function InfiniteScroller() {
                     }}
                   >
                     <CardMedia
-                      component="img"
+                      component='img'
                       sx={{
                         // 16:9
                         resizeMode: 'stretch',
-                        height: 450,
+                        height: 900,
                         justifyContent: 'center',
                       }}
                       style={{
@@ -99,30 +107,49 @@ function InfiniteScroller() {
                         resizeMode: 'stretch',
                         objectFit: 'cover',
                       }}
-                      //Only works occasionally, maybe sometimes the get request comes back empty? If doesn't work try "https://source.unsplash.com/random" as placeholder
                       image={meme.url}
                       alt={meme.name}
                       key={meme.id}
                       id={meme.id}
                     />
-                    <CardContent sx={{ flexGrow: 1 }}>
-                      <Typography gutterBottom variant="h5" component="h2">
+                    <CardContent
+                      sx={{
+                        width: '100%',
+
+                        textAlign: 'center',
+                      }}
+                    >
+                      <Typography gutterBottom variant='h4' component='h2'>
                         {meme.name}
                       </Typography>
-                      <Typography>
+                      <Typography sx={{ fontSize: 20 }}>
                         This is a media card. You can use this section to describe the content.
                       </Typography>
                     </CardContent>
-                    <CardActions disableSpacing={true}>
-                      <Button size="small" onClick={handleView}>
+                    <CardActions sx={{ width: '100%', justifyContent: 'center' }}>
+                      <Button
+                        sx={{ fontSize: 20, mr: 4, fontWeight: 'bold' }}
+                        size='small'
+                        onClick={handleView}
+                      >
                         View
                       </Button>
-                      <Button size="small" onClick={handleEdit}>
+                      <Button
+                        sx={{ fontSize: 20, mr: 4, fontWeight: 'bold' }}
+                        size='small'
+                        onClick={handleEdit}
+                      >
                         Edit
                       </Button>
-                      <Button size="small">Comment</Button>
-                      <Button size="small">Vote</Button>
-                      <Button size="small">Share</Button>
+                      <Button sx={{ fontSize: 20, mr: 4, fontWeight: 'bold' }} size='small'>
+                        Comment
+                      </Button>
+                      <Button sx={{ fontSize: 20, mr: 4, fontWeight: 'bold' }} size='small'>
+                        Vote
+                      </Button>
+                      <Button sx={{ fontSize: 20, mr: 4, fontWeight: 'bold' }} size='small'>
+                        Share
+                      </Button>
                     </CardActions>
                   </Card>
                 </Grid>

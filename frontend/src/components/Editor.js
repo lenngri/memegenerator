@@ -99,7 +99,7 @@ const Editor = () => {
           ) : (
             <>
               <Typography variant="body1" color="gray" gutterBottom component="div">
-                Please choose a template below.
+                Please choose a template first.
               </Typography>
             </>
           )}

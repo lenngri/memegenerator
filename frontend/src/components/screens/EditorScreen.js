@@ -1,20 +1,32 @@
 import React from 'react';
+import { Container, Stack } from '@mui/material';
 import NavBar from '../NavBar';
 import Editor from '../Editor';
-import Download from '../Download';
+import ServerTemplateSelector from '../ServerTemplateSelector';
 import ImgflipSelector from '../ImgflipSelector';
-import { Container, Stack } from '@mui/material';
+import LocalFileSelector from '../LocalFileSelector';
+import URLSelector from '../UrlSelector';
+import Download from '../Download';
+import CameraUpload from '../CameraUpload';
+import DrawTemplateSelector from '../DrawTemplateSelector';
 
 const EditorScreen = ({ logout }) => {
   return (
     <div style={{ overflow: 'hidden' }}>
       <NavBar logout={logout} />
-      <Editor />
-      <Container sx={{ justifyContent: 'center', display: 'flex' }}>
-        <Stack direction="row" spacing={1} sx={{ my: 3 }}>
+      <Container sx={{ justifyContent: 'space-around', display: 'flex' }}>
+        <Stack direction="row" spacing={1} sx={{ mt: 3 }}>
+          <ServerTemplateSelector />
           <ImgflipSelector />
-          <Download />
+          <LocalFileSelector ButtonText={'Use local file'}></LocalFileSelector>
+          <URLSelector></URLSelector>
+          <CameraUpload></CameraUpload>
+          <DrawTemplateSelector ButtonText={'Draw Meme'}></DrawTemplateSelector>
         </Stack>
+      </Container>
+      <Editor />
+      <Container sx={{ justifyContent: 'space-around', display: 'flex' }}>
+        <Download />
       </Container>
     </div>
   );
