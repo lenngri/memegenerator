@@ -27,6 +27,7 @@ function InfiniteScroller() {
 
   useEffect(() => {
     fetchMemes();
+    //eslint-disable-next-line
   }, []);
 
   const fetchMemes = () => {
@@ -84,6 +85,7 @@ function InfiniteScroller() {
                       flexDirection: 'column',
                       justifyContent: 'center',
                       border: 2,
+                      boxShadow: 4,
                     }}
                     style={{
                       backgroundColor: '#D3D3D3',
