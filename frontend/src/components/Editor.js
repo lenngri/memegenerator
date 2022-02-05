@@ -4,7 +4,7 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import { Button, TextField, Stack, Typography } from '@mui/material';
-import { SliderPicker } from 'react-color';
+import { CompactPicker } from 'react-color';
 
 const C_WIDTH = 600;
 const C_HEIGHT = 600;
@@ -57,6 +57,9 @@ const Editor = () => {
     setTopText('');
     setMidText('');
     setBottomText('');
+    setColor('black');
+    setFontStyle('bold');
+    setFontSize('30');
   };
 
   const captionProps = {
@@ -82,6 +85,7 @@ const Editor = () => {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
+            mb: 3,
           }}
         >
           {template ? (
@@ -183,8 +187,8 @@ const Editor = () => {
               Normal
             </Button>
           </Stack>
+          <CompactPicker color={captionColor} onChange={(color) => setColor(color.hex)} />
         </Box>
-        <SliderPicker color={captionColor} onChangeComplete={(color) => setColor(color.hex)} />
       </Container>
     </div>
   );
