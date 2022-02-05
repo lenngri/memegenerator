@@ -1,7 +1,11 @@
+const fs = require('fs');
+const{ join, dirname } = require('path');
 const Meme = require('../database/models/meme.model');
 // helper functions
 const { fileSizeFormatter } = require('../helpers/fileSizeFormatter.helper')
 const { removeEmpty } = require('../helpers/removeEmpty.helper')
+const { writeFile } = require('../helpers/fileSaver.helper')
+const { parseURI } = require('../helpers/uriParser.helper')
 
 
 exports.retrieve = async function(req, res, next) {
@@ -70,7 +74,7 @@ exports.uploadSingle = async function(req, res, next) {
 
     try {
 
-        if (!req.files) {
+        if (!req.body.meme) {
             res.send({
                 status: false,
                 message: "No file uploaded!"
@@ -80,7 +84,13 @@ exports.uploadSingle = async function(req, res, next) {
 
             console.log("constructing upload object")
 
-            let file = req.files.meme
+            console.log("writing buffer to file")
+            const data = parseURI(req.body.meme)
+
+            const fileName = Date.now().toString();
+            const fileType = data.extension;
+            const filePath = join(__dirname, `../uploads/meme/${req.body.userID}/${fileName}.${data.extension}`);
+            const fileSize = fileSizeFormatter(data.image.toString('base64').length);
 
             const meme = new Meme ({
                 userID:     req.body.userID,
@@ -88,29 +98,30 @@ exports.uploadSingle = async function(req, res, next) {
                 title: req.body.title,
                 description: req.body.description,
                 memeCaptions: req.body.memeCaptions,
-                fileName: file.name,
-                filePath: "./uploads/meme/" + req.body.user + "/" + file.name,
-                fileType: file.mimetype,
-                fileSize: fileSizeFormatter(file.size, 2),
-                private: req.body.private,
+                fileName: fileName,
+                fileType: fileType,
+                filePath: filePath,
+                fileSize: fileSize,
+                isPrivate: req.body.isPrivate,
+                isHidden: req.body.isHidden,
+                isDraft: req.body.isDraft,
                 likes: req.body.likes,
-                comments: req.body.comments
+                comments: req.body
             })
 
             console.log("contacting database")
 
             await meme.save( function(error, meme) {
-                if(error){
-                    console.log(error.message)
-                }
+                if(error) console.log(error.message)
                 res.status(200).json(meme)
-                file.mv("./uploads/meme/" + "/" + meme.userID + "/" + meme.fileName)
+                writeFile(filePath, data.image)
                 console.log("saved meme with ID: " + meme.id + " at " + meme.filePath)
             })
 
         }
 
     } catch (error) {
+        console.log(error)
         res.status(500).send(error)
     }
 };

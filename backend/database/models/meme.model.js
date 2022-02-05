@@ -25,7 +25,7 @@ const MemeSchema = new Schema({
         required: false
     },
     memeCaptions: {
-        type: String,
+        type: Array,
         required: [true, 'meme documents require a memeCaptions']
     },
     fileName: {
@@ -44,19 +44,35 @@ const MemeSchema = new Schema({
         type: String,
         required: [true, 'meme documents require fileSize']
     },
-    private: {
+    isPrivate: {
         type: Boolean,
         required: true,
         default: true
     },
-    likes: [{
+    isHidden: {
+        type: Boolean,
+        required: true,
+        default: true
+    },
+    isDraft: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    votes: [{
         _id: {
             type: Schema.Types.ObjectId,
+        },
+        value: {
+            type: Number,
         },
         userID: {
             type: String,
         },
         createdAt: {
+            type: Date,
+        },
+        updatedAt: {
             type: Date,
         }
     }],
@@ -84,8 +100,8 @@ MemeSchema.pre('save', async function (next) {
       this.comments = [];                                                                                                                                   
     }
 
-    if (this.isNew && 0 === this.likes.length) {
-        this.likes = [];                                                                                                                                   
+    if (this.isNew && 0 === this.votes.length) {
+        this.votes = [];                                                                                                                                   
       }
 
     next();
