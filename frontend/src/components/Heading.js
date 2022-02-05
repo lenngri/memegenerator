@@ -1,15 +1,17 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const Header = styled.header`
   max-width: 70rem;
   margin: 2rem auto;
   text-align: center;
+  font-size: large;
 `;
 
 const H1 = styled.h1`
-  font-family: "Oswald", sans-serif;
+  font-family: 'Oswald', sans-serif;
   margin-bottom: 1em;
+  font-size: xx-large;
 `;
 
 // const Input = styled.input`
@@ -39,7 +41,7 @@ const H1 = styled.h1`
 export const Heading = () => {
   return (
     <Header>
-      <H1>Meme Gallery</H1>
+      <H1> Meme Gallery</H1>
       <p>View and Interact with your created Memes.</p>
       {/* <form>
         <Input type="text" placeholder="Search photos" />
