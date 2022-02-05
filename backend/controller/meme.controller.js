@@ -102,6 +102,7 @@ exports.uploadSingle = async function(req, res, next) {
                 fileType: fileType,
                 filePath: filePath,
                 fileSize: fileSize,
+                konva: req.body.konva,
                 isPrivate: req.body.isPrivate,
                 isHidden: req.body.isHidden,
                 isDraft: req.body.isDraft,

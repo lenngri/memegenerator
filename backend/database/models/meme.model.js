@@ -44,6 +44,10 @@ const MemeSchema = new Schema({
         type: String,
         required: [true, 'meme documents require fileSize']
     },
+    konva: {
+        type: Object,
+        required: true
+    },
     isPrivate: {
         type: Boolean,
         required: true,
