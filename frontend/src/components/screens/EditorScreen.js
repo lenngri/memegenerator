@@ -14,20 +14,6 @@ const EditorScreen = ({ logout }) => {
   return (
     <div style={{ overflow: 'hidden' }}>
       <NavBar logout={logout} />
-      <Container sx={{ justifyContent: 'space-around', display: 'flex' }}>
-        <Stack direction="row" spacing={1} sx={{ mt: 3 }}>
-          <ServerTemplateSelector />
-          <ImgflipSelector />
-          <LocalFileSelector ButtonText={'Use local file'}></LocalFileSelector>
-          <URLSelector></URLSelector>
-          <CameraUpload></CameraUpload>
-          <DrawTemplateSelector ButtonText={'Draw Meme'}></DrawTemplateSelector>
-        </Stack>
-      </Container>
-      <Editor />
-      <Container sx={{ justifyContent: 'space-around', display: 'flex' }}>
-        <Download />
-      </Container>
     </div>
   );
 };
