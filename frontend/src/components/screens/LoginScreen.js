@@ -16,11 +16,13 @@ import { useNavigate } from 'react-router-dom';
 import backgroundLogo from '../../assets/backgroundlogo4.jpg';
 import { useStoreActions } from 'easy-peasy';
 
+const axios = require('axios');
+
 function Copyright(props) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+    <Typography variant='body2' color='text.secondary' align='center' {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://imgflip.com/i/3vmmo4">
+      <Link color='inherit' href='https://imgflip.com/i/3vmmo4'>
         Burrito Memes
       </Link>{' '}
       {new Date().getFullYear()}
@@ -32,7 +34,9 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function LoginScreen() {
+  const setToken = useStoreActions((actions) => actions.setToken);
   const setLoggedIn = useStoreActions((actions) => actions.setLoggedIn);
+  // TODO: const setUser = useStoreActions((actions) => actions.setUser);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -42,18 +46,26 @@ export default function LoginScreen() {
       email: data.get('email'),
       password: data.get('password'),
     });
+    axios
+      .post('http://localhost:3000/api/user/login', data)
+      .then(function (response) {
+        console.log(response);
+        if (response.data.success) {
+          setToken(response.data.token);
+          setLoggedIn(true);
+          navigate('/editor');
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   const navigate = useNavigate();
-  //auth button handler
-  const onClick = () => {
-    setLoggedIn(true);
-    navigate('profile');
-  };
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container component="main" sx={{ height: '100vh' }}>
+      <Grid container component='main' sx={{ height: '100vh' }}>
         <CssBaseline />
         <Grid
           item
@@ -82,51 +94,45 @@ export default function LoginScreen() {
             <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
               <LockOutlinedIcon />
             </Avatar>
-            <Typography component="h1" variant="h5">
+            <Typography component='h1' variant='h5'>
               Sign in
             </Typography>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+            <Box component='form' noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <TextField
-                margin="normal"
+                margin='normal'
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id='email'
+                label='Email Address'
+                name='email'
+                autoComplete='email'
                 autoFocus
               />
               <TextField
-                margin="normal"
+                margin='normal'
                 required
                 fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
+                name='password'
+                label='Password'
+                type='password'
+                id='password'
+                autoComplete='current-password'
               />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-                onClick={onClick}
-              >
+              {/* <FormControlLabel
+                control={<Checkbox value='remember' color='primary' />}
+                label='Remember me'
+              /> */}
+              <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
                 Sign In
               </Button>
               <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2" onClick={() => navigate('/forgotpassword')}>
+                {/* <Grid item xs>
+                  <Link href='#' variant='body2' onClick={() => navigate('/forgotpassword')}>
                     Forgot password?
                   </Link>
-                </Grid>
+                </Grid> */}
                 <Grid item>
-                  <Link href="#" variant="body2" onClick={() => navigate('/register')}>
+                  <Link href='#' variant='body2' onClick={() => navigate('/register')}>
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>

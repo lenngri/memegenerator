@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useStoreActions } from 'easy-peasy';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,6 +15,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import backgroundLogo from '../../assets/backgroundlogo4.jpg';
+
+const axios = require('axios');
 
 function Copyright(props) {
   return (
@@ -31,6 +34,10 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function RegisterScreen() {
+  // TODO: const setUser = useStoreActions((actions) => actions.setUser);
+  const setToken = useStoreActions((actions) => actions.setToken);
+  const setLoggedIn = useStoreActions((actions) => actions.setLoggedIn);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -40,6 +47,20 @@ export default function RegisterScreen() {
       email: data.get('email'),
       password: data.get('password'),
     });
+    // register the user
+    axios
+      .post('http://localhost:3000/api/user/register', data)
+      .then(function (response) {
+        console.log(response);
+        if (response.data.success) {
+          setToken(response.data.token);
+          setLoggedIn(true);
+          navigate('/editor');
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   let navigate = useNavigate();
@@ -78,12 +99,7 @@ export default function RegisterScreen() {
             <Typography component='h1' variant='h5'>
               Sign Up
             </Typography>
-            <Box
-              component='form'
-              noValidate
-              // onSubmit={handleSubmit}
-              sx={{ mt: 1 }}
-            >
+            <Box component='form' noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <TextField
                 margin='normal'
                 required
@@ -109,7 +125,7 @@ export default function RegisterScreen() {
                 required
                 fullWidth
                 name='password'
-                label='Password'
+                label='Password (min 8 Characters)'
                 type='password'
                 id='password'
                 autoComplete='current-password'
@@ -118,13 +134,7 @@ export default function RegisterScreen() {
                 control={<Checkbox value='remember' color='primary' />}
                 label='Remember me'
               />
-              <Button
-                type='submit'
-                fullWidth
-                variant='contained'
-                sx={{ mt: 3, mb: 2 }}
-                onClick={() => handleSubmit}
-              >
+              <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
                 Register now
               </Button>
               <Grid container>
