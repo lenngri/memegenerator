@@ -36,7 +36,7 @@ const TemplateSchema = new Schema({
         type: String,
         required: false
     },
-    private: {
+    isPrivate: {
         type: Boolean,
         required: true,
         default: false

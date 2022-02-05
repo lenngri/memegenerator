@@ -1,7 +1,10 @@
+const path = require('path')
 const Template = require('../database/models/template.model');
 // helper functions
 const { fileSizeFormatter } = require('../helpers/fileSizeFormatter.helper')
 const { removeEmpty } = require('../helpers/removeEmpty.helper')
+const { parseURI } = require('../helpers/uriParser.helper')
+const { writeFile } = require('../helpers/fileSaver.helper')
 
 // allows retrieval of templates according to params sent in request body
 exports.retrieve = async function(req, res, next) {
@@ -34,7 +37,7 @@ exports.retrieve = async function(req, res, next) {
         }
         
     } catch (error) {
-        res.status(500).send(error.message)
+        res.status(500).send(error)
     }
     
 };
@@ -43,12 +46,9 @@ exports.retrieve = async function(req, res, next) {
 // uploads single file and saves it to the upload folder and database
 exports.uploadSingle = async function(req, res, next) {
 
-    console.log(req.body)
-    console.log(req.files)
-
     try {
 
-        if (!req.files) {
+        if (!req.body.template) {
             res.send({
                 status: false,
                 message: "No file uploaded!"
@@ -56,17 +56,28 @@ exports.uploadSingle = async function(req, res, next) {
 
         } else {
 
-            let file = req.files.template
+            console.log("constructing upload object")
+
+            console.log("writing buffer to file")
+            const data = parseURI(req.body.template)
+            const fileName = Date.now().toString();
+            
+            file = {
+                name: fileName,
+                mimetype: data.extension,
+                path: path.join(__dirname, `../uploads/template/${req.body.userID}/${fileName}.${data.extension}`),
+                size: fileSizeFormatter(data.image.toString('base64').length)
+            }
 
             const template = new Template ({
                 userID:     req.body.userID,
                 source:     req.body.source,
                 fileName:   file.name,
-                filePath:   "./uploads/template/" + req.body.userID + "/" + file.name,
+                filePath:   file.path,
                 fileType:   file.mimetype,
-                fileSize:   fileSizeFormatter(file.size, 2),
+                fileSize:   file.size,
                 description: req.body.description,
-                private:    req.body.private
+                isPrivate:   req.body.isPrivate
             })
 
             await template.save( function(error, template) {
@@ -74,12 +85,13 @@ exports.uploadSingle = async function(req, res, next) {
                     console.log(error.message)
                 }
                 res.status(200).send(template)
-                file.mv("./uploads/template/" + template.userID + "/" + template.fileName)
+                writeFile(template.filePath, data.image)
                 console.log('Saved template with ID: ' + template.id + " at " + template.filePath)
             })
         }
 
     } catch (error) {
+        console.log(error)
         res.status(500).send(error)
     }
 };
