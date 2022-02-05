@@ -1,11 +1,14 @@
+const fs = require('fs');
+const{ join, dirname } = require('path');
 const Meme = require('../database/models/meme.model');
 // helper functions
 const { fileSizeFormatter } = require('../helpers/fileSizeFormatter.helper')
 const { removeEmpty } = require('../helpers/removeEmpty.helper')
+const { writeFile } = require('../helpers/fileSaver.helper')
+const { parseURI } = require('../helpers/uriParser.helper')
 
 
 exports.retrieve = async function(req, res, next) {
-
 
     console.log("getting memes")
 
@@ -14,7 +17,10 @@ exports.retrieve = async function(req, res, next) {
         userID: req.body.userID || "",
         templateID: req.body.templateID || "",
         title: req.body.title || "",
-        private: req.body.private || ""
+        private: req.body.private || "",
+        newest: req.body.newest ? new Date(req.body.newest.year, req.body.newest.month-1, req.body.newest.day, 23, 59) : "",
+        oldest: req.body.oldest ? new Date(req.body.oldest.year, req.body.oldest.month-1, req.body.oldest.day, 00, 00) : "",
+        maxNumber: req.body.maxNumber || ""
     }
     
     const query = removeEmpty(filters)
@@ -24,13 +30,35 @@ exports.retrieve = async function(req, res, next) {
 
         console.log("querying database")
 
-        const memes = await Meme.find(query)
+        let memes = await Meme.find(query)
         console.log("found " + memes.length + " memes according to query parameters")
 
+        if (query.newest) memes = memes.filter((element) => query.oldest <= element.createdAt)
+
+        if (query.oldest) memes = memes.filter((element) => query.newest >= element.createdAt)
+        console.log(memes)
+
+        if (query.maxNumber) memes = memes.slice(0, query.maxNumber)
+
         if(memes.length > 0) {
-            res.status(200).json(memes)
+            res.status(200).json({
+                meta: {
+                    searchTerms: filters,
+                    results: {
+                        newest: new Date(Math.max.apply(null, memes.map( e => { return new Date(e.createdAt); }))),
+                        oldest: new Date(Math.min.apply(null, memes.map( e => { return new Date(e.createdAt); }))),
+                        totalMemes: memes.length
+                    }
+                },
+                data: {
+                    memes
+                }
+            })
         } else {
-            res.status(500).json({"message" : "no memes match your query"})
+            res.status(500).json({
+                "message" : "no memes match your query",
+                "query:" : query
+            })
         }
         
     } catch (error) {
@@ -46,7 +74,7 @@ exports.uploadSingle = async function(req, res, next) {
 
     try {
 
-        if (!req.files) {
+        if (!req.body.meme) {
             res.send({
                 status: false,
                 message: "No file uploaded!"
@@ -56,7 +84,13 @@ exports.uploadSingle = async function(req, res, next) {
 
             console.log("constructing upload object")
 
-            let file = req.files.meme
+            console.log("writing buffer to file")
+            const data = parseURI(req.body.meme)
+
+            const fileName = Date.now().toString();
+            const fileType = data.extension;
+            const filePath = join(__dirname, `../uploads/meme/${req.body.userID}/${fileName}.${data.extension}`);
+            const fileSize = fileSizeFormatter(data.image.toString('base64').length);
 
             const meme = new Meme ({
                 userID:     req.body.userID,
@@ -64,29 +98,31 @@ exports.uploadSingle = async function(req, res, next) {
                 title: req.body.title,
                 description: req.body.description,
                 memeCaptions: req.body.memeCaptions,
-                fileName: file.name,
-                filePath: "./uploads/meme/" + req.body.user + "/" + file.name,
-                fileType: file.mimetype,
-                fileSize: fileSizeFormatter(file.size, 2),
-                private: req.body.private,
+                fileName: fileName,
+                fileType: fileType,
+                filePath: filePath,
+                fileSize: fileSize,
+                konva: req.body.konva,
+                isPrivate: req.body.isPrivate,
+                isHidden: req.body.isHidden,
+                isDraft: req.body.isDraft,
                 likes: req.body.likes,
-                comments: req.body.comments
+                comments: req.body
             })
 
             console.log("contacting database")
 
             await meme.save( function(error, meme) {
-                if(error){
-                    console.log(error.message)
-                }
-                res.status(200).send(meme)
-                file.mv("./uploads/meme/" + "/" + meme.userID + "/" + meme.fileName)
+                if(error) console.log(error.message)
+                res.status(200).json(meme)
+                writeFile(filePath, data.image)
                 console.log("saved meme with ID: " + meme.id + " at " + meme.filePath)
             })
 
         }
 
     } catch (error) {
+        console.log(error)
         res.status(500).send(error)
     }
 };

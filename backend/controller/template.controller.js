@@ -17,8 +17,6 @@ exports.retrieve = async function(req, res, next) {
       private: req.body.private || ""
     };
 
-    console.log(filters)
-    
     const query = removeEmpty(filters)
     console.log("applying filters: " + JSON.stringify(query))
 
@@ -44,6 +42,10 @@ exports.retrieve = async function(req, res, next) {
 
 // uploads single file and saves it to the upload folder and database
 exports.uploadSingle = async function(req, res, next) {
+
+    console.log(req.body)
+    console.log(req.files)
+
     try {
 
         if (!req.files) {
