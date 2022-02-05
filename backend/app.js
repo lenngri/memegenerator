@@ -17,9 +17,11 @@ const mongoDB = require('./database/connection');
 
 const app = express();
 
+// allow all cross-origin requests
+app.use(cors());
+
 // view engine setup
 app.set('view engine', 'pug');
-
 
 // https://attacomsian.com/blog/uploading-files-nodejs-express
 app.use(fileUpload({
