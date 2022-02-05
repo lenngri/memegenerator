@@ -171,6 +171,13 @@ const Editor = () => {
             <Button
               disabled={!template ? true : false}
               variant='contained'
+              onClick={() => setFontStyle('bold italic')}
+            >
+              Bold Italic
+            </Button>
+            <Button
+              disabled={!template ? true : false}
+              variant='contained'
               onClick={() => setFontStyle('normal')}
             >
               Normal
