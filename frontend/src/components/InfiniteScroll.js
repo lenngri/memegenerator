@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStoreActions } from 'easy-peasy';
 import { Heading } from './Heading';
@@ -15,41 +15,44 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Singleview from './Singleview';
+import { useStoreState } from 'easy-peasy';
 
 function InfiniteScroller() {
   const navigate = useNavigate();
   const setTemplate = useStoreActions((actions) => actions.setTemplate);
-  const [memes, setMemes] = useState([]);
   const [meme, setMeme] = useState(null);
   const [openSingleView, setOpenSingleView] = useState(false);
   const theme = createTheme();
-  let [counter, setCounter] = useState(0);
+  const [counter, setCounter] = useState(2);
+  const serverTemplates = useStoreState((state) => state.serverTemplates);
+  const [memes, setMemes] = useState(serverTemplates);
+  const [memeIndex, setMemeIndex] = useState(0);
+  console.log(counter);
 
-  useEffect(() => {
-    fetchMemes();
-    //eslint-disable-next-line
-  }, []);
+  // useEffect(() => {
+  //   fetchMemes();
+  //   //eslint-disable-next-line
+  // }, []);
 
-  const fetchMemes = () => {
-    fetch('https://api.imgflip.com/get_memes').then((res) => {
-      res.json().then((res) => {
-        const _memes = res.data.memes.slice(0, counter + 2);
-        console.log(_memes);
-        setMemes(_memes);
-      });
-    });
-  };
+  // const fetchMemes = () => {
+  //   fetch('https://api.imgflip.com/get_memes').then((res) => {
+  //     res.json().then((res) => {
+  //       const _memes = res.data.memes.slice(0, counter + 2);
+  //       console.log(_memes);
+  //       setMemes(_memes);
+  //     });
+  //   });
+  // };
 
   const incrementCounter = () => {
-    setCounter((counter = counter + 2));
-    fetchMemes();
+    setCounter(counter + 1);
+    console.log(counter);
   };
 
   const handleEdit = (event) => {
     const button = event.target;
     const cardBody = button.parentNode.parentNode;
-    const meme = cardBody.childNodes[0];
-    setTemplate(meme);
+    setTemplate(cardBody.childNodes[0].childNodes[0]);
     navigate('/editor');
   };
 
@@ -57,8 +60,10 @@ function InfiniteScroller() {
     console.log('View clicked on meme:', event.target);
     const button = event.target;
     const cardBody = button.parentNode.parentNode;
-    const meme = cardBody.childNodes[0];
-    setMeme(meme);
+    // const meme = cardBody.childNodes[0].childNodes[0];
+    console.log(cardBody.childNodes[0].childNodes[0].alt);
+    setMemeIndex(cardBody.childNodes[0].childNodes[0].alt);
+    // setMeme(meme);
     setOpenSingleView(true);
     console.log(openSingleView);
   };
@@ -76,7 +81,7 @@ function InfiniteScroller() {
             loader={<Loader />}
           >
             <Grid container>
-              {memes.map((meme) => (
+              {memes.slice(0, counter).map((meme, index) => (
                 <Grid item key={meme.id} xs={12} sm={12} md={12} sx={{ mb: 4 }}>
                   <Card
                     sx={{
@@ -94,37 +99,28 @@ function InfiniteScroller() {
                       resizeMode: 'contain',
                     }}
                   >
-                    <CardMedia
-                      component='img'
-                      sx={{
-                        // 16:9
-                        resizeMode: 'stretch',
-                        height: 900,
-                        justifyContent: 'center',
-                      }}
-                      style={{
-                        justifyContent: 'center',
-                        resizeMode: 'stretch',
-                        objectFit: 'cover',
-                      }}
-                      image={meme.url}
-                      alt={meme.name}
-                      key={meme.id}
-                      id={meme.id}
-                    />
+                    <CardMedia key={meme._id}>
+                      <img
+                        src={
+                          'http://localhost:3000' +
+                          meme.filePath.substr(1, meme.filePath.length - 1)
+                        }
+                        alt={index}
+                        crossOrigin='Anonymous' // Source: https://konvajs.org/docs/posts/Tainted_Canvas.html (13.01.2022)
+                        loading='lazy'
+                      />
+                    </CardMedia>
+
                     <CardContent
                       sx={{
                         width: '100%',
-
                         textAlign: 'center',
                       }}
                     >
                       <Typography gutterBottom variant='h4' component='h2'>
-                        {meme.name}
+                        {meme.fileName}
                       </Typography>
-                      <Typography sx={{ fontSize: 20 }}>
-                        This is a media card. You can use this section to describe the content.
-                      </Typography>
+                      <Typography sx={{ fontSize: 20 }}>{meme.description}</Typography>
                     </CardContent>
                     <CardActions sx={{ width: '100%', justifyContent: 'center' }}>
                       <Button
@@ -161,6 +157,8 @@ function InfiniteScroller() {
           openSingleView={openSingleView}
           setOpenSingleView={setOpenSingleView}
           meme={meme}
+          memeIndex={memeIndex}
+          setMemeIndex={setMemeIndex}
         />
       </main>
     </ThemeProvider>
