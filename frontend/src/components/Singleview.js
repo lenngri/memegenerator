@@ -9,42 +9,44 @@ import { useStoreState } from 'easy-peasy';
 
 const WIDTH = 600;
 
-const Singleview = ({ openSingleView, setOpenSingleView, meme, memeIndex, setMemeIndex }) => {
+const Singleview = ({ openSingleView, setOpenSingleView, memeIndex, setMemeIndex }) => {
   const [viewWidth, setViewWidth] = useState(WIDTH);
   const [open, setOpen] = React.useState(false);
   const scroll = 'paper';
   const serverTemplates = useStoreState((state) => state.serverTemplates);
 
-  const imageSource =
-    'http://localhost:3000' +
-    serverTemplates[memeIndex].filePath.substr(1, serverTemplates[memeIndex].filePath.length - 1);
-
   useEffect(() => {
     setOpen(openSingleView);
   }, [openSingleView]);
+  console.log(serverTemplates[memeIndex]);
 
-  useEffect(() => {
-    if (imageSource) {
-      if (imageSource.naturalWidth > WIDTH) {
-        setViewWidth({
-          width: WIDTH,
-          height: (imageSource.naturalHeight * WIDTH) / imageSource.naturalWidth,
-        });
-      } else {
-        setViewWidth({
-          width: imageSource.naturalWidth,
-          height: imageSource.naturalHeight,
-        });
-      }
-    }
-  }, [memeIndex, setViewWidth]);
+  // implement something like this to resize dialog according to image size
+  // useEffect(() => {
+  //   if (imageSource) {
+  //     if (imageSource.naturalWidth > WIDTH) {
+  //       setViewWidth({
+  //         width: WIDTH,
+  //         height: (imageSource.naturalHeight * WIDTH) / imageSource.naturalWidth,
+  //       });
+  //     } else {
+  //       setViewWidth({
+  //         width: imageSource.naturalWidth,
+  //         height: imageSource.naturalHeight,
+  //       });
+  //     }
+  //   }
+  // }, [memeIndex, setViewWidth]);
 
   const handleClose = () => {
     setOpen(false);
     setOpenSingleView(false);
   };
 
-  return memeIndex ? (
+  const extractImageURL = (filePath) => {
+    return 'http://localhost:3000' + filePath.substr(1, filePath.length - 1);
+  };
+
+  return (
     <Dialog
       open={open}
       onClose={handleClose}
@@ -66,32 +68,39 @@ const Singleview = ({ openSingleView, setOpenSingleView, meme, memeIndex, setMem
           <CloseIcon />
         </IconButton>
       </DialogTitle>
+
       <DialogContent dividers={scroll === 'body'}>
         <Container sx={{ justifyContent: 'center', display: 'flex' }}>
           <Box width={viewWidth} boxShadow={1}>
-            <CardMedia
-              component='img'
-              id='img'
-              // image={'http://localhost:3000' + serverTemplates[0].filePath}
-              // image={
-              //   <img alt='hallo' src={'http://localhost:3000' + serverTemplates[0].filePath} />
-              // }
-              // image={meme.src}
-              image={imageSource}
-              title='Picture'
-              alt='pic'
-            ></CardMedia>
+            {serverTemplates[memeIndex] ? (
+              <CardMedia
+                component='img'
+                id='img'
+                image={extractImageURL(serverTemplates[memeIndex].filePath)}
+                title='Picture'
+                alt='pic'
+              ></CardMedia>
+            ) : (
+              <CircularProgress />
+            )}
           </Box>
         </Container>
       </DialogContent>
       <DialogActions>
+        <Button disabled={memeIndex < 1 ? true : false} onClick={() => setMemeIndex(memeIndex - 1)}>
+          Previous
+        </Button>
+        <Button
+          disabled={memeIndex === serverTemplates.length - 1 ? true : false}
+          onClick={() => setMemeIndex(memeIndex + 1)}
+        >
+          Next
+        </Button>
         <Button color={'error'} onClick={handleClose}>
           Close
         </Button>
       </DialogActions>
     </Dialog>
-  ) : (
-    <CircularProgress />
   );
 };
 

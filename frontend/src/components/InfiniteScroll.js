@@ -26,7 +26,7 @@ function InfiniteScroller() {
   const [counter, setCounter] = useState(2);
   const serverTemplates = useStoreState((state) => state.serverTemplates);
   const [memes, setMemes] = useState(serverTemplates);
-  const [memeIndex, setMemeIndex] = useState(0);
+  const [memeIndex, setMemeIndex] = useState(null);
   console.log(counter);
 
   // useEffect(() => {
@@ -57,15 +57,10 @@ function InfiniteScroller() {
   };
 
   const handleView = (event) => {
-    console.log('View clicked on meme:', event.target);
     const button = event.target;
     const cardBody = button.parentNode.parentNode;
-    // const meme = cardBody.childNodes[0].childNodes[0];
-    console.log(cardBody.childNodes[0].childNodes[0].alt);
     setMemeIndex(cardBody.childNodes[0].childNodes[0].alt);
-    // setMeme(meme);
     setOpenSingleView(true);
-    console.log(openSingleView);
   };
 
   return (
@@ -156,7 +151,6 @@ function InfiniteScroller() {
         <Singleview
           openSingleView={openSingleView}
           setOpenSingleView={setOpenSingleView}
-          meme={meme}
           memeIndex={memeIndex}
           setMemeIndex={setMemeIndex}
         />
