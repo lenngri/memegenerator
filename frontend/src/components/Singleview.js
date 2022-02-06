@@ -9,16 +9,17 @@ import { useStoreState } from 'easy-peasy';
 
 const WIDTH = 600;
 
-const Singleview = ({ openSingleView, setOpenSingleView, memeIndex, setMemeIndex }) => {
+const Singleview = ({ openSingleView, setOpenSingleView, memeIndex }) => {
   const [viewWidth, setViewWidth] = useState(WIDTH);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [shownIndex, setShownIndex] = useState(null);
   const scroll = 'paper';
   const serverTemplates = useStoreState((state) => state.serverTemplates);
 
   useEffect(() => {
     setOpen(openSingleView);
-  }, [openSingleView]);
-  console.log(serverTemplates[memeIndex]);
+    setShownIndex(memeIndex);
+  }, [openSingleView, memeIndex]);
 
   // implement something like this to resize dialog according to image size
   // useEffect(() => {
@@ -72,11 +73,11 @@ const Singleview = ({ openSingleView, setOpenSingleView, memeIndex, setMemeIndex
       <DialogContent dividers={scroll === 'body'}>
         <Container sx={{ justifyContent: 'center', display: 'flex' }}>
           <Box width={viewWidth} boxShadow={1}>
-            {serverTemplates[memeIndex] ? (
+            {serverTemplates[shownIndex] ? (
               <CardMedia
                 component='img'
                 id='img'
-                image={extractImageURL(serverTemplates[memeIndex].filePath)}
+                image={extractImageURL(serverTemplates[shownIndex].filePath)}
                 title='Picture'
                 alt='pic'
               ></CardMedia>
@@ -87,12 +88,15 @@ const Singleview = ({ openSingleView, setOpenSingleView, memeIndex, setMemeIndex
         </Container>
       </DialogContent>
       <DialogActions>
-        <Button disabled={memeIndex < 1 ? true : false} onClick={() => setMemeIndex(memeIndex - 1)}>
+        <Button
+          disabled={shownIndex < 1 ? true : false}
+          onClick={() => setShownIndex(shownIndex - 1)}
+        >
           Previous
         </Button>
         <Button
-          disabled={memeIndex === serverTemplates.length - 1 ? true : false}
-          onClick={() => setMemeIndex(memeIndex + 1)}
+          disabled={shownIndex === serverTemplates.length - 1 ? true : false}
+          onClick={() => setShownIndex(shownIndex + 1)}
         >
           Next
         </Button>

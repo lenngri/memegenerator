@@ -20,14 +20,12 @@ import { useStoreState } from 'easy-peasy';
 function InfiniteScroller() {
   const navigate = useNavigate();
   const setTemplate = useStoreActions((actions) => actions.setTemplate);
-  const [meme, setMeme] = useState(null);
   const [openSingleView, setOpenSingleView] = useState(false);
   const theme = createTheme();
   const [counter, setCounter] = useState(2);
   const serverTemplates = useStoreState((state) => state.serverTemplates);
   const [memes, setMemes] = useState(serverTemplates);
   const [memeIndex, setMemeIndex] = useState(null);
-  console.log(counter);
 
   // useEffect(() => {
   //   fetchMemes();
@@ -59,7 +57,7 @@ function InfiniteScroller() {
   const handleView = (event) => {
     const button = event.target;
     const cardBody = button.parentNode.parentNode;
-    setMemeIndex(cardBody.childNodes[0].childNodes[0].alt);
+    setMemeIndex(Number(cardBody.childNodes[0].childNodes[0].alt));
     setOpenSingleView(true);
   };
 
@@ -152,7 +150,6 @@ function InfiniteScroller() {
           openSingleView={openSingleView}
           setOpenSingleView={setOpenSingleView}
           memeIndex={memeIndex}
-          setMemeIndex={setMemeIndex}
         />
       </main>
     </ThemeProvider>
