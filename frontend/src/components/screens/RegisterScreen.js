@@ -34,26 +34,25 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function RegisterScreen() {
-  // TODO: const setUser = useStoreActions((actions) => actions.setUser);
+  const setUser = useStoreActions((actions) => actions.setUser);
   const setToken = useStoreActions((actions) => actions.setToken);
   const setLoggedIn = useStoreActions((actions) => actions.setLoggedIn);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      username: data.get('username'),
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-    // register the user
+    // register the user via API
     axios
-      .post('http://localhost:3000/api/user/register', data)
+      .post('http://localhost:3000/api/user/register', {
+        username: data.get('username'),
+        email: data.get('email'),
+        password: data.get('password'),
+      })
       .then(function (response) {
         console.log(response);
         if (response.data.success) {
           setToken(response.data.token);
+          setUser(response.data.user);
           setLoggedIn(true);
           navigate('/editor');
         }

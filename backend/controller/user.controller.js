@@ -122,13 +122,11 @@ const sendToken = (user, statusCode, res) => {
   const token = user.getSignedToken();
   res.status(statusCode).json({
     success: true,
-    data: {
-      token: token,
-      user: {
-        id: user.id,
-        email: user.email,
-        username: user.username,
-      },
+    token: token,
+    user: {
+      id: user.id,
+      email: user.email,
+      username: user.username,
     },
   });
 };
