@@ -15,6 +15,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import backgroundLogo from '../../assets/backgroundlogo4.jpg';
 import { useStoreActions } from 'easy-peasy';
+import { useAuth0 } from '@auth0/auth0-react';
+//import axios from 'axios';
 
 function Copyright(props) {
   return (
@@ -33,6 +35,30 @@ const theme = createTheme();
 
 export default function LoginScreen() {
   const setLoggedIn = useStoreActions((actions) => actions.setLoggedIn);
+
+  //auth0 social login handler
+  const {
+    loginWithPopup,
+    logout,
+    user,
+    isAuthenticated
+  } = useAuth0();
+
+//async function callApi() {
+//  const token = await getAccessTokenSilently()
+//  console.log(token);
+//  axios
+//    .get('http://localhost:3000/')
+//    .then(response => console.log(response.data))
+//    .catch(error => console.log(error.message));
+//}
+
+//function callPrivateApi() {
+//  axios
+//    .get('http://localhost:3000/api/private')
+//    .then(response => console.log(response.data))
+//    .catch(error => console.log(error.message));
+//}
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -119,6 +145,28 @@ export default function LoginScreen() {
               >
                 Sign In
               </Button>
+              <Button
+                fullWidth
+                variant="outlined"
+                sx={{ mt: 3, mb: 2 }}
+                onClick={loginWithPopup}
+              >
+                Sign in with Social
+              </Button>
+              <Button
+                fullWidth
+                variant="outlined"
+                sx={{ mt: 3, mb: 2 }}
+                onClick={logout}
+              >
+                Logout from Social Login
+              </Button>
+              <h3>Your are currently { isAuthenticated ? 'signed in.' : 'not signed in.' }</h3>
+              {isAuthenticated && (
+                <pre style={{textAlign: 'start'}}>
+                 {JSON.stringify(user, null, 2)}
+                </pre>
+              ) }
               <Grid container>
                 <Grid item xs>
                   <Link href="#" variant="body2" onClick={() => navigate('/forgotpassword')}>
