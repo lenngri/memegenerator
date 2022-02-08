@@ -136,9 +136,9 @@ const Singleview = ({ openSingleView, setOpenSingleView, memeIndex }) => {
             >
               Next
             </Button>
-            <Button color={'error'} onClick={handleClose}>
+            {/* <Button color={'error'} onClick={handleClose}>
               Close
-            </Button>
+            </Button> */}
           </DialogActions>
         </Dialog>
       ) : (
