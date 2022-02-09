@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStoreActions } from 'easy-peasy';
 import { Heading } from './Heading';
@@ -22,29 +22,31 @@ function InfiniteScroller() {
   const setTemplate = useStoreActions((actions) => actions.setTemplate);
   const [openSingleView, setOpenSingleView] = useState(false);
   const theme = createTheme();
-  const [counter, setCounter] = useState(2);
+  const [counter, setCounter] = useState(1);
   const serverTemplates = useStoreState((state) => state.serverTemplates);
-  const [memes, setMemes] = useState(serverTemplates);
+  const [memes, setMemes] = useState([]);
   const [memeIndex, setMemeIndex] = useState(null);
+  console.log('Rendered Infinite Scroll, counter:', counter, 'Memes:', memes);
 
-  // useEffect(() => {
-  //   fetchMemes();
-  //   //eslint-disable-next-line
-  // }, []);
+  useEffect(() => {
+    fetchMemes();
+    //eslint-disable-next-line
+  }, []);
 
-  // const fetchMemes = () => {
-  //   fetch('https://api.imgflip.com/get_memes').then((res) => {
-  //     res.json().then((res) => {
-  //       const _memes = res.data.memes.slice(0, counter + 2);
-  //       console.log(_memes);
-  //       setMemes(_memes);
-  //     });
-  //   });
-  // };
+  const fetchMemes = () => {
+    fetch('http://localhost:3000/api/template/retrieve').then((res) => {
+      res.json().then((res) => {
+        setCounter(counter + 1);
+        const _memes = res.slice(0, counter + 1);
+        setMemes(_memes);
+        console.log('fetchMemes updated _memes', _memes);
+      });
+    });
+  };
 
   const incrementCounter = () => {
-    setCounter(counter + 1);
-    console.log(counter);
+    fetchMemes();
+    console.log('Increment counter finished', counter);
   };
 
   const handleEdit = (event) => {
@@ -72,9 +74,15 @@ function InfiniteScroller() {
             next={incrementCounter}
             hasMore={true}
             loader={<Loader />}
+            scrollThreshold={1.0}
+            endMessage={
+              <p style={{ textAlign: 'center' }}>
+                <b>Yay! You have seen it all</b>
+              </p>
+            }
           >
             <Grid container>
-              {memes.slice(0, counter).map((meme, index) => (
+              {memes.map((meme, index) => (
                 <Grid item key={meme.id} xs={12} sm={12} md={12} sx={{ mb: 4 }}>
                   <Card
                     sx={{
@@ -92,7 +100,7 @@ function InfiniteScroller() {
                       resizeMode: 'contain',
                     }}
                   >
-                    <CardMedia key={meme._id}>
+                    <CardMedia key={meme._id} maxHeight={600}>
                       <img
                         src={
                           'http://localhost:3000' +
