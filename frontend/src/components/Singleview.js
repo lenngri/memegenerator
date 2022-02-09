@@ -5,11 +5,12 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import {
-  Container,
+  Card,
+  CardContent,
+  CardMedia,
   Box,
   Button,
   IconButton,
-  CardMedia,
   CircularProgress,
   Typography,
   Divider,
@@ -42,23 +43,6 @@ const Singleview = ({ openSingleView, setOpenSingleView, memeIndex }) => {
     }
   }, delay);
 
-  // implement something like this to resize dialog according to image size
-  // useEffect(() => {
-  //   if (imageSource) {
-  //     if (imageSource.naturalWidth > WIDTH) {
-  //       setViewWidth({
-  //         width: WIDTH,
-  //         height: (imageSource.naturalHeight * WIDTH) / imageSource.naturalWidth,
-  //       });
-  //     } else {
-  //       setViewWidth({
-  //         width: imageSource.naturalWidth,
-  //         height: imageSource.naturalHeight,
-  //       });
-  //     }
-  //   }
-  // }, [memeIndex, setViewWidth]);
-
   const handleClose = () => {
     setOpen(false);
     setOpenSingleView(false);
@@ -80,7 +64,7 @@ const Singleview = ({ openSingleView, setOpenSingleView, memeIndex }) => {
           aria-describedby='scroll-dialog-description'
         >
           <DialogTitle id='scroll-dialog-title'>
-            <Typography>{serverTemplates[shownIndex].fileName}</Typography>
+            <Typography variant='h6'>{serverTemplates[shownIndex].fileName}</Typography>
             <IconButton
               aria-label='close'
               onClick={handleClose}
@@ -96,22 +80,34 @@ const Singleview = ({ openSingleView, setOpenSingleView, memeIndex }) => {
           </DialogTitle>
 
           <DialogContent dividers={scroll === 'body'}>
-            <Container sx={{ justifyContent: 'center', display: 'flex' }}>
-              <Box width={viewWidth} boxShadow={1}>
-                {serverTemplates[shownIndex] ? (
-                  <CardMedia
-                    component='img'
-                    id='img'
-                    image={extractImageURL(serverTemplates[shownIndex].filePath)}
-                    title='Picture'
-                    alt='pic'
-                  ></CardMedia>
-                ) : (
-                  <CircularProgress />
-                )}
-              </Box>
-              <Typography>{serverTemplates[shownIndex].description}</Typography>
-            </Container>
+            <Card
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                textAlign: 'center',
+                boxShadow: 0,
+              }}
+            >
+              <CardContent>
+                <Box width={viewWidth}>
+                  {serverTemplates[shownIndex] ? (
+                    <CardMedia
+                      component='img'
+                      id='img'
+                      image={extractImageURL(serverTemplates[shownIndex].filePath)}
+                      title='Picture'
+                      alt='pic'
+                    ></CardMedia>
+                  ) : (
+                    <CircularProgress />
+                  )}
+                </Box>
+                <Typography variant='body2' color='text.secondary' sx={{ mt: 2 }}>
+                  {serverTemplates[shownIndex].description}
+                </Typography>
+              </CardContent>
+            </Card>
           </DialogContent>
           <DialogActions>
             <Button
