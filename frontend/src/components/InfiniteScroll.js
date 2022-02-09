@@ -21,7 +21,7 @@ function InfiniteScroller() {
   const setTemplate = useStoreActions((actions) => actions.setTemplate);
   const [openSingleView, setOpenSingleView] = useState(false);
   const theme = createTheme();
-  const [counter, setCounter] = useState(1);
+  const [counter, setCounter] = useState(2);
   // const serverTemplates = useStoreState((state) => state.serverTemplates);
   const setServerTemplates = useStoreActions((actions) => actions.setServerTemplates);
   const [memes, setMemes] = useState([]);
@@ -99,7 +99,8 @@ function InfiniteScroller() {
                       component='img'
                       key={meme._id}
                       alt={index}
-                      maxHeight={600}
+                      height={600}
+                      width={500}
                       image={
                         'http://localhost:3000' + meme.filePath.substr(1, meme.filePath.length - 1)
                       }
@@ -110,35 +111,21 @@ function InfiniteScroller() {
                         textAlign: 'center',
                       }}
                     >
-                      <Typography gutterBottom variant='h4' component='h2'>
+                      <Typography gutterBottom variant='h5'>
                         {meme.fileName}
                       </Typography>
-                      <Typography sx={{ fontSize: 20 }}>{meme.description}</Typography>
+                      <Typography>{meme.description}</Typography>
                     </CardContent>
                     <CardActions sx={{ width: '100%', justifyContent: 'center' }}>
-                      <Button
-                        sx={{ fontSize: 20, mr: 4, fontWeight: 'bold' }}
-                        size='small'
-                        onClick={handleView}
-                      >
+                      <Button size='large' onClick={handleView}>
                         View
                       </Button>
-                      <Button
-                        sx={{ fontSize: 20, mr: 4, fontWeight: 'bold' }}
-                        size='small'
-                        onClick={handleEdit}
-                      >
+                      <Button size='large' onClick={handleEdit}>
                         Edit
                       </Button>
-                      <Button sx={{ fontSize: 20, mr: 4, fontWeight: 'bold' }} size='small'>
-                        Comment
-                      </Button>
-                      <Button sx={{ fontSize: 20, mr: 4, fontWeight: 'bold' }} size='small'>
-                        Vote
-                      </Button>
-                      <Button sx={{ fontSize: 20, mr: 4, fontWeight: 'bold' }} size='small'>
-                        Share
-                      </Button>
+                      <Button size='large'>Comment</Button>
+                      <Button size='large'>Vote</Button>
+                      <Button size='large'>Share</Button>
                     </CardActions>
                   </Card>
                 </Grid>
