@@ -15,7 +15,6 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Singleview from './Singleview';
-import { useStoreState } from 'easy-peasy';
 
 function InfiniteScroller() {
   const navigate = useNavigate();
@@ -23,10 +22,10 @@ function InfiniteScroller() {
   const [openSingleView, setOpenSingleView] = useState(false);
   const theme = createTheme();
   const [counter, setCounter] = useState(1);
-  const serverTemplates = useStoreState((state) => state.serverTemplates);
+  // const serverTemplates = useStoreState((state) => state.serverTemplates);
+  const setServerTemplates = useStoreActions((actions) => actions.setServerTemplates);
   const [memes, setMemes] = useState([]);
   const [memeIndex, setMemeIndex] = useState(null);
-  console.log('Rendered Infinite Scroll, counter:', counter, 'Memes:', memes);
 
   useEffect(() => {
     fetchMemes();
@@ -36,17 +35,12 @@ function InfiniteScroller() {
   const fetchMemes = () => {
     fetch('http://localhost:3000/api/template/retrieve').then((res) => {
       res.json().then((res) => {
+        setServerTemplates(res);
         setCounter(counter + 1);
-        const _memes = res.slice(0, counter + 1);
+        const _memes = res.slice(0, counter);
         setMemes(_memes);
-        console.log('fetchMemes updated _memes', _memes);
       });
     });
-  };
-
-  const incrementCounter = () => {
-    fetchMemes();
-    console.log('Increment counter finished', counter);
   };
 
   const handleEdit = (event) => {
@@ -70,11 +64,11 @@ function InfiniteScroller() {
         <Container maxWidth='md'>
           <Heading />
           <InfiniteScroll
-            dataLength={memes.length}
-            next={incrementCounter}
-            hasMore={true}
+            dataLength={memes.length - 1}
+            next={fetchMemes}
+            hasMore
             loader={<Loader />}
-            scrollThreshold={1.0}
+            scrollThreshold={0.9}
             endMessage={
               <p style={{ textAlign: 'center' }}>
                 <b>Yay! You have seen it all</b>
