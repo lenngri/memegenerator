@@ -110,6 +110,7 @@ const Singleview = ({ openSingleView, setOpenSingleView, memeIndex }) => {
                   <CircularProgress />
                 )}
               </Box>
+              <Typography>{serverTemplates[shownIndex].description}</Typography>
             </Container>
           </DialogContent>
           <DialogActions>
