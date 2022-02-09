@@ -46,14 +46,15 @@ function InfiniteScroller() {
   const handleEdit = (event) => {
     const button = event.target;
     const cardBody = button.parentNode.parentNode;
-    setTemplate(cardBody.childNodes[0].childNodes[0]);
+    setTemplate(cardBody.childNodes[0]);
     navigate('/editor');
   };
 
   const handleView = (event) => {
+    console.log(event.target.parentNode.parentNode);
     const button = event.target;
     const cardBody = button.parentNode.parentNode;
-    setMemeIndex(Number(cardBody.childNodes[0].childNodes[0].alt));
+    setMemeIndex(Number(cardBody.childNodes[0].alt));
     setOpenSingleView(true);
   };
 
@@ -94,18 +95,15 @@ function InfiniteScroller() {
                       resizeMode: 'contain',
                     }}
                   >
-                    <CardMedia key={meme._id} maxHeight={600}>
-                      <img
-                        src={
-                          'http://localhost:3000' +
-                          meme.filePath.substr(1, meme.filePath.length - 1)
-                        }
-                        alt={index}
-                        crossOrigin='Anonymous' // Source: https://konvajs.org/docs/posts/Tainted_Canvas.html (13.01.2022)
-                        loading='lazy'
-                      />
-                    </CardMedia>
-
+                    <CardMedia
+                      component='img'
+                      key={meme._id}
+                      alt={index}
+                      maxHeight={600}
+                      image={
+                        'http://localhost:3000' + meme.filePath.substr(1, meme.filePath.length - 1)
+                      }
+                    ></CardMedia>
                     <CardContent
                       sx={{
                         width: '100%',
