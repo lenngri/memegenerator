@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStoreActions } from 'easy-peasy';
-import { Heading } from './Heading';
 import { Loader } from './Loader';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Button from '@mui/material/Button';
@@ -9,21 +8,21 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Singleview from './Singleview';
 
 function InfiniteScroller() {
   const navigate = useNavigate();
   const setTemplate = useStoreActions((actions) => actions.setTemplate);
-  const [memes, setMemes] = useState([]);
-  const [meme, setMeme] = useState(null);
   const [openSingleView, setOpenSingleView] = useState(false);
-  const theme = createTheme();
-  let [counter, setCounter] = useState(0);
+
+  const [counter, setCounter] = useState(2);
+  // const serverTemplates = useStoreState((state) => state.serverTemplates);
+  const setServerTemplates = useStoreActions((actions) => actions.setServerTemplates);
+  const [memes, setMemes] = useState([]);
+  const [memeIndex, setMemeIndex] = useState(null);
 
   useEffect(() => {
     fetchMemes();
@@ -31,139 +30,99 @@ function InfiniteScroller() {
   }, []);
 
   const fetchMemes = () => {
-    fetch('https://api.imgflip.com/get_memes').then((res) => {
+    fetch('http://localhost:3000/api/template/retrieve').then((res) => {
       res.json().then((res) => {
-        const _memes = res.data.memes.slice(0, counter + 2);
-        console.log(_memes);
+        setServerTemplates(res);
+        setCounter(counter + 1);
+        const _memes = res.slice(0, counter);
         setMemes(_memes);
       });
     });
   };
 
-  const incrementCounter = () => {
-    setCounter((counter = counter + 2));
-    fetchMemes();
-  };
-
   const handleEdit = (event) => {
     const button = event.target;
     const cardBody = button.parentNode.parentNode;
-    const meme = cardBody.childNodes[0];
-    setTemplate(meme);
+    setTemplate(cardBody.childNodes[0]);
     navigate('/editor');
   };
 
   const handleView = (event) => {
-    console.log('View clicked on meme:', event.target);
+    console.log(event.target.parentNode.parentNode);
     const button = event.target;
     const cardBody = button.parentNode.parentNode;
-    const meme = cardBody.childNodes[0];
-    setMeme(meme);
+    setMemeIndex(Number(cardBody.childNodes[0].alt));
     setOpenSingleView(true);
-    console.log(openSingleView);
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <main>
-        <Container maxWidth='md'>
-          <Heading />
-          <InfiniteScroll
-            dataLength={memes.length}
-            next={incrementCounter}
-            hasMore={true}
-            loader={<Loader />}
-          >
-            <Grid container>
-              {memes.map((meme) => (
-                <Grid item key={meme.id} xs={12} sm={12} md={12} sx={{ mb: 4 }}>
-                  <Card
-                    sx={{
-                      height: '100%',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
-                      border: 2,
-                      boxShadow: 4,
-                    }}
-                    style={{
-                      backgroundColor: '#D3D3D3',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      resizeMode: 'contain',
-                    }}
-                  >
-                    <CardMedia
-                      component='img'
-                      sx={{
-                        // 16:9
-                        resizeMode: 'stretch',
-                        height: 900,
-                        justifyContent: 'center',
-                      }}
-                      style={{
-                        justifyContent: 'center',
-                        resizeMode: 'stretch',
-                        objectFit: 'cover',
-                      }}
-                      image={meme.url}
-                      alt={meme.name}
-                      key={meme.id}
-                      id={meme.id}
-                    />
-                    <CardContent
-                      sx={{
-                        width: '100%',
-
-                        textAlign: 'center',
-                      }}
-                    >
-                      <Typography gutterBottom variant='h4' component='h2'>
-                        {meme.name}
-                      </Typography>
-                      <Typography sx={{ fontSize: 20 }}>
-                        This is a media card. You can use this section to describe the content.
-                      </Typography>
-                    </CardContent>
-                    <CardActions sx={{ width: '100%', justifyContent: 'center' }}>
-                      <Button
-                        sx={{ fontSize: 20, mr: 4, fontWeight: 'bold' }}
-                        size='small'
-                        onClick={handleView}
-                      >
-                        View
-                      </Button>
-                      <Button
-                        sx={{ fontSize: 20, mr: 4, fontWeight: 'bold' }}
-                        size='small'
-                        onClick={handleEdit}
-                      >
-                        Edit
-                      </Button>
-                      <Button sx={{ fontSize: 20, mr: 4, fontWeight: 'bold' }} size='small'>
-                        Comment
-                      </Button>
-                      <Button sx={{ fontSize: 20, mr: 4, fontWeight: 'bold' }} size='small'>
-                        Vote
-                      </Button>
-                      <Button sx={{ fontSize: 20, mr: 4, fontWeight: 'bold' }} size='small'>
-                        Share
-                      </Button>
-                    </CardActions>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
-          </InfiniteScroll>
-        </Container>
-        <Singleview
-          openSingleView={openSingleView}
-          setOpenSingleView={setOpenSingleView}
-          meme={meme}
-        />
-      </main>
-    </ThemeProvider>
+    <>
+      <Container maxWidth='md'>
+        <Typography variant='h4' sx={{ mt: 5, mb: 2, textAlign: 'center' }}>
+          Meme Gallery
+        </Typography>
+        <Typography variant='subtitle1' sx={{ mb: 2, textAlign: 'center' }}>
+          Explore public memes on Burrito Memes!
+        </Typography>
+        <InfiniteScroll
+          dataLength={memes.length - 1}
+          next={fetchMemes}
+          hasMore
+          loader={<Loader />}
+          scrollThreshold={0.9}
+        >
+          <Grid container>
+            {memes.map((meme, index) => (
+              <Grid item key={meme.id} xs={12} sm={12} md={12} sx={{ mb: 4 }}>
+                <Card
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    border: 1,
+                    boxShadow: 4,
+                    backgroundColor: '#D1D1D1',
+                  }}
+                >
+                  <CardMedia
+                    component='img'
+                    key={meme._id}
+                    alt={index}
+                    height={600}
+                    width={500}
+                    image={
+                      'http://localhost:3000' + meme.filePath.substr(1, meme.filePath.length - 1)
+                    }
+                  ></CardMedia>
+                  <CardContent sx={{ textAlign: 'center' }}>
+                    <Typography gutterBottom variant='h5'>
+                      {meme.fileName}
+                    </Typography>
+                    <Typography>{meme.description}</Typography>
+                  </CardContent>
+                  <CardActions sx={{ width: '100%', justifyContent: 'center' }}>
+                    <Button size='large' onClick={handleView}>
+                      View
+                    </Button>
+                    <Button size='large' onClick={handleEdit}>
+                      Edit
+                    </Button>
+                    <Button size='large'>Comment</Button>
+                    <Button size='large'>Vote</Button>
+                    <Button size='large'>Share</Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </InfiniteScroll>
+      </Container>
+      <Singleview
+        openSingleView={openSingleView}
+        setOpenSingleView={setOpenSingleView}
+        memeIndex={memeIndex}
+      />
+    </>
   );
 }
 
