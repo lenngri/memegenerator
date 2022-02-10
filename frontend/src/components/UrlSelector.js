@@ -9,7 +9,7 @@ import { useStoreActions } from 'easy-peasy';
 import Alert from '@mui/material/Alert';
 
 export default function URLSelector() {
-  const setTemplate = useStoreActions((actions) => actions.setTemplate);
+  const setMemeToEdit = useStoreActions((actions) => actions.setMemeToEdit);
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState();
   const [alert, setAlert] = React.useState(false);
@@ -32,31 +32,31 @@ export default function URLSelector() {
 
   return (
     <div>
-      <Button variant="contained" onClick={handleClickOpen}>
+      <Button variant='contained' onClick={handleClickOpen}>
         Use URL
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Please insert an URL</DialogTitle>
-        {alert ? <Alert severity="error">Please choose a file</Alert> : null}
+        {alert ? <Alert severity='error'>Please choose a file</Alert> : null}
 
         <DialogContent sx={{ width: 400 }}>
           <TextField
             autoFocus
-            margin="dense"
-            id="name"
-            label="URL"
-            type="email"
+            margin='dense'
+            id='name'
+            label='URL'
+            type='email'
             fullWidth
-            variant="standard"
+            variant='standard'
             onChange={handleChange}
           />
         </DialogContent>
         <DialogActions>
           <Button
-            variant="contained"
+            variant='contained'
             onClick={(e) => {
               if (name) {
-                setTemplate(image);
+                setMemeToEdit(image);
                 handleClose();
                 setAlert(false);
               } else {

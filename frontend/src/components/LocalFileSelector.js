@@ -8,7 +8,7 @@ import { useStoreActions } from 'easy-peasy';
 import Alert from '@mui/material/Alert';
 
 export default function LocalFileSelector({ ButtonText }) {
-  const setTemplate = useStoreActions((actions) => actions.setTemplate);
+  const setMemeToEdit = useStoreActions((actions) => actions.setMemeToEdit);
   const [open, setOpen] = React.useState(false);
 
   const descriptionElementRef = React.useRef(null);
@@ -64,21 +64,21 @@ export default function LocalFileSelector({ ButtonText }) {
 
   return (
     <div>
-      <Button variant="contained" onClick={handleClickOpen}>
+      <Button variant='contained' onClick={handleClickOpen}>
         {ButtonText}
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Select a local file</DialogTitle>
         <DialogContent>
-          {alert ? <Alert severity="error">Please choose a file</Alert> : null}
+          {alert ? <Alert severity='error'>Please choose a file</Alert> : null}
 
-          <input type="file" onChange={onSelectFile} />
+          <input type='file' onChange={onSelectFile} />
         </DialogContent>
         <DialogActions>
           <Button
             onClick={(e) => {
               if (preview) {
-                setTemplate(image);
+                setMemeToEdit(image);
                 handleClose();
                 setAlert(false);
               } else {

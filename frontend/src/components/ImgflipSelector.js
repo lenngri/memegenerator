@@ -10,7 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 
 export default function ImgflipSelector() {
-  const setTemplate = useStoreActions((actions) => actions.setTemplate);
+  const setMemeToEdit = useStoreActions((actions) => actions.setMemeToEdit);
   const imgflipTemplates = useStoreState((state) => state.imgflipTemplates);
   const [open, setOpen] = React.useState(false);
   const scroll = 'paper';
@@ -35,7 +35,7 @@ export default function ImgflipSelector() {
 
   return (
     <div>
-      <Button variant="contained" onClick={handleClickOpen('paper')}>
+      <Button variant='contained' onClick={handleClickOpen('paper')}>
         Imgflip Templates
       </Button>
       <Dialog
@@ -45,13 +45,13 @@ export default function ImgflipSelector() {
         maxWidth={'xl'}
         fullWidth={true}
         // fullScreen={true}
-        aria-labelledby="scroll-dialog-title"
-        aria-describedby="scroll-dialog-description"
+        aria-labelledby='scroll-dialog-title'
+        aria-describedby='scroll-dialog-description'
       >
-        <DialogTitle id="scroll-dialog-title">
+        <DialogTitle id='scroll-dialog-title'>
           Select a template from Imgflip.
           <IconButton
-            aria-label="close"
+            aria-label='close'
             onClick={handleClose}
             sx={{
               position: 'absolute',
@@ -65,18 +65,18 @@ export default function ImgflipSelector() {
         <DialogContent dividers={scroll === 'paper'}>
           <Container sx={{ justifyContent: 'center', display: 'flex' }}>
             <Box>
-              <ImageList style={{ cursor: 'pointer' }} variant="masonry" cols={3} gap={8}>
+              <ImageList style={{ cursor: 'pointer' }} variant='masonry' cols={3} gap={8}>
                 {imgflipTemplates.map((item) => (
                   <ImageListItem key={item.id}>
                     <img
                       src={item.url}
                       alt={item.name}
-                      crossOrigin="Anonymous" // Source: https://konvajs.org/docs/posts/Tainted_Canvas.html (13.01.2022)
+                      crossOrigin='Anonymous' // Source: https://konvajs.org/docs/posts/Tainted_Canvas.html (13.01.2022)
                       onClick={(e) => {
-                        setTemplate(e.target);
+                        setMemeToEdit(e.target);
                         handleClose();
                       }}
-                      loading="lazy"
+                      loading='lazy'
                     />
                   </ImageListItem>
                 ))}

@@ -10,7 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 
 export default function ServerTemplateSelector() {
-  const setTemplate = useStoreActions((actions) => actions.setTemplate);
+  const setMemeToEdit = useStoreActions((actions) => actions.setMemeToEdit);
   const serverTemplates = useStoreState((state) => state.serverTemplates);
   const [open, setOpen] = React.useState(false);
   const scroll = 'paper';
@@ -77,7 +77,7 @@ export default function ServerTemplateSelector() {
                         alt={item.fileName}
                         crossOrigin='Anonymous' // Source: https://konvajs.org/docs/posts/Tainted_Canvas.html (13.01.2022)
                         onClick={(e) => {
-                          setTemplate(e.target);
+                          setMemeToEdit(e.target);
                           handleClose();
                         }}
                         loading='lazy'

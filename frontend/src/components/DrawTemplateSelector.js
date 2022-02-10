@@ -9,7 +9,7 @@ import Alert from '@mui/material/Alert';
 import DrawCanvas from './DrawCanvas';
 
 export default function DrawTemplateSelector({ ButtonText }) {
-  const setTemplate = useStoreActions((actions) => actions.setTemplate);
+  const setMemeToEdit = useStoreActions((actions) => actions.setMemeToEdit);
   const [open, setOpen] = React.useState(false);
 
   const descriptionElementRef = React.useRef(null);
@@ -43,13 +43,13 @@ export default function DrawTemplateSelector({ ButtonText }) {
 
   return (
     <div>
-      <Button variant="contained" onClick={handleClickOpen}>
+      <Button variant='contained' onClick={handleClickOpen}>
         {ButtonText}
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Draw an image</DialogTitle>
         {alert ? (
-          <Alert severity="error">Please save a drawn picture before proceeding</Alert>
+          <Alert severity='error'>Please save a drawn picture before proceeding</Alert>
         ) : null}
 
         <DialogContent>
@@ -59,7 +59,7 @@ export default function DrawTemplateSelector({ ButtonText }) {
           <Button
             onClick={(e) => {
               if (preview) {
-                setTemplate(image);
+                setMemeToEdit(image);
                 handleClose();
                 setAlert(false);
               } else {

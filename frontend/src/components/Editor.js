@@ -23,25 +23,25 @@ const Editor = () => {
   const [fontStyle, setFontStyle] = useState('bold');
   const [editorDims, setEditorDims] = useState({ width: C_WIDTH, height: C_HEIGHT });
 
-  // load template from store
-  const template = useStoreState((state) => state.template);
+  // load memeToEdit from store
+  const memeToEdit = useStoreState((state) => state.memeToEdit);
 
   useEffect(() => {
-    if (template) {
-      if (template.naturalWidth > C_WIDTH) {
+    if (memeToEdit) {
+      if (memeToEdit.naturalWidth > C_WIDTH) {
         setEditorDims({
           width: C_WIDTH,
-          height: (template.naturalHeight * C_WIDTH) / template.naturalWidth,
+          height: (memeToEdit.naturalHeight * C_WIDTH) / memeToEdit.naturalWidth,
         });
       } else {
         setEditorDims({
-          width: template.naturalWidth,
-          height: template.naturalHeight,
+          width: memeToEdit.naturalWidth,
+          height: memeToEdit.naturalHeight,
         });
       }
     }
     setStageRef(stageRef);
-  }, [template, setStageRef]);
+  }, [memeToEdit, setStageRef]);
 
   // Source for cursor event handling: https://konvajs.org/docs/styling/Mouse_Cursor.html (13.01.2022)
   const grabCursor = () => {
@@ -88,11 +88,11 @@ const Editor = () => {
             mb: 3,
           }}
         >
-          {template ? (
+          {memeToEdit ? (
             <Box boxShadow={2}>
               <Stage ref={stageRef} width={editorDims.width} height={editorDims.height}>
                 <Layer>
-                  <Image image={template} width={editorDims.width} height={editorDims.height} />
+                  <Image image={memeToEdit} width={editorDims.width} height={editorDims.height} />
                   <Text
                     x={editorDims.width * 0.25}
                     y={editorDims.height * 0.1}
@@ -117,34 +117,34 @@ const Editor = () => {
           ) : (
             <>
               <Typography variant='body1' color='gray' gutterBottom component='div'>
-                Please choose a template first.
+                Please choose a memeToEdit first.
               </Typography>
             </>
           )}
           <Stack direction='row' spacing={1} sx={{ mt: 3, mb: 2 }}>
             <TextField
-              disabled={!template ? true : false}
+              disabled={!memeToEdit ? true : false}
               required
               id='outlined-required'
               label='Caption 1'
               onChange={(e) => setTopText(e.target.value)}
             />
             <TextField
-              disabled={!template ? true : false}
+              disabled={!memeToEdit ? true : false}
               required
               id='outlined-required'
               label='Caption 2'
               onChange={(e) => setBottomText(e.target.value)}
             />
             <TextField
-              disabled={!template ? true : false}
+              disabled={!memeToEdit ? true : false}
               required
               id='outlined-required'
               label='Caption 3'
               onChange={(e) => setMidText(e.target.value)}
             />
             <Button
-              disabled={!template ? true : false}
+              disabled={!memeToEdit ? true : false}
               variant='contained'
               onClick={handleClearEditor}
             >
@@ -153,7 +153,7 @@ const Editor = () => {
           </Stack>
           <Stack direction='row' spacing={1} sx={{ mb: 2 }}>
             <TextField
-              disabled={!template ? true : false}
+              disabled={!memeToEdit ? true : false}
               id='outlined-number'
               label='Font Size'
               type='number'
@@ -164,28 +164,28 @@ const Editor = () => {
               }}
             />
             <Button
-              disabled={!template ? true : false}
+              disabled={!memeToEdit ? true : false}
               variant='contained'
               onClick={() => setFontStyle('bold')}
             >
               Bold
             </Button>
             <Button
-              disabled={!template ? true : false}
+              disabled={!memeToEdit ? true : false}
               variant='contained'
               onClick={() => setFontStyle('italic')}
             >
               Italic
             </Button>
             <Button
-              disabled={!template ? true : false}
+              disabled={!memeToEdit ? true : false}
               variant='contained'
               onClick={() => setFontStyle('bold italic')}
             >
               Bold Italic
             </Button>
             <Button
-              disabled={!template ? true : false}
+              disabled={!memeToEdit ? true : false}
               variant='contained'
               onClick={() => setFontStyle('normal')}
             >

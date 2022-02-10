@@ -15,7 +15,7 @@ import Singleview from './Singleview';
 
 function InfiniteScroller() {
   const navigate = useNavigate();
-  const setTemplate = useStoreActions((actions) => actions.setTemplate);
+  const setMemeToEdit = useStoreActions((actions) => actions.setMemeToEdit);
   const [openSingleView, setOpenSingleView] = useState(false);
 
   const [counter, setCounter] = useState(2);
@@ -43,7 +43,7 @@ function InfiniteScroller() {
   const handleEdit = (event) => {
     const button = event.target;
     const cardBody = button.parentNode.parentNode;
-    setTemplate(cardBody.childNodes[0]);
+    setMemeToEdit(cardBody.childNodes[0]);
     navigate('/editor');
   };
 

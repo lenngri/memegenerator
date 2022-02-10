@@ -13,7 +13,7 @@ import Webcam from 'react-webcam';
 // https://www.npmjs.com/package/react-webcam
 
 export default function CameraUpload({ ButtonText }) {
-  const setTemplate = useStoreActions((actions) => actions.setTemplate);
+  const setMemeToEdit = useStoreActions((actions) => actions.setMemeToEdit);
   const [preview, setPreview] = React.useState();
   const [imgSrc, setImgSrc] = React.useState(null);
   const [alert, setAlert] = React.useState(false);
@@ -41,13 +41,13 @@ export default function CameraUpload({ ButtonText }) {
 
   return (
     <div>
-      <Button variant="contained" onClick={handleClickOpen}>
+      <Button variant='contained' onClick={handleClickOpen}>
         Camera Upload
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Select a local file</DialogTitle>
         <IconButton
-          aria-label="close"
+          aria-label='close'
           onClick={handleClose}
           sx={{
             position: 'absolute',
@@ -58,11 +58,11 @@ export default function CameraUpload({ ButtonText }) {
           <CloseIcon />
         </IconButton>
         <DialogContent>
-          {alert ? <Alert severity="error">Please take a photo first</Alert> : null}
+          {alert ? <Alert severity='error'>Please take a photo first</Alert> : null}
           <Webcam
             audio={false}
             ref={webcamRef}
-            screenshotFormat="image/jpeg"
+            screenshotFormat='image/jpeg'
             height={400}
             width={400}
           />
@@ -76,17 +76,17 @@ export default function CameraUpload({ ButtonText }) {
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="error">
+          <Button onClick={handleClose} color='error'>
             Cancel
           </Button>
-          <Button variant="contained" onClick={capture}>
+          <Button variant='contained' onClick={capture}>
             Capture photo
           </Button>
           <Button
-            variant="contained"
+            variant='contained'
             onClick={(e) => {
               if (preview) {
-                setTemplate(image);
+                setMemeToEdit(image);
                 setImgSrc(null);
                 setPreview(null);
                 setAlert(false);
@@ -96,7 +96,7 @@ export default function CameraUpload({ ButtonText }) {
               }
             }}
           >
-            set Template
+            Set Template
           </Button>
         </DialogActions>
       </Dialog>
