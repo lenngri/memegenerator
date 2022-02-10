@@ -9,7 +9,7 @@ import {
   DialogContentText,
   DialogActions,
 } from '@mui/material';
-import { FormGroup, FormControlLabel, Checkbox } from '@mui/material';
+import { FormControlLabel, Checkbox } from '@mui/material';
 
 const MemeUpload = () => {
   // central state
@@ -24,6 +24,14 @@ const MemeUpload = () => {
   const [isDraft, setIsDraft] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
   const [isPrivate, setIsPrivate] = useState(false);
+
+  const clearState = () => {
+    setTitle('Title');
+    setDescription('Description');
+    setIsDraft(false);
+    setIsHidden(false);
+    setIsPrivate(false);
+  };
 
   const handleUploadMeme = () => {
     console.log(stageRef.current);
