@@ -34,6 +34,8 @@ const MemeUpload = () => {
     setIsPrivate(false);
   };
 
+  const getCaptions = (konvaJSON) => {};
+
   const handleUploadMeme = () => {
     const dataURL = stageRef.current.toDataURL({ mimeType: 'image/jpeg' });
     const konvaJSON = stageRef.current.toJSON();
