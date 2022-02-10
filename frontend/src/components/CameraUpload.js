@@ -86,7 +86,7 @@ export default function CameraUpload({ ButtonText }) {
             variant='contained'
             onClick={(e) => {
               if (preview) {
-                setMemeToEdit(image);
+                setMemeToEdit({ image: image });
                 setImgSrc(null);
                 setPreview(null);
                 setAlert(false);

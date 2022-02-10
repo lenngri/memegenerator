@@ -56,7 +56,7 @@ export default function URLSelector() {
             variant='contained'
             onClick={(e) => {
               if (name) {
-                setMemeToEdit(image);
+                setMemeToEdit({ image: image });
                 handleClose();
                 setAlert(false);
               } else {

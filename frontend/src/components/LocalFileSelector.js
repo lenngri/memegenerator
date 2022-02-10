@@ -78,7 +78,7 @@ export default function LocalFileSelector({ ButtonText }) {
           <Button
             onClick={(e) => {
               if (preview) {
-                setMemeToEdit(image);
+                setMemeToEdit({ image: image });
                 handleClose();
                 setAlert(false);
               } else {
