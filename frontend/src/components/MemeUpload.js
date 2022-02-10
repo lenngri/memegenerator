@@ -34,25 +34,28 @@ const MemeUpload = () => {
     setIsPrivate(false);
   };
 
-  const getCaptions = (konvaJSON) => {};
+  const getCaptions = (konvaObject) => {
+    const layer0Children = konvaObject.children[0].children;
+    const captionsArray = [];
+    for (let i = 1; i < layer0Children.length; i++) {
+      if (layer0Children[i].attrs.text === undefined) captionsArray.push('');
+      else captionsArray.push(layer0Children[i].attrs.text);
+    }
+    return captionsArray;
+  };
 
   const handleUploadMeme = () => {
+    const konvaObject = stageRef.current.toObject();
     const dataURL = stageRef.current.toDataURL({ mimeType: 'image/jpeg' });
-    const konvaJSON = stageRef.current.toJSON();
 
     const body = {
       userID: user.id,
       templateID: 'fixedID',
       title: title,
       description: description,
-      memeCaptions: [
-        {
-          'Text A': 'Test A',
-          TextB: 'Test B',
-        },
-      ],
+      memeCaptions: getCaptions(konvaObject),
       meme: dataURL,
-      konva: konvaJSON,
+      konva: konvaObject,
       isPrivate: isPrivate,
       isHidden: isHidden,
       isDraft: isDraft,
