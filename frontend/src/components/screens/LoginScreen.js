@@ -16,8 +16,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import backgroundLogo from '../../assets/backgroundlogo4.jpg';
 import { useStoreActions } from 'easy-peasy';
-
-const axios = require('axios');
+import axios from 'axios';
 
 function Copyright(props) {
   return (
@@ -49,7 +48,6 @@ export default function LoginScreen() {
         password: data.get('password'),
       })
       .then(function (response) {
-        console.log(response);
         if (response.data.success) {
           setToken(response.data.token);
           setUser(response.data.user);

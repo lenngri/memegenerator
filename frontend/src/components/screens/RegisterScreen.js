@@ -15,8 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import backgroundLogo from '../../assets/backgroundlogo4.jpg';
-
-const axios = require('axios');
+import axios from 'axios';
 
 function Copyright(props) {
   return (
@@ -56,8 +55,8 @@ export default function RegisterScreen() {
           navigate('/editor');
         }
       })
-      .catch(function (error) {
-        console.log(error);
+      .catch(function (res, error) {
+        console.log(res, error);
       });
   };
 
