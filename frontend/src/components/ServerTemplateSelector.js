@@ -77,7 +77,7 @@ export default function ServerTemplateSelector() {
                         alt={item.fileName}
                         crossOrigin='Anonymous' // Source: https://konvajs.org/docs/posts/Tainted_Canvas.html (13.01.2022)
                         onClick={(e) => {
-                          setMemeToEdit(e.target);
+                          setMemeToEdit({ image: e.target, templateObject: null });
                           handleClose();
                         }}
                         loading='lazy'

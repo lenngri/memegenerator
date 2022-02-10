@@ -5,7 +5,10 @@ const model = {
   // STATE
   imgflipTemplates: [],
   serverTemplates: [],
-  memeToEdit: null,
+  memeToEdit: {
+    image: null,
+    templateObject: null,
+  },
   stageRef: null,
   userSession: persist({
     isLoggedIn: false,
@@ -30,9 +33,10 @@ const model = {
   setServerTemplates: action((state, templates) => {
     state.serverTemplates = templates;
   }),
-  setMemeToEdit: action((state, memeToEdit) => {
-    state.memeToEdit = memeToEdit;
-    console.log('New editor memeToEdit set.');
+  setMemeToEdit: action((state, { image, templateObject }) => {
+    state.memeToEdit.image = image;
+    state.memeToEdit.templateObject = templateObject;
+    console.log('New editor memeToEdit set.', image, templateObject);
   }),
   setStageRef: action((state, stageRef) => {
     state.stageRef = stageRef;

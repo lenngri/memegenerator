@@ -25,24 +25,24 @@ const Editor = () => {
   const [editorDims, setEditorDims] = useState({ width: C_WIDTH, height: C_HEIGHT });
 
   // load memeToEdit from store
-  const memeToEdit = useStoreState((state) => state.memeToEdit);
+  const { image } = useStoreState((state) => state.memeToEdit);
 
   useEffect(() => {
-    if (memeToEdit) {
-      if (memeToEdit.naturalWidth > C_WIDTH) {
+    if (image) {
+      if (image.naturalWidth > C_WIDTH) {
         setEditorDims({
           width: C_WIDTH,
-          height: (memeToEdit.naturalHeight * C_WIDTH) / memeToEdit.naturalWidth,
+          height: (image.naturalHeight * C_WIDTH) / image.naturalWidth,
         });
       } else {
         setEditorDims({
-          width: memeToEdit.naturalWidth,
-          height: memeToEdit.naturalHeight,
+          width: image.naturalWidth,
+          height: image.naturalHeight,
         });
       }
     }
     setStageRef(stageRef);
-  }, [memeToEdit, setStageRef]);
+  }, [image, setStageRef]);
 
   // Source for cursor event handling: https://konvajs.org/docs/styling/Mouse_Cursor.html (13.01.2022)
   const grabCursor = () => {
@@ -94,11 +94,11 @@ const Editor = () => {
             mb: 3,
           }}
         >
-          {memeToEdit ? (
+          {image ? (
             <Box boxShadow={2}>
               <Stage ref={stageRef} width={editorDims.width} height={editorDims.height}>
                 <Layer>
-                  <Image image={memeToEdit} width={editorDims.width} height={editorDims.height} />
+                  <Image image={image} width={editorDims.width} height={editorDims.height} />
                   <Text
                     x={editorDims.width * 0.25}
                     y={editorDims.height * 0.1}
@@ -129,28 +129,28 @@ const Editor = () => {
           )}
           <Stack direction='row' spacing={1} sx={{ mt: 3, mb: 2 }}>
             <TextField
-              disabled={!memeToEdit ? true : false}
+              disabled={!image ? true : false}
               size='small'
               id='outlined-required'
               label='Caption 1'
               onChange={(e) => setTopText(e.target.value)}
             />
             <TextField
-              disabled={!memeToEdit ? true : false}
+              disabled={!image ? true : false}
               size='small'
               id='outlined-required'
               label='Caption 2'
               onChange={(e) => setBottomText(e.target.value)}
             />
             <TextField
-              disabled={!memeToEdit ? true : false}
+              disabled={!image ? true : false}
               size='small'
               id='outlined-required'
               label='Caption 3'
               onChange={(e) => setMidText(e.target.value)}
             />
             <Button
-              disabled={!memeToEdit ? true : false}
+              disabled={!image ? true : false}
               variant='contained'
               onClick={handleClearEditor}
             >
@@ -159,7 +159,7 @@ const Editor = () => {
           </Stack>
           <Stack direction='row' spacing={1} sx={{ mb: 2 }}>
             <TextField
-              disabled={!memeToEdit ? true : false}
+              disabled={!image ? true : false}
               id='outlined-number'
               label='Font Size'
               type='number'
@@ -173,7 +173,7 @@ const Editor = () => {
             />
             <Button
               color={fontStyle === 'bold' ? 'success' : 'primary'}
-              disabled={!memeToEdit ? true : false}
+              disabled={!image ? true : false}
               variant='contained'
               onClick={() => setFontStyle('bold')}
             >
@@ -181,7 +181,7 @@ const Editor = () => {
             </Button>
             <Button
               color={fontStyle === 'italic' ? 'success' : 'primary'}
-              disabled={!memeToEdit ? true : false}
+              disabled={!image ? true : false}
               variant='contained'
               onClick={() => setFontStyle('italic')}
             >
@@ -189,7 +189,7 @@ const Editor = () => {
             </Button>
             <Button
               color={fontStyle === 'bold italic' ? 'success' : 'primary'}
-              disabled={!memeToEdit ? true : false}
+              disabled={!image ? true : false}
               variant='contained'
               onClick={() => setFontStyle('bold italic')}
             >
@@ -197,7 +197,7 @@ const Editor = () => {
             </Button>
             <Button
               color={fontStyle === 'normal' ? 'success' : 'primary'}
-              disabled={!memeToEdit ? true : false}
+              disabled={!image ? true : false}
               variant='contained'
               onClick={() => setFontStyle('normal')}
             >
@@ -205,7 +205,7 @@ const Editor = () => {
             </Button>
             <Button
               color={outlined ? 'success' : 'primary'}
-              disabled={!memeToEdit ? true : false}
+              disabled={!image ? true : false}
               variant='contained'
               onClick={() => setOutlined(!outlined)}
             >
