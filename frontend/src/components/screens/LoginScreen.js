@@ -44,11 +44,12 @@ export default function LoginScreen() {
     const data = new FormData(event.currentTarget);
     // register the user via API
     axios
-      .post('http://localhost:3001/api/user/login', {
+      .post(process.env.REACT_APP_BURL + '/api/user/login', {
         email: data.get('email'),
         password: data.get('password'),
       })
       .then(function (response) {
+        console.log(response);
         if (response.data.success) {
           setToken(response.data.token);
           setUser(response.data.user);
@@ -56,8 +57,8 @@ export default function LoginScreen() {
           navigate('/editor');
         }
       })
-      .catch(function (error) {
-        console.log(error);
+      .catch(function (res, error) {
+        console.log(res, error);
       });
   };
 

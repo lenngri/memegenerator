@@ -43,7 +43,7 @@ export default function RegisterScreen() {
     const data = new FormData(event.currentTarget);
     // register the user via API
     axios
-      .post('http://localhost:3001/api/user/register', {
+      .post(process.env.REACT_APP_BURL + '/api/user/register', {
         username: data.get('username'),
         email: data.get('email'),
         password: data.get('password'),

@@ -19,7 +19,8 @@ const model = {
     console.log('Fetched templates from imgflip with status code:', res.status);
   }),
   fetchServerTemplates: thunk(async (actions) => {
-    const res = await fetch('/api/template/retrieve');
+    const res = await fetch(process.env.REACT_APP_BURL + '/api/template/retrieve');
+    console.log(res);
     const templates = await res.json();
     actions.setServerTemplates(templates);
     console.log('Fetched templates from server with status code:', res.status);
