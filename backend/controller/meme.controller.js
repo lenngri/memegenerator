@@ -1,5 +1,5 @@
 const fs = require('fs');
-const{ join, dirname } = require('path');
+const{ join } = require('path');
 const Meme = require('../database/models/meme.model');
 // helper functions
 const { fileSizeFormatter } = require('../helpers/fileSizeFormatter.helper')
@@ -86,11 +86,14 @@ exports.uploadSingle = async function(req, res, next) {
 
             console.log("writing buffer to file")
             const data = parseURI(req.body.meme)
-
             const fileName = Date.now().toString();
-            const fileType = data.extension;
-            const filePath = join(__dirname, `../uploads/meme/${req.body.userID}/${fileName}.${data.extension}`);
-            const fileSize = fileSizeFormatter(data.image.toString('base64').length);
+
+            const file = {
+                name: fileName,
+                mimetype: data.extension,
+                path: join(__dirname, `../uploads/meme/${req.body.userID}/${fileName}.${data.extension}`),
+                size: fileSizeFormatter(data.image.toString('base64').length)
+            }
 
             const meme = new Meme ({
                 userID:     req.body.userID,
@@ -98,10 +101,10 @@ exports.uploadSingle = async function(req, res, next) {
                 title: req.body.title,
                 description: req.body.description,
                 memeCaptions: req.body.memeCaptions,
-                fileName: fileName,
-                fileType: fileType,
-                filePath: filePath,
-                fileSize: fileSize,
+                fileName: file.name,
+                fileType: file.mimetype,
+                filePath: file.path,
+                fileSize: file.size,
                 konva: req.body.konva,
                 isPrivate: req.body.isPrivate,
                 isHidden: req.body.isHidden,
@@ -115,7 +118,7 @@ exports.uploadSingle = async function(req, res, next) {
             await meme.save( function(error, meme) {
                 if(error) console.log(error.message)
                 res.status(200).json(meme)
-                writeFile(filePath, data.image)
+                writeFile(meme.filePath, data.image)
                 console.log("saved meme with ID: " + meme.id + " at " + meme.filePath)
             })
 
