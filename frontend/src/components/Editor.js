@@ -21,6 +21,7 @@ const Editor = () => {
   const [fontSize, setFontSize] = useState(30);
   const [captionColor, setColor] = useState('black');
   const [fontStyle, setFontStyle] = useState('bold');
+  const [outlined, setOutlined] = useState(true);
   const [editorDims, setEditorDims] = useState({ width: C_WIDTH, height: C_HEIGHT });
 
   // load memeToEdit from store
@@ -60,7 +61,12 @@ const Editor = () => {
     setColor('black');
     setFontStyle('bold');
     setFontSize('30');
+    setOutlined('true');
   };
+
+  let stroke;
+  if (outlined) stroke = 'white';
+  else stroke = undefined;
 
   const captionProps = {
     align: 'center',
@@ -68,7 +74,7 @@ const Editor = () => {
     fontFamily: 'Verdana',
     fontStyle: fontStyle,
     fill: captionColor,
-    stroke: 'white',
+    stroke: stroke,
     strokeWidth: 1.5,
     onMouseEnter: grabCursor,
     onMouseLeave: defaultCursor,
@@ -117,28 +123,28 @@ const Editor = () => {
           ) : (
             <>
               <Typography variant='body1' color='gray' gutterBottom component='div'>
-                Please choose a memeToEdit first.
+                Please choose a template first.
               </Typography>
             </>
           )}
           <Stack direction='row' spacing={1} sx={{ mt: 3, mb: 2 }}>
             <TextField
               disabled={!memeToEdit ? true : false}
-              required
+              size='small'
               id='outlined-required'
               label='Caption 1'
               onChange={(e) => setTopText(e.target.value)}
             />
             <TextField
               disabled={!memeToEdit ? true : false}
-              required
+              size='small'
               id='outlined-required'
               label='Caption 2'
               onChange={(e) => setBottomText(e.target.value)}
             />
             <TextField
               disabled={!memeToEdit ? true : false}
-              required
+              size='small'
               id='outlined-required'
               label='Caption 3'
               onChange={(e) => setMidText(e.target.value)}
@@ -157,6 +163,8 @@ const Editor = () => {
               id='outlined-number'
               label='Font Size'
               type='number'
+              size='small'
+              width={10}
               defaultValue={fontSize}
               onChange={(e) => setFontSize(Number(e.target.value))}
               InputLabelProps={{
@@ -164,6 +172,7 @@ const Editor = () => {
               }}
             />
             <Button
+              color={fontStyle === 'bold' ? 'success' : 'primary'}
               disabled={!memeToEdit ? true : false}
               variant='contained'
               onClick={() => setFontStyle('bold')}
@@ -171,6 +180,7 @@ const Editor = () => {
               Bold
             </Button>
             <Button
+              color={fontStyle === 'italic' ? 'success' : 'primary'}
               disabled={!memeToEdit ? true : false}
               variant='contained'
               onClick={() => setFontStyle('italic')}
@@ -178,6 +188,7 @@ const Editor = () => {
               Italic
             </Button>
             <Button
+              color={fontStyle === 'bold italic' ? 'success' : 'primary'}
               disabled={!memeToEdit ? true : false}
               variant='contained'
               onClick={() => setFontStyle('bold italic')}
@@ -185,11 +196,20 @@ const Editor = () => {
               Bold Italic
             </Button>
             <Button
+              color={fontStyle === 'normal' ? 'success' : 'primary'}
               disabled={!memeToEdit ? true : false}
               variant='contained'
               onClick={() => setFontStyle('normal')}
             >
               Normal
+            </Button>
+            <Button
+              color={outlined ? 'success' : 'primary'}
+              disabled={!memeToEdit ? true : false}
+              variant='contained'
+              onClick={() => setOutlined(!outlined)}
+            >
+              Outlined
             </Button>
           </Stack>
           <CompactPicker color={captionColor} onChange={(color) => setColor(color.hex)} />

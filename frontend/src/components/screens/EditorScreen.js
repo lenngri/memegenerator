@@ -27,7 +27,7 @@ const EditorScreen = ({ logout }) => {
       </Container>
       <Editor />
       <Container sx={{ justifyContent: 'space-around', display: 'flex' }}>
-        <Stack direction='row' spacing={1} sx={{ mt: 3 }}>
+        <Stack direction='row' spacing={1} sx={{ my: 1 }}>
           <MemeUpload />
           <Download />
         </Stack>
