@@ -54,25 +54,26 @@ const Download = () => {
     <>
       <Button
         disabled={!template ? true : false}
-        variant="contained"
+        variant='contained'
         onClick={handleClickOpen}
         startIcon={<DownloadIcon />}
+        sx={{ my: 1 }}
       >
         Download
       </Button>
       <Dialog
         open={open}
         onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+        aria-labelledby='alert-dialog-title'
+        aria-describedby='alert-dialog-description'
       >
-        <DialogTitle id="alert-dialog-title">{'Please select the quality in %.'}</DialogTitle>
+        <DialogTitle id='alert-dialog-title'>{'Please select the quality in %.'}</DialogTitle>
         <DialogContent>
           <Box width={300} sx={{ pt: 5, px: 5 }}>
             <Slider
               defaultValue={100}
-              aria-label="Default"
-              valueLabelDisplay="on"
+              aria-label='Default'
+              valueLabelDisplay='on'
               marks={marks}
               onChange={(e) => {
                 setSliderValue(e.target.value);

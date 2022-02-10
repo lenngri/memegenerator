@@ -22,9 +22,13 @@ app.use(cors());
 // view engine setup
 app.set('view engine', 'pug');
 
+<<<<<<< HEAD
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(express.json());
+=======
+app.use(bodyParser.json())
+>>>>>>> bf4fcaac4f492bca18a33e4ce2a415f82a2eace5
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

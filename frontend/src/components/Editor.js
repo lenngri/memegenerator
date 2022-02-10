@@ -3,7 +3,8 @@ import { Stage, Layer, Image, Text } from 'react-konva'; // Source: https://konv
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
-import { TextField, Stack, Typography } from '@mui/material';
+import { Button, TextField, Stack, Typography } from '@mui/material';
+import { CompactPicker } from 'react-color';
 
 const C_WIDTH = 600;
 const C_HEIGHT = 600;
@@ -12,9 +13,14 @@ const Editor = () => {
   // Source Editor Canvas: https://www.youtube.com/watch?v=-AwG8yF06Po
   const stageRef = useRef(null);
   const setStageRef = useStoreActions((actions) => actions.setStageRef);
+  // captions state
   const [topText, setTopText] = useState('');
   const [bottomText, setBottomText] = useState('');
   const [midText, setMidText] = useState('');
+  // text style state
+  const [fontSize, setFontSize] = useState(30);
+  const [captionColor, setColor] = useState('black');
+  const [fontStyle, setFontStyle] = useState('bold');
   const [editorDims, setEditorDims] = useState({ width: C_WIDTH, height: C_HEIGHT });
 
   // load template from store
@@ -46,11 +52,22 @@ const Editor = () => {
     stageRef.current.container().style.cursor = 'default';
   };
 
+  // clears all captions from the Editor
+  const handleClearEditor = () => {
+    setTopText('');
+    setMidText('');
+    setBottomText('');
+    setColor('black');
+    setFontStyle('bold');
+    setFontSize('30');
+  };
+
   const captionProps = {
     align: 'center',
-    fontSize: 30,
+    fontSize: fontSize,
     fontFamily: 'Verdana',
-    fontStyle: 'bold',
+    fontStyle: fontStyle,
+    fill: captionColor,
     stroke: 'white',
     strokeWidth: 1.5,
     onMouseEnter: grabCursor,
@@ -60,7 +77,7 @@ const Editor = () => {
 
   return (
     <div style={{ overflow: 'hidden' }}>
-      <Container component="main">
+      <Container component='main'>
         <Box
           sx={{
             marginTop: 4,
@@ -68,6 +85,7 @@ const Editor = () => {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
+            mb: 3,
           }}
         >
           {template ? (
@@ -98,34 +116,78 @@ const Editor = () => {
             </Box>
           ) : (
             <>
-              <Typography variant="body1" color="gray" gutterBottom component="div">
+              <Typography variant='body1' color='gray' gutterBottom component='div'>
                 Please choose a template first.
               </Typography>
             </>
           )}
-          <Stack direction="row" spacing={1} sx={{ mt: 3, mb: 2 }}>
+          <Stack direction='row' spacing={1} sx={{ mt: 3, mb: 2 }}>
             <TextField
               disabled={!template ? true : false}
               required
-              id="outlined-required"
-              label="Caption 1"
+              id='outlined-required'
+              label='Caption 1'
               onChange={(e) => setTopText(e.target.value)}
             />
             <TextField
               disabled={!template ? true : false}
               required
-              id="outlined-required"
-              label="Caption 2"
+              id='outlined-required'
+              label='Caption 2'
               onChange={(e) => setBottomText(e.target.value)}
             />
             <TextField
               disabled={!template ? true : false}
               required
-              id="outlined-required"
-              label="Caption 3"
+              id='outlined-required'
+              label='Caption 3'
               onChange={(e) => setMidText(e.target.value)}
             />
+            <Button
+              disabled={!template ? true : false}
+              variant='contained'
+              onClick={handleClearEditor}
+            >
+              Clear
+            </Button>
           </Stack>
+          <Stack direction='row' spacing={1} sx={{ mb: 2 }}>
+            <TextField
+              disabled={!template ? true : false}
+              id='outlined-required'
+              label='Font Size'
+              onChange={(e) => setFontSize(e.target.value)}
+            />
+            <Button
+              disabled={!template ? true : false}
+              variant='contained'
+              onClick={() => setFontStyle('bold')}
+            >
+              Bold
+            </Button>
+            <Button
+              disabled={!template ? true : false}
+              variant='contained'
+              onClick={() => setFontStyle('italic')}
+            >
+              Italic
+            </Button>
+            <Button
+              disabled={!template ? true : false}
+              variant='contained'
+              onClick={() => setFontStyle('bold italic')}
+            >
+              Bold Italic
+            </Button>
+            <Button
+              disabled={!template ? true : false}
+              variant='contained'
+              onClick={() => setFontStyle('normal')}
+            >
+              Normal
+            </Button>
+          </Stack>
+          <CompactPicker color={captionColor} onChange={(color) => setColor(color.hex)} />
         </Box>
       </Container>
     </div>
