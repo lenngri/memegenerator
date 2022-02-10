@@ -44,14 +44,12 @@ export default function LoginScreen() {
     const data = new FormData(event.currentTarget);
     // register the user via API
     axios
-      .post('http://localhost:3000/api/user/login', {
+      .post('http://localhost:3001/api/user/login', {
         email: data.get('email'),
         password: data.get('password'),
       })
       .then(function (response) {
-        console.log(response);
         if (response.data.success) {
-          console.log(response.data.user);
           setToken(response.data.token);
           setUser(response.data.user);
           setLoggedIn(true);
