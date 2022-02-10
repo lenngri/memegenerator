@@ -66,7 +66,7 @@ export default function ImgflipSelector() {
                       alt={item.name}
                       crossOrigin='Anonymous' // Source: https://konvajs.org/docs/posts/Tainted_Canvas.html (13.01.2022)
                       onClick={(e) => {
-                        const templateObject = generateTemplateObject(user.id, 'webcam', e.target);
+                        const templateObject = generateTemplateObject(user.id, 'imgflip', e.target);
                         setMemeToEdit({ image: e.target, templateObject });
                         handleClose();
                       }}

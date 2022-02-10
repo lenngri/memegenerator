@@ -58,7 +58,7 @@ export default function URLSelector() {
             variant='contained'
             onClick={(e) => {
               if (name) {
-                const templateObject = generateTemplateObject(user.id, 'webcam', image);
+                const templateObject = generateTemplateObject(user.id, 'web-url', image);
                 setMemeToEdit({ image, templateObject });
                 handleClose();
                 setAlert(false);
