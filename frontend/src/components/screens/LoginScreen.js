@@ -56,6 +56,7 @@ export default function LoginScreen() {
         }
       })
       .catch(function (res, error) {
+        alert('Email or password wrong.');
         console.log(res, error);
       });
   };

@@ -24,18 +24,17 @@ export default class DrawCanvas extends Component {
       <div>
         <Container>
           <div>
-            <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
+            <Stack direction='row' spacing={1} sx={{ mb: 1 }}>
               <Button
-                variant="contained"
+                variant='contained'
                 onClick={() => {
                   this.props.parentMethod(this.saveableCanvas.getDataURL());
-                  console.log(this.saveableCanvas.getDataURL());
                 }}
               >
                 Save
               </Button>
               <Button
-                variant="contained"
+                variant='contained'
                 onClick={() => {
                   this.saveableCanvas.eraseAll();
                 }}
@@ -43,7 +42,7 @@ export default class DrawCanvas extends Component {
                 Erase
               </Button>
               <Button
-                variant="contained"
+                variant='contained'
                 onClick={() => {
                   this.saveableCanvas.undo();
                 }}
@@ -62,7 +61,7 @@ export default class DrawCanvas extends Component {
             <div>
               <label>Width: </label>
               <input
-                type="number"
+                type='number'
                 value={this.state.width}
                 onChange={(e) => this.setState({ width: parseInt(e.target.value, 10) })}
               />
@@ -70,7 +69,7 @@ export default class DrawCanvas extends Component {
             <div>
               <label>Height: </label>
               <input
-                type="number"
+                type='number'
                 value={this.state.height}
                 onChange={(e) => this.setState({ height: parseInt(e.target.value, 10) })}
               />
@@ -78,7 +77,7 @@ export default class DrawCanvas extends Component {
             <div>
               <label>Brush-Radius: </label>
               <input
-                type="number"
+                type='number'
                 value={this.state.brushRadius}
                 onChange={(e) => this.setState({ brushRadius: parseInt(e.target.value, 10) })}
               />
@@ -86,7 +85,7 @@ export default class DrawCanvas extends Component {
             <div>
               <label>Lazy-Radius: </label>
               <input
-                type="number"
+                type='number'
                 value={this.state.lazyRadius}
                 onChange={(e) => this.setState({ lazyRadius: parseInt(e.target.value, 10) })}
               />

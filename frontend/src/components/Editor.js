@@ -21,27 +21,29 @@ const Editor = () => {
   const [fontSize, setFontSize] = useState(30);
   const [captionColor, setColor] = useState('black');
   const [fontStyle, setFontStyle] = useState('bold');
+  const [outlined, setOutlined] = useState(true);
   const [editorDims, setEditorDims] = useState({ width: C_WIDTH, height: C_HEIGHT });
 
-  // load template from store
-  const template = useStoreState((state) => state.template);
+  // load memeToEdit from store
+
+  const { image } = useStoreState((state) => state.memeToEdit);
 
   useEffect(() => {
-    if (template) {
-      if (template.naturalWidth > C_WIDTH) {
+    if (image) {
+      if (image.naturalWidth > C_WIDTH) {
         setEditorDims({
           width: C_WIDTH,
-          height: (template.naturalHeight * C_WIDTH) / template.naturalWidth,
+          height: (image.naturalHeight * C_WIDTH) / image.naturalWidth,
         });
       } else {
         setEditorDims({
-          width: template.naturalWidth,
-          height: template.naturalHeight,
+          width: image.naturalWidth,
+          height: image.naturalHeight,
         });
       }
     }
     setStageRef(stageRef);
-  }, [template, setStageRef]);
+  }, [image, setStageRef]);
 
   // Source for cursor event handling: https://konvajs.org/docs/styling/Mouse_Cursor.html (13.01.2022)
   const grabCursor = () => {
@@ -60,7 +62,12 @@ const Editor = () => {
     setColor('black');
     setFontStyle('bold');
     setFontSize('30');
+    setOutlined('true');
   };
+
+  let stroke;
+  if (outlined) stroke = 'white';
+  else stroke = undefined;
 
   const captionProps = {
     align: 'center',
@@ -68,7 +75,7 @@ const Editor = () => {
     fontFamily: 'Verdana',
     fontStyle: fontStyle,
     fill: captionColor,
-    stroke: 'white',
+    stroke: stroke,
     strokeWidth: 1.5,
     onMouseEnter: grabCursor,
     onMouseLeave: defaultCursor,
@@ -88,11 +95,11 @@ const Editor = () => {
             mb: 3,
           }}
         >
-          {template ? (
+          {image ? (
             <Box boxShadow={2}>
               <Stage ref={stageRef} width={editorDims.width} height={editorDims.height}>
                 <Layer>
-                  <Image image={template} width={editorDims.width} height={editorDims.height} />
+                  <Image image={image} width={editorDims.width} height={editorDims.height} />
                   <Text
                     x={editorDims.width * 0.25}
                     y={editorDims.height * 0.1}
@@ -123,28 +130,28 @@ const Editor = () => {
           )}
           <Stack direction='row' spacing={1} sx={{ mt: 3, mb: 2 }}>
             <TextField
-              disabled={!template ? true : false}
-              required
+              disabled={!image ? true : false}
+              size='small'
               id='outlined-required'
               label='Caption 1'
               onChange={(e) => setTopText(e.target.value)}
             />
             <TextField
-              disabled={!template ? true : false}
-              required
+              disabled={!image ? true : false}
+              size='small'
               id='outlined-required'
               label='Caption 2'
               onChange={(e) => setBottomText(e.target.value)}
             />
             <TextField
-              disabled={!template ? true : false}
-              required
+              disabled={!image ? true : false}
+              size='small'
               id='outlined-required'
               label='Caption 3'
               onChange={(e) => setMidText(e.target.value)}
             />
             <Button
-              disabled={!template ? true : false}
+              disabled={!image ? true : false}
               variant='contained'
               onClick={handleClearEditor}
             >
@@ -153,38 +160,57 @@ const Editor = () => {
           </Stack>
           <Stack direction='row' spacing={1} sx={{ mb: 2 }}>
             <TextField
-              disabled={!template ? true : false}
-              id='outlined-required'
+              disabled={!image ? true : false}
+              id='outlined-number'
               label='Font Size'
-              onChange={(e) => setFontSize(e.target.value)}
+              type='number'
+              size='small'
+              width={10}
+              defaultValue={fontSize}
+              onChange={(e) => setFontSize(Number(e.target.value))}
+              InputLabelProps={{
+                shrink: true,
+              }}
             />
             <Button
-              disabled={!template ? true : false}
+              color={fontStyle === 'bold' ? 'success' : 'primary'}
+              disabled={!image ? true : false}
               variant='contained'
               onClick={() => setFontStyle('bold')}
             >
               Bold
             </Button>
             <Button
-              disabled={!template ? true : false}
+              color={fontStyle === 'italic' ? 'success' : 'primary'}
+              disabled={!image ? true : false}
               variant='contained'
               onClick={() => setFontStyle('italic')}
             >
               Italic
             </Button>
             <Button
-              disabled={!template ? true : false}
+              color={fontStyle === 'bold italic' ? 'success' : 'primary'}
+              disabled={!image ? true : false}
               variant='contained'
               onClick={() => setFontStyle('bold italic')}
             >
               Bold Italic
             </Button>
             <Button
-              disabled={!template ? true : false}
+              color={fontStyle === 'normal' ? 'success' : 'primary'}
+              disabled={!image ? true : false}
               variant='contained'
               onClick={() => setFontStyle('normal')}
             >
               Normal
+            </Button>
+            <Button
+              color={outlined ? 'success' : 'primary'}
+              disabled={!image ? true : false}
+              variant='contained'
+              onClick={() => setOutlined(!outlined)}
+            >
+              Outlined
             </Button>
           </Stack>
           <CompactPicker color={captionColor} onChange={(color) => setColor(color.hex)} />

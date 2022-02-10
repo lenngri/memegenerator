@@ -10,7 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 
 export default function ServerTemplateSelector() {
-  const setTemplate = useStoreActions((actions) => actions.setTemplate);
+  const setMemeToEdit = useStoreActions((actions) => actions.setMemeToEdit);
   const serverTemplates = useStoreState((state) => state.serverTemplates);
   const [open, setOpen] = React.useState(false);
   const scroll = 'paper';
@@ -23,15 +23,13 @@ export default function ServerTemplateSelector() {
     setOpen(false);
   };
 
-  const descriptionElementRef = React.useRef(null);
-  React.useEffect(() => {
-    if (open) {
-      const { current: descriptionElement } = descriptionElementRef;
-      if (descriptionElement !== null) {
-        descriptionElement.focus();
-      }
-    }
-  }, [open]);
+  const handleClickTemplate = (e) => {
+    setMemeToEdit({
+      image: e.target,
+      templateObject: serverTemplates[Number(e.target.alt)],
+    });
+    handleClose();
+  };
 
   return (
     <div>
@@ -67,19 +65,16 @@ export default function ServerTemplateSelector() {
             <Box>
               <ImageList style={{ cursor: 'pointer' }} variant='masonry' cols={3} gap={8}>
                 {serverTemplates ? (
-                  serverTemplates.map((item) => (
+                  serverTemplates.map((item, index) => (
                     <ImageListItem key={item._id}>
                       <img
                         src={
                           'http://localhost:3001' +
                           item.filePath.substr(1, item.filePath.length - 1)
                         }
-                        alt={item.fileName}
+                        alt={index}
                         crossOrigin='Anonymous' // Source: https://konvajs.org/docs/posts/Tainted_Canvas.html (13.01.2022)
-                        onClick={(e) => {
-                          setTemplate(e.target);
-                          handleClose();
-                        }}
+                        onClick={handleClickTemplate}
                         loading='lazy'
                       />
                     </ImageListItem>
