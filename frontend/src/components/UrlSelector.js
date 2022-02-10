@@ -31,6 +31,7 @@ export default function URLSelector() {
   const image = new Image();
   // image.src = `"${name}"`;
   image.src = name;
+  image.crossorigin = 'anonymous';
 
   return (
     <div>

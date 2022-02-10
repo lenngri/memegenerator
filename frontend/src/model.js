@@ -34,11 +34,15 @@ const model = {
   setServerTemplates: action((state, templates) => {
     state.serverTemplates = templates;
   }),
-  setMemeToEdit: action((state, { image, templateObject }) => {
+  setMemeToEdit: action((state, { image, templateObject, templateNew }) => {
+    // setMemeToEdit image
     state.memeToEdit.image = image;
+    // set templateObject
     if (templateObject !== undefined) state.memeToEdit.templateObject = templateObject;
     else state.memeToEdit.templateObject = null;
-    console.log('New editor memeToEdit set.', image, templateObject);
+    // set templateNew flag
+    state.memeToEdit.templateNew = templateNew;
+    console.log('New editor memeToEdit set.', image, templateObject, templateNew);
   }),
   setStageRef: action((state, stageRef) => {
     state.stageRef = stageRef;
