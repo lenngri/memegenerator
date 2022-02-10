@@ -45,9 +45,10 @@ const MemeUpload = () => {
   };
 
   const handleUploadMeme = () => {
+    // get meta data and image from the current editor canvas
     const konvaObject = stageRef.current.toObject();
     const dataURL = stageRef.current.toDataURL({ mimeType: 'image/jpeg' });
-
+    // construct meme object
     const body = {
       userID: user.id,
       templateID: 'fixedID',
@@ -62,9 +63,8 @@ const MemeUpload = () => {
       votes: [],
       comments: [],
     };
-    console.log(body);
-    console.log(process.env.REACT_APP_BURL);
-
+    // send the meme object to the server
+    console.log('Send meme object to the server:', body);
     axios
       .post(process.env.REACT_APP_BURL + '/api/meme/uploadSingle', body)
       .then((res) => {
@@ -74,9 +74,9 @@ const MemeUpload = () => {
         console.log(res);
         console.log(error);
       });
-
-    setOpen(!open);
+    // clear the state and close dialog
     clearState();
+    setOpen(!open);
   };
 
   return (

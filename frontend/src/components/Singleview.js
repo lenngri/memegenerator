@@ -24,7 +24,6 @@ const Singleview = ({ openSingleView, setOpenSingleView, memeIndex }) => {
   const serverTemplates = useStoreState((state) => state.serverTemplates);
   const [open, setOpen] = useState(false);
   const [shownIndex, setShownIndex] = useState(null);
-  const [viewWidth, setViewWidth] = useState(WIDTH);
   const [autoPlayFlag, setAutoPlayFlag] = useState(false);
   const scroll = 'paper';
   const delay = 3000;
@@ -90,7 +89,7 @@ const Singleview = ({ openSingleView, setOpenSingleView, memeIndex }) => {
               }}
             >
               <CardContent>
-                <Box width={viewWidth}>
+                <Box width={WIDTH}>
                   {serverTemplates[shownIndex] ? (
                     <CardMedia
                       component='img'
