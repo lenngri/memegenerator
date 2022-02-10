@@ -1,9 +1,8 @@
 // casts data URI to buffer to save to server
 // source: https://www.edureka.co/community/95996/how-do-i-parse-a-data-url-in-node
+// source: https://stackoverflow.com/questions/6850276/how-to-convert-dataurl-to-file-object-in-javascript
 
 exports.parseURI = function(URI) {
-
-    const regex = /^data:.+\/(.+);base64,(.*)$/;
 
     console.log("extracting file extension using uriParser.helper")
     const extension = URI.split(',')[0].split(':')[1].split(';')[0];
