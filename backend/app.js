@@ -3,10 +3,9 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
+const bodyParser = require('body-parser', );
 const logger = require('morgan');
 const cors = require('cors')
-const fileUpload = require('express-fileupload');
 
 const userRouter = require('./routes/user.routes');
 const templateRouter = require('./routes/template.routes');
@@ -23,13 +22,9 @@ app.use(cors());
 // view engine setup
 app.set('view engine', 'pug');
 
-// https://attacomsian.com/blog/uploading-files-nodejs-express
-app.use(fileUpload({
-  createParentPath: true,
-  limits: { fileSize: 50 * 1024 * 1024 },
-}));
-
-app.use(bodyParser.json())
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+app.use(express.json());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
