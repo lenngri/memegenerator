@@ -44,15 +44,38 @@ const MemeUpload = () => {
     return captionsArray;
   };
 
-  const handleUploadMeme = () => {
+  const handleUploadMeme = async () => {
+    // check, whether the template is new
+    if (memeToEdit.templateNew) {
+      try {
+        const templateResponse = await axios.post(
+          process.env.REACT_APP_BURL + '/api/template/uploadSingle',
+          memeToEdit.templateObject
+        );
+        console.log('Sent new template, server responeded:', templateResponse);
+        sendMeme(templateResponse.data._id);
+      } catch (error) {
+        alert('Something went wrong, please try again.');
+        console.log(error);
+      }
+    } else {
+      console.log('Existing template with ID:', memeToEdit.templateObject.templateID);
+      sendMeme(memeToEdit.templateObject._id);
+    }
+
+    // clear the state and close dialog
+    clearState();
+    setOpen(!open);
+  };
+
+  const sendMeme = (templateID) => {
     // get meta data and image from the current editor canvas
     const konvaObject = stageRef.current.toObject();
     const dataURL = stageRef.current.toDataURL({ mimeType: 'image/jpeg' });
-
     // construct meme object
     const body = {
       userID: user.id,
-      templateID: memeToEdit.templateObject.id,
+      templateID: templateID,
       title: title,
       description: description,
       memeCaptions: getCaptions(konvaObject),
@@ -75,9 +98,6 @@ const MemeUpload = () => {
         console.log(res);
         console.log(error);
       });
-    // clear the state and close dialog
-    clearState();
-    setOpen(!open);
   };
 
   return (
