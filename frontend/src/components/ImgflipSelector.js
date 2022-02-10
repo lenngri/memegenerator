@@ -23,16 +23,6 @@ export default function ImgflipSelector() {
     setOpen(false);
   };
 
-  const descriptionElementRef = React.useRef(null);
-  React.useEffect(() => {
-    if (open) {
-      const { current: descriptionElement } = descriptionElementRef;
-      if (descriptionElement !== null) {
-        descriptionElement.focus();
-      }
-    }
-  }, [open]);
-
   return (
     <div>
       <Button variant='contained' onClick={handleClickOpen('paper')}>
@@ -73,7 +63,7 @@ export default function ImgflipSelector() {
                       alt={item.name}
                       crossOrigin='Anonymous' // Source: https://konvajs.org/docs/posts/Tainted_Canvas.html (13.01.2022)
                       onClick={(e) => {
-                        setMemeToEdit(e.target);
+                        setMemeToEdit({ image: e.target });
                         handleClose();
                       }}
                       loading='lazy'

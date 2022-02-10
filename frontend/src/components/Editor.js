@@ -25,6 +25,7 @@ const Editor = () => {
   const [editorDims, setEditorDims] = useState({ width: C_WIDTH, height: C_HEIGHT });
 
   // load memeToEdit from store
+
   const { image } = useStoreState((state) => state.memeToEdit);
 
   useEffect(() => {

@@ -35,7 +35,8 @@ const model = {
   }),
   setMemeToEdit: action((state, { image, templateObject }) => {
     state.memeToEdit.image = image;
-    state.memeToEdit.templateObject = templateObject;
+    if (templateObject !== undefined) state.memeToEdit.templateObject = templateObject;
+    else state.memeToEdit.templateObject = null;
     console.log('New editor memeToEdit set.', image, templateObject);
   }),
   setStageRef: action((state, stageRef) => {
