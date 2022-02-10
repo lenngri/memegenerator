@@ -1,15 +1,17 @@
 import * as React from 'react';
+import { useStoreActions, useStoreState } from 'easy-peasy';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useStoreActions } from 'easy-peasy';
 import Alert from '@mui/material/Alert';
+import { generateTemplateObject } from './generateTemplateObject';
 
 export default function URLSelector() {
   const setMemeToEdit = useStoreActions((actions) => actions.setMemeToEdit);
+  const user = useStoreState((state) => state.userSession.user);
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState();
   const [alert, setAlert] = React.useState(false);
@@ -56,7 +58,8 @@ export default function URLSelector() {
             variant='contained'
             onClick={(e) => {
               if (name) {
-                setMemeToEdit({ image: image });
+                const templateObject = generateTemplateObject(user.id, 'webcam', image);
+                setMemeToEdit({ image, templateObject });
                 handleClose();
                 setAlert(false);
               } else {

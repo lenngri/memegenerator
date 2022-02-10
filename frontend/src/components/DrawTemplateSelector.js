@@ -4,12 +4,14 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useStoreActions } from 'easy-peasy';
+import { useStoreState, useStoreActions } from 'easy-peasy';
 import Alert from '@mui/material/Alert';
 import DrawCanvas from './DrawCanvas';
+import { generateTemplateObject } from './generateTemplateObject';
 
 export default function DrawTemplateSelector({ ButtonText }) {
   const setMemeToEdit = useStoreActions((actions) => actions.setMemeToEdit);
+  const user = useStoreState((state) => state.userSession.user);
   const [open, setOpen] = React.useState(false);
 
   const descriptionElementRef = React.useRef(null);
@@ -59,7 +61,8 @@ export default function DrawTemplateSelector({ ButtonText }) {
           <Button
             onClick={(e) => {
               if (preview) {
-                setMemeToEdit({ image: image });
+                const templateObject = generateTemplateObject(user.id, 'draw', image);
+                setMemeToEdit({ image, templateObject });
                 handleClose();
                 setAlert(false);
               } else {

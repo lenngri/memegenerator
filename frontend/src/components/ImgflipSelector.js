@@ -8,10 +8,13 @@ import { Box } from '@mui/system';
 import { Container, ImageList, ImageListItem, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useStoreState, useStoreActions } from 'easy-peasy';
+import { generateTemplateObject } from './generateTemplateObject';
 
 export default function ImgflipSelector() {
   const setMemeToEdit = useStoreActions((actions) => actions.setMemeToEdit);
   const imgflipTemplates = useStoreState((state) => state.imgflipTemplates);
+  const user = useStoreState((state) => state.userSession.user);
+
   const [open, setOpen] = React.useState(false);
   const scroll = 'paper';
 
@@ -63,7 +66,8 @@ export default function ImgflipSelector() {
                       alt={item.name}
                       crossOrigin='Anonymous' // Source: https://konvajs.org/docs/posts/Tainted_Canvas.html (13.01.2022)
                       onClick={(e) => {
-                        setMemeToEdit({ image: e.target });
+                        const templateObject = generateTemplateObject(user.id, 'webcam', e.target);
+                        setMemeToEdit({ image: e.target, templateObject });
                         handleClose();
                       }}
                       loading='lazy'
