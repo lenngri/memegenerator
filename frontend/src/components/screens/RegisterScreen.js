@@ -56,6 +56,7 @@ export default function RegisterScreen() {
         }
       })
       .catch(function (res, error) {
+        alert('Something went wron, please try again.');
         console.log(res, error);
       });
   };
