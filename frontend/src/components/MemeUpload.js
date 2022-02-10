@@ -10,6 +10,7 @@ import {
   DialogActions,
 } from '@mui/material';
 import { FormControlLabel, Checkbox } from '@mui/material';
+import axios from 'axios';
 
 const MemeUpload = () => {
   // central state
@@ -19,8 +20,8 @@ const MemeUpload = () => {
 
   // local state
   const [open, setOpen] = useState(false);
-  const [title, setTitle] = useState('Funny Meme');
-  const [description, setDescription] = useState('Funny Description');
+  const [title, setTitle] = useState('Title');
+  const [description, setDescription] = useState('Description');
   const [isDraft, setIsDraft] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
   const [isPrivate, setIsPrivate] = useState(false);
@@ -34,13 +35,8 @@ const MemeUpload = () => {
   };
 
   const handleUploadMeme = () => {
-    console.log(stageRef.current);
-
-    const dataURL = stageRef.current.toDataURL({
-      mimeType: 'image/jpeg',
-    });
+    const dataURL = stageRef.current.toDataURL({ mimeType: 'image/jpeg' });
     const konvaJSON = stageRef.current.toJSON();
-    console.log(konvaJSON);
 
     const body = {
       userID: user.id,
@@ -62,6 +58,18 @@ const MemeUpload = () => {
       comments: [],
     };
     console.log(body);
+    console.log(process.env.REACT_APP_BURL);
+
+    axios
+      .post(process.env.REACT_APP_BURL + '/api/meme/uploadSingle', body)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((res, error) => {
+        console.log(res);
+        console.log(error);
+      });
+
     setOpen(!open);
     clearState();
   };
