@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useStoreState } from 'easy-peasy';
-import { Button, TextField } from '@mui/material';
+import { Button, TextField, IconButton, Stack } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import {
   Dialog,
   DialogTitle,
@@ -8,13 +9,21 @@ import {
   DialogContentText,
   DialogActions,
 } from '@mui/material';
+import { FormGroup, FormControlLabel, Checkbox } from '@mui/material';
 
 const MemeUpload = () => {
+  // central state
   const memeToEdit = useStoreState((state) => state.memeToEdit);
   const stageRef = useStoreState((state) => state.stageRef);
   const user = useStoreState((state) => state.userSession.user);
 
+  // local state
   const [open, setOpen] = useState(false);
+  const [title, setTitle] = useState('Funny Meme');
+  const [description, setDescription] = useState('Funny Description');
+  const [isDraft, setIsDraft] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
+  const [isPrivate, setIsPrivate] = useState(false);
 
   const handleUploadMeme = () => {
     console.log(stageRef.current);
@@ -28,8 +37,8 @@ const MemeUpload = () => {
     const body = {
       userID: user.id,
       templateID: 'fixedID',
-      title: 'Funny Testing Title',
-      description: 'This is a funny test meme, sent by the Frontend',
+      title: title,
+      description: description,
       memeCaptions: [
         {
           'Text A': 'Test A',
@@ -38,13 +47,15 @@ const MemeUpload = () => {
       ],
       meme: dataURL,
       konva: konvaJSON,
-      isPrivate: 'true',
-      isHidden: 'true',
-      isDraft: 'false',
+      isPrivate: isPrivate,
+      isHidden: isHidden,
+      isDraft: isDraft,
       votes: [],
       comments: [],
     };
     console.log(body);
+    setOpen(!open);
+    clearState();
   };
 
   return (
@@ -57,24 +68,57 @@ const MemeUpload = () => {
         Save Meme
       </Button>
       <Dialog open={open} onClose={() => setOpen(!open)}>
-        <DialogTitle>Subscribe</DialogTitle>
+        <DialogTitle>Save Meme</DialogTitle>
+        <IconButton
+          aria-label='close'
+          onClick={() => setOpen(!open)}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
         <DialogContent>
-          <DialogContentText>
-            To subscribe to this website, please enter your email address here. We will send updates
-            occasionally.
-          </DialogContentText>
+          <DialogContentText>To save the meme, please specify the fields below.</DialogContentText>
           <TextField
             autoFocus
             margin='dense'
             id='name'
-            label='Email Address'
-            type='email'
+            label='Title'
             fullWidth
             variant='standard'
+            onChange={(e) => setTitle(e.target.value)}
           />
+          <TextField
+            margin='dense'
+            id='name'
+            label='Description'
+            fullWidth
+            variant='standard'
+            onChange={(e) => setDescription(e.target.value)}
+          />
+          <Stack direction='row' spacing={1}>
+            <FormControlLabel
+              control={<Checkbox />}
+              label='Draft'
+              onClick={() => setIsDraft(!isDraft)}
+            />
+            <FormControlLabel
+              control={<Checkbox />}
+              label='Unlisted'
+              onClick={() => setIsHidden(!isHidden)}
+            />
+            <FormControlLabel
+              control={<Checkbox />}
+              label='Private'
+              onClick={() => setIsPrivate(!isPrivate)}
+            />
+          </Stack>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpen(!open)}>Save</Button>
+          <Button onClick={handleUploadMeme}>Save</Button>
         </DialogActions>
       </Dialog>
     </>
