@@ -62,7 +62,7 @@ export default function DrawTemplateSelector({ ButtonText }) {
             onClick={(e) => {
               if (preview) {
                 const templateObject = generateTemplateObject(user.id, 'draw', image);
-                setMemeToEdit({ image, templateObject });
+                setMemeToEdit({ image, templateObject, templateNew: true });
                 handleClose();
                 setAlert(false);
               } else {

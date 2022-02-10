@@ -37,7 +37,7 @@ export default function CameraUpload({ ButtonText }) {
   const handleSetTemplate = (e) => {
     if (preview) {
       const templateObject = generateTemplateObject(user.id, 'webcam', image);
-      setMemeToEdit({ image, templateObject });
+      setMemeToEdit({ image, templateObject, templateNew: true });
       setImgSrc(null);
       setPreview(null);
       setAlert(false);

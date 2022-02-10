@@ -59,7 +59,7 @@ export default function URLSelector() {
             onClick={(e) => {
               if (name) {
                 const templateObject = generateTemplateObject(user.id, 'web-url', image);
-                setMemeToEdit({ image, templateObject });
+                setMemeToEdit({ image, templateObject, templateNew: true });
                 handleClose();
                 setAlert(false);
               } else {

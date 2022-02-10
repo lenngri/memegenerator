@@ -8,6 +8,7 @@ const model = {
   memeToEdit: {
     image: null,
     templateObject: null,
+    templateNew: null,
   },
   stageRef: null,
   userSession: persist({
