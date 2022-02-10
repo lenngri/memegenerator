@@ -48,10 +48,11 @@ const MemeUpload = () => {
     // get meta data and image from the current editor canvas
     const konvaObject = stageRef.current.toObject();
     const dataURL = stageRef.current.toDataURL({ mimeType: 'image/jpeg' });
+
     // construct meme object
     const body = {
       userID: user.id,
-      templateID: 'fixedID',
+      templateID: memeToEdit.templateObject.id,
       title: title,
       description: description,
       memeCaptions: getCaptions(konvaObject),
@@ -84,7 +85,7 @@ const MemeUpload = () => {
       <Button
         variant='contained'
         onClick={() => setOpen(!open)}
-        disabled={!memeToEdit ? true : false}
+        disabled={!memeToEdit.image ? true : false}
       >
         Save Meme
       </Button>

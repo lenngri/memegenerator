@@ -52,7 +52,7 @@ const Download = () => {
   return (
     <>
       <Button
-        disabled={!memeToEdit ? true : false}
+        disabled={!memeToEdit.image ? true : false}
         variant='contained'
         onClick={handleClickOpen}
         startIcon={<DownloadIcon />}
