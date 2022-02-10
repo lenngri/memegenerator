@@ -1,4 +1,5 @@
 import { action, thunk, persist } from 'easy-peasy';
+import axios from 'axios';
 
 const model = {
   // STATE
@@ -13,16 +14,13 @@ const model = {
   }),
   // THUNKS
   fetchImgflip: thunk(async (actions) => {
-    const res = await fetch('https://api.imgflip.com/get_memes');
-    const templates = await res.json();
-    actions.setImgflip(templates.data.memes);
+    const res = await axios.get('https://api.imgflip.com/get_memes');
+    actions.setImgflip(res.data.data.memes);
     console.log('Fetched templates from imgflip with status code:', res.status);
   }),
   fetchServerTemplates: thunk(async (actions) => {
-    const res = await fetch(process.env.REACT_APP_BURL + '/api/template/retrieve');
-    console.log(res);
-    const templates = await res.json();
-    actions.setServerTemplates(templates);
+    const res = await axios.get(process.env.REACT_APP_BURL + '/api/template/retrieve');
+    actions.setServerTemplates(res.data);
     console.log('Fetched templates from server with status code:', res.status);
   }),
   // ACTIONS
