@@ -154,9 +154,14 @@ const Editor = () => {
           <Stack direction='row' spacing={1} sx={{ mb: 2 }}>
             <TextField
               disabled={!template ? true : false}
-              id='outlined-required'
+              id='outlined-number'
               label='Font Size'
-              onChange={(e) => setFontSize(e.target.value)}
+              type='number'
+              defaultValue={fontSize}
+              onChange={(e) => setFontSize(Number(e.target.value))}
+              InputLabelProps={{
+                shrink: true,
+              }}
             />
             <Button
               disabled={!template ? true : false}
