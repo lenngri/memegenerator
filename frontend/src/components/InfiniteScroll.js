@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useStoreActions, useStoreState } from 'easy-peasy';
+import { useClipboard } from 'use-clipboard-copy';
 import { Loader } from './Loader';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Button from '@mui/material/Button';
@@ -28,6 +29,12 @@ function InfiniteScroller() {
   const [memeIndex, setMemeIndex] = useState(null);
   // catch parameter from URL
   const { paramMemeID } = useParams();
+  // initalize clipboard
+  const clipboard = useClipboard();
+
+  let baseURL;
+  if (process.env.REACT_APP_BURL === '') baseURL = window.location.host;
+  else baseURL = process.env.REACT_APP_BURL;
 
   // if there is a memeID passed as parameter, check it and open single view
   useEffect(() => {
@@ -56,23 +63,28 @@ function InfiniteScroller() {
     });
   };
 
+  const getCardMediaFromButton = (button) => {
+    return button.parentNode.parentNode.childNodes[0];
+  };
+
   const handleEdit = (event) => {
-    const button = event.target;
-    const cardBody = button.parentNode.parentNode;
-    setMemeToEdit(cardBody.childNodes[0]);
+    const cardMedia = getCardMediaFromButton(event.target);
+    setMemeToEdit({ image: cardMedia });
     navigate('/editor');
   };
 
   const handleView = (event) => {
-    const button = event.target;
-    const cardBody = button.parentNode.parentNode;
-    setMemeIndex(Number(cardBody.childNodes[0].alt));
+    const cardMedia = getCardMediaFromButton(event.target);
+    setMemeIndex(Number(cardMedia.alt));
     setOpenSingleView(true);
   };
 
-  let baseURL;
-  if (process.env.REACT_APP_BURL === '') baseURL = window.location.host;
-  else baseURL = process.env.REACT_APP_BURL;
+  const handleShare = (event) => {
+    const cardMedia = getCardMediaFromButton(event.target);
+    const meme = memes[Number(cardMedia.alt)];
+    clipboard.copy(window.location.origin + '/overview/' + meme._id);
+    alert(`Link to share meme copied! \n ${window.location.origin + '/overview/' + meme._id}`);
+  };
 
   return (
     <>
@@ -126,7 +138,9 @@ function InfiniteScroller() {
                     </Button>
                     <Button size='large'>Comment</Button>
                     <Button size='large'>Vote</Button>
-                    <Button size='large'>Share</Button>
+                    <Button size='large' onClick={handleShare}>
+                      Share
+                    </Button>
                   </CardActions>
                 </Card>
               </Grid>
