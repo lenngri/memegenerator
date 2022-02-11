@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -12,7 +12,7 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 export default function ServerTemplateSelector() {
   const setMemeToEdit = useStoreActions((actions) => actions.setMemeToEdit);
   const serverTemplates = useStoreState((state) => state.serverTemplates);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const scroll = 'paper';
 
   const handleClickOpen = () => () => {
@@ -30,6 +30,10 @@ export default function ServerTemplateSelector() {
     });
     handleClose();
   };
+
+  let baseURL;
+  if (process.env.REACT_APP_BURL === '') baseURL = window.location.host;
+  else baseURL = process.env.REACT_APP_BURL;
 
   return (
     <div>
@@ -68,10 +72,7 @@ export default function ServerTemplateSelector() {
                   serverTemplates.map((item, index) => (
                     <ImageListItem key={item._id}>
                       <img
-                        src={
-                          'http://localhost:3001' +
-                          item.filePath.substr(1, item.filePath.length - 1)
-                        }
+                        src={baseURL + item.filePath.split('backend')[1]}
                         alt={index}
                         crossOrigin='Anonymous' // Source: https://konvajs.org/docs/posts/Tainted_Canvas.html (13.01.2022)
                         onClick={handleClickTemplate}

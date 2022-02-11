@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useStoreActions } from 'easy-peasy';
 import { Container, Stack } from '@mui/material';
 import NavBar from '../NavBar';
 import Editor from '../Editor';
@@ -12,6 +13,17 @@ import DrawTemplateSelector from '../DrawTemplateSelector';
 import MemeUpload from '../MemeUpload';
 
 const EditorScreen = ({ logout }) => {
+  const fetchImgflip = useStoreActions((actions) => actions.fetchImgflip);
+  const fetchServerTemplates = useStoreActions((actions) => actions.fetchServerTemplates);
+  const fetchServerMemes = useStoreActions((actions) => actions.fetchServerMemes);
+
+  useEffect(() => {
+    fetchImgflip();
+    fetchServerTemplates();
+    fetchServerMemes();
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <div style={{ overflow: 'hidden' }}>
       <NavBar logout={logout} />

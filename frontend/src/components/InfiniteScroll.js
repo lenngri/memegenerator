@@ -12,6 +12,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Singleview from './Singleview';
+import axios from 'axios';
 
 function InfiniteScroller() {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ function InfiniteScroller() {
 
   const [counter, setCounter] = useState(2);
   // const serverTemplates = useStoreState((state) => state.serverTemplates);
-  const setServerTemplates = useStoreActions((actions) => actions.setServerTemplates);
+  const setServerMemes = useStoreActions((actions) => actions.setServerMemes);
   const [memes, setMemes] = useState([]);
   const [memeIndex, setMemeIndex] = useState(null);
 
@@ -30,13 +31,11 @@ function InfiniteScroller() {
   }, []);
 
   const fetchMemes = () => {
-    fetch('http://localhost:3000/api/template/retrieve').then((res) => {
-      res.json().then((res) => {
-        setServerTemplates(res);
-        setCounter(counter + 1);
-        const _memes = res.slice(0, counter);
-        setMemes(_memes);
-      });
+    axios.get(process.env.REACT_APP_BURL + '/api/meme/retrieve').then((res) => {
+      setServerMemes(res.data.data.memes);
+      setCounter(counter + 1);
+      const _memes = res.data.data.memes.slice(0, counter);
+      setMemes(_memes);
     });
   };
 
@@ -48,12 +47,15 @@ function InfiniteScroller() {
   };
 
   const handleView = (event) => {
-    console.log(event.target.parentNode.parentNode);
     const button = event.target;
     const cardBody = button.parentNode.parentNode;
     setMemeIndex(Number(cardBody.childNodes[0].alt));
     setOpenSingleView(true);
   };
+
+  let baseURL;
+  if (process.env.REACT_APP_BURL === '') baseURL = window.location.host;
+  else baseURL = process.env.REACT_APP_BURL;
 
   return (
     <>
@@ -90,9 +92,7 @@ function InfiniteScroller() {
                     alt={index}
                     height={600}
                     width={500}
-                    image={
-                      'http://localhost:3000' + meme.filePath.substr(1, meme.filePath.length - 1)
-                    }
+                    image={baseURL + meme.filePath.split('backend')[1]}
                   ></CardMedia>
                   <CardContent sx={{ textAlign: 'center' }}>
                     <Typography gutterBottom variant='h5'>
