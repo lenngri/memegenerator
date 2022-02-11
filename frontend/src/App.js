@@ -16,21 +16,23 @@ function App() {
       <Routes>
         {!isLoggedIn && (
           <>
-            <Route path="/login" element={<LoginScreen />} />
-            <Route path="/register" element={<RegisterScreen />} />
+            <Route path='/login' element={<LoginScreen />} />
+            <Route path='/register' element={<RegisterScreen />} />
 
-            <Route path="/forgotpassword" element={<ForgotPasswordScreen />} />
+            <Route path='/forgotpassword' element={<ForgotPasswordScreen />} />
           </>
         )}
 
         {isLoggedIn && (
           <>
-            <Route path="/profile" element={<ProfileScreen />} />
-            <Route path="/editor" element={<EditorScreen />} />
-            <Route path="/overview" element={<OverviewScreen />} />
+            <Route path='/profile' element={<ProfileScreen />} />
+            <Route path='/editor' element={<EditorScreen />} />
+            <Route path='/overview/*' element={<OverviewScreen />}>
+              <Route path=':memeID' element={<OverviewScreen />} />
+            </Route>
           </>
         )}
-        <Route path="*" element={<Navigate to={isLoggedIn ? '/editor' : '/login'} />} />
+        <Route path='*' element={<Navigate to={isLoggedIn ? '/editor' : '/login'} />} />
       </Routes>
     </Router>
   );

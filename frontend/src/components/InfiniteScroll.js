@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useStoreActions } from 'easy-peasy';
 import { Loader } from './Loader';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -15,15 +15,19 @@ import Singleview from './Singleview';
 import axios from 'axios';
 
 function InfiniteScroller() {
+  // use central state
   const navigate = useNavigate();
   const setMemeToEdit = useStoreActions((actions) => actions.setMemeToEdit);
-  const [openSingleView, setOpenSingleView] = useState(false);
 
+  // use local state
+  const [openSingleView, setOpenSingleView] = useState(false);
   const [counter, setCounter] = useState(2);
-  // const serverTemplates = useStoreState((state) => state.serverTemplates);
   const setServerMemes = useStoreActions((actions) => actions.setServerMemes);
   const [memes, setMemes] = useState([]);
   const [memeIndex, setMemeIndex] = useState(null);
+  const { memeID } = useParams();
+
+  console.log(memeID);
 
   useEffect(() => {
     fetchMemes();
