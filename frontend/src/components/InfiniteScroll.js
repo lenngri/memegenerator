@@ -125,9 +125,10 @@ function InfiniteScroller() {
                   ></CardMedia>
                   <CardContent sx={{ textAlign: 'center' }}>
                     <Typography gutterBottom variant='h5'>
-                      {meme.fileName}
+                      {meme.title}
                     </Typography>
                     <Typography>{meme.description}</Typography>
+                    <Typography>Number of votes: {meme.votes.length}</Typography>
                   </CardContent>
                   <CardActions sx={{ width: '100%', justifyContent: 'center' }}>
                     <Button size='large' onClick={handleView}>
