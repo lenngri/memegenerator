@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import { FormControlLabel, Checkbox } from '@mui/material';
 import axios from 'axios';
+import Konva from 'konva';
 
 const MemeUpload = () => {
   // central state
@@ -36,10 +37,13 @@ const MemeUpload = () => {
 
   const getCaptions = (konvaObject) => {
     const layer0Children = konvaObject.children[0].children;
+    console.log(layer0Children);
     const captionsArray = [];
-    for (let i = 1; i < layer0Children.length; i++) {
-      if (layer0Children[i].attrs.text === undefined) captionsArray.push('');
-      else captionsArray.push(layer0Children[i].attrs.text);
+    for (let i = 0; i < layer0Children.length; i++) {
+      if (layer0Children[i].className === 'Text') {
+        if (layer0Children[i].attrs.text === undefined) captionsArray.push('');
+        else captionsArray.push(layer0Children[i].attrs.text);
+      }
     }
     return captionsArray;
   };
@@ -88,6 +92,7 @@ const MemeUpload = () => {
       votes: [],
       comments: [],
     };
+
     // send the meme object to the server
     console.log('Send meme object to the server:', body);
     axios
@@ -99,6 +104,21 @@ const MemeUpload = () => {
         console.log(res);
         console.log(error);
       });
+  };
+
+  const memeFromJSON = () => {
+    const konvaObject = stageRef.current.toObject();
+
+    const stage = Konva.Node.create(konvaObject, 'container');
+    const background = new Konva.Image({
+      image: memeToEdit.image,
+      width: stage.width(),
+      height: stage.height(),
+    });
+    const layer = stage.getLayers()[0];
+    layer.add(background);
+    background.moveToBottom();
+    console.log(stage.toDataURL());
   };
 
   return (
@@ -162,8 +182,10 @@ const MemeUpload = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleUploadMeme}>Save</Button>
+          <Button onClick={memeFromJSON}>memeFromJSON</Button>
         </DialogActions>
       </Dialog>
+      <div id='container'></div>
     </>
   );
 };
