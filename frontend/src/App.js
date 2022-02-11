@@ -11,8 +11,6 @@ import { useStoreState, useStoreRehydrated } from 'easy-peasy';
 function App() {
   const isRehydrated = useStoreRehydrated();
   const isLoggedIn = useStoreState((state) => state.userSession.isLoggedIn);
-  console.log('Rehydrated:', isRehydrated);
-  console.log('Logged in:', isLoggedIn);
 
   if (!isRehydrated) return <p>Loading...</p>;
 
