@@ -66,6 +66,7 @@ const MemeUpload = () => {
     // clear the state and close dialog
     clearState();
     setOpen(!open);
+    alert('You saved the meme.');
   };
 
   const sendMeme = (templateID) => {
