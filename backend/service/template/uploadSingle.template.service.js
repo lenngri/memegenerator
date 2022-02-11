@@ -5,7 +5,7 @@ const { join } = require('path')
 
 const Template = require('../../database/models/template.model');
 
-exports.uploadSingleTemplate = async function(req, res) {
+exports.uploadSingleTemplateService = async function(req, res) {
     try {
 
         if (!req.body.template) {
