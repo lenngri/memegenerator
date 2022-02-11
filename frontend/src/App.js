@@ -28,7 +28,7 @@ function App() {
             <Route path='/profile' element={<ProfileScreen />} />
             <Route path='/editor' element={<EditorScreen />} />
             <Route path='/overview/*' element={<OverviewScreen />}>
-              <Route path=':memeID' element={<OverviewScreen />} />
+              <Route path=':paramMemeID' element={<OverviewScreen />} />
             </Route>
           </>
         )}

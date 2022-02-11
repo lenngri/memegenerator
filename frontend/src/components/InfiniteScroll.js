@@ -26,19 +26,21 @@ function InfiniteScroller() {
   const [counter, setCounter] = useState(2);
   const [memes, setMemes] = useState([]);
   const [memeIndex, setMemeIndex] = useState(null);
-  const { memeID } = useParams();
+  // catch parameter from URL
+  const { paramMemeID } = useParams();
 
   // if there is a memeID passed as parameter, check it and open single view
   useEffect(() => {
-    if (memeID !== undefined) {
-      const singleViewIndex = serverMemes.findIndex((meme) => meme._id === memeID);
+    if (paramMemeID !== undefined) {
+      // source: https://stackoverflow.com/questions/26468557/return-index-value-from-filter-method-javascript (11.02.2021)
+      const paramMemeIndex = serverMemes.findIndex((meme) => meme._id === paramMemeID);
       console.log('URL contains existing meme id, open single view.');
-      if (singleViewIndex > -1) {
-        setMemeIndex(singleViewIndex);
+      if (paramMemeIndex > -1) {
+        setMemeIndex(paramMemeIndex);
         setOpenSingleView(true);
       }
     }
-  }, [memeID, serverMemes]);
+  }, [paramMemeID, serverMemes]);
 
   useEffect(() => {
     fetchMemes();
