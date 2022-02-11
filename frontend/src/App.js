@@ -32,7 +32,7 @@ function App() {
             </Route>
           </>
         )}
-        <Route path='*' element={<Navigate to={isLoggedIn ? '/editor' : '/login'} />} />
+        {/* <Route path='*' element={<Navigate to={isLoggedIn ? '/editor' : '/login'} />} /> */}
       </Routes>
     </Router>
   );

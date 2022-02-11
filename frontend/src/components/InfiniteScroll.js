@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useStoreActions } from 'easy-peasy';
+import { useStoreActions, useStoreState } from 'easy-peasy';
 import { Loader } from './Loader';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Button from '@mui/material/Button';
@@ -18,16 +18,27 @@ function InfiniteScroller() {
   // use central state
   const navigate = useNavigate();
   const setMemeToEdit = useStoreActions((actions) => actions.setMemeToEdit);
+  const setServerMemes = useStoreActions((actions) => actions.setServerMemes);
+  const serverMemes = useStoreState((actions) => actions.serverMemes);
 
   // use local state
   const [openSingleView, setOpenSingleView] = useState(false);
   const [counter, setCounter] = useState(2);
-  const setServerMemes = useStoreActions((actions) => actions.setServerMemes);
   const [memes, setMemes] = useState([]);
   const [memeIndex, setMemeIndex] = useState(null);
   const { memeID } = useParams();
-
   console.log(memeID);
+
+  useEffect(() => {
+    if (memeID !== undefined) {
+      const singleViewIndex = serverMemes.findIndex((meme) => meme._id === memeID);
+      console.log('ID provided via URL parameter matches meme at index:', singleViewIndex);
+      if (singleViewIndex > -1) {
+        setMemeIndex(singleViewIndex);
+        setOpenSingleView(true);
+      }
+    }
+  }, [memeID, serverMemes]);
 
   useEffect(() => {
     fetchMemes();
