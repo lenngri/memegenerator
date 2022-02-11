@@ -24,4 +24,5 @@ yarn-debug.log*
 yarn-error.log*
 
 # uploads
-uploads/*
+uploads/template/*
+uploads/meme/*

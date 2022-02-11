@@ -18,10 +18,10 @@ const {
 router.route('/comment/add').put(addComment)
 
 const {
-    addLike
-} = require('../controller/like.controller')
+    addVote
+} = require('../controller/vote.controller')
 
 // like routes
-router.route('/like/add').put(addLike)
+router.route('/vote/add').put(addVote)
 
 module.exports = router
