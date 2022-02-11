@@ -19,7 +19,7 @@ exports.addLike = async function(req, res, next) {
     console.log('successfully retrieved meme with ID: ' + meme._id)
 
     // stores memes in likes variable
-    const likes = meme.likes
+    const likes = meme.votes
     if(!likes) res.status(404).send('Meme likes could not be retrieved')
     console.log('successfully retrieved ' + likes.length + ' like(s)')
 
