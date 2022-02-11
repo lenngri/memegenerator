@@ -1,28 +1,11 @@
-const fs = require('fs');
-const{ join } = require('path');
-const Meme = require('../database/models/meme.model');
-// helper functions
-const { fileSizeFormatter } = require('../helpers/fileSizeFormatter.helper')
-const { writeFile } = require('../helpers/fileSaver.helper')
-const { parseURI } = require('../helpers/uriParser.helper')
-const { retrieveMemeService } = require('../service/meme/retrieve.meme.service')
-const { uploadSingleMemeService } = require('../service/meme/uploadSingle.meme.service')
+const { parseURI } = require('../../helpers/uriParser.helper');
+const { fileSizeFormatter } = require('../../helpers/fileSizeFormatter.helper');
+const { writeFile } = require('../../helpers/fileSaver.helper');
+const { join } = require('path')
 
+const Meme = require('../../database/models/meme.model');
 
-exports.retrieve = async function(req, res, next) {
-
-    await retrieveMemeService(req, res)
-
-};
-
-// Uploads single meme and saves it to the uploads directory, along with database
-exports.uploadSingle = async function(req, res, next) {
-
-    await uploadSingleMemeService(req, res)
-
-};
-
-exports.createSingle = async function(req, res, next) {
+exports.uploadSingleMemeService = async function(req, res) {
 
     console.log("posting single meme")
 
@@ -68,12 +51,17 @@ exports.createSingle = async function(req, res, next) {
             })
 
             console.log("contacting database")
-            console.log(join(__dirname, '../', meme.filePath), data.image)
 
             await meme.save( function(error, meme) {
                 if(error) console.log(error.message)
-                res.status(200).json(meme)
-                writeFile(join(__dirname, '../', meme.filePath), data.image)
+                const proxyHost = req.headers["x-forwarded-host"];
+                const host = proxyHost ? proxyHost : req.headers.host;
+                const stableURL = "http://" + host + "/overview/" + meme._id;
+                res.status(200).json({
+                    meme: meme,
+                    stableURL: stableURL
+                })
+                writeFile(join(__dirname, '../../', meme.filePath), data.image)
                 console.log("saved meme with ID: " + meme.id + " at " + meme.filePath)
             })
 
@@ -83,7 +71,5 @@ exports.createSingle = async function(req, res, next) {
         console.log(error)
         res.status(500).send(error)
     }
-};
-
-
-
+    
+}

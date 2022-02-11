@@ -1,23 +1,11 @@
+const { parseURI } = require('../../helpers/uriParser.helper');
+const { fileSizeFormatter } = require('../../helpers/fileSizeFormatter.helper');
+const { writeFile } = require('../../helpers/fileSaver.helper');
 const { join } = require('path')
-const Template = require('../database/models/template.model');
-// helper functions
-const { fileSizeFormatter } = require('../helpers/fileSizeFormatter.helper')
-const { removeEmpty } = require('../helpers/removeEmpty.helper')
-const { parseURI } = require('../helpers/uriParser.helper')
-const { writeFile } = require('../helpers/fileSaver.helper');
-const { retrieveTemplateService } = require('../service/template/retrieve.template.service');
 
-// allows retrieval of templates according to params sent in request body
-exports.retrieve = async function(req, res, next) {
+const Template = require('../../database/models/template.model');
 
-    retrieveTemplateService(req, res)
-    
-};
-
-
-// uploads single file and saves it to the upload folder and database
-exports.uploadSingle = async function(req, res, next) {
-
+exports.uploadSingleTemplate = async function(req, res) {
     try {
 
         if (!req.body.template) {
@@ -57,7 +45,7 @@ exports.uploadSingle = async function(req, res, next) {
                     console.log(error.message)
                 }
                 res.status(200).send(template)
-                writeFile(join(__dirname, '../', template.filePath), data.image)
+                writeFile(join(__dirname, '../../', template.filePath), data.image)
                 console.log('Saved template with ID: ' + template.id + " at " + template.filePath)
             })
         }
@@ -66,7 +54,5 @@ exports.uploadSingle = async function(req, res, next) {
         console.log(error)
         res.status(500).send(error)
     }
-};
-
-
-
+    
+}
