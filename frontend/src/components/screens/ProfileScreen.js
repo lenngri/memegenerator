@@ -11,11 +11,13 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import PersonIcon from '@mui/icons-material/Person';
 import NavBar from '../NavBar';
 import MemeHistory from '../MemeHistory';
+import { useStoreState } from 'easy-peasy';
 
 const theme = createTheme();
 
 export default function ProfileScreen() {
   const setLoggedIn = useStoreActions((actions) => actions.setLoggedIn);
+  const user = useStoreState((state) => state.userSession.user);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -73,19 +75,19 @@ export default function ProfileScreen() {
                     Username
                   </Typography>
                   <Typography component='h6' variant='subtitle1' style={{ paddingBottom: 20.0 }}>
-                    John Doe
+                    {user.username}
                   </Typography>
 
                   <Typography component='h6' variant='h6'>
                     Email address
                   </Typography>
                   <Typography component='h6' variant='subtitle1'>
-                    johndoe@gmail.com
+                    {user.email}
                   </Typography>
 
-                  <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
+                  {/* <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
                     Edit
-                  </Button>
+                  </Button> */}
                   <Button
                     onClick={() => {
                       setLoggedIn(false);
@@ -93,7 +95,7 @@ export default function ProfileScreen() {
                     type='submit'
                     fullWidth
                     variant='contained'
-                    sx={{ color: 'red', backgroundColor: 'white', mb: 2 }}
+                    sx={{ color: 'red', backgroundColor: 'white', msHyphenateLimitLines: 2 }}
                   >
                     Logout
                   </Button>
