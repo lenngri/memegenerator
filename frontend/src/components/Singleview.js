@@ -27,7 +27,10 @@ const Singleview = ({ openSingleView, setOpenSingleView, memeIndex }) => {
   const [autoPlayFlag, setAutoPlayFlag] = useState(false);
   const scroll = 'paper';
   const delay = 3000;
-  console.log('Shown Index:', shownIndex);
+
+  let baseURL;
+  if (process.env.REACT_APP_BURL === '') baseURL = window.location.host;
+  else baseURL = process.env.REACT_APP_BURL;
 
   useEffect(() => {
     setOpen(openSingleView);
@@ -48,7 +51,7 @@ const Singleview = ({ openSingleView, setOpenSingleView, memeIndex }) => {
   };
 
   const extractImageURL = (filePath) => {
-    return 'http://localhost:3000' + filePath.substr(1, filePath.length - 1);
+    return baseURL + filePath.split('backend')[1];
   };
 
   return (

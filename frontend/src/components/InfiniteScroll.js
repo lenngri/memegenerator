@@ -12,6 +12,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Singleview from './Singleview';
+import axios from 'axios'
 
 function InfiniteScroller() {
   const navigate = useNavigate();
@@ -30,13 +31,11 @@ function InfiniteScroller() {
   }, []);
 
   const fetchMemes = () => {
-    fetch('http://localhost:3000/api/template/retrieve').then((res) => {
-      res.json().then((res) => {
-        setServerTemplates(res);
+    axios.get(process.env.REACT_APP_BURL + '/api/template/retrieve').then((res) => {
+        setServerTemplates(res.data);
         setCounter(counter + 1);
-        const _memes = res.slice(0, counter);
+        const _memes = res.data.slice(0, counter);
         setMemes(_memes);
-      });
     });
   };
 
@@ -54,6 +53,10 @@ function InfiniteScroller() {
     setMemeIndex(Number(cardBody.childNodes[0].alt));
     setOpenSingleView(true);
   };
+
+  let baseURL;
+  if (process.env.REACT_APP_BURL === '') baseURL = window.location.host;
+  else baseURL = process.env.REACT_APP_BURL;
 
   return (
     <>
@@ -91,7 +94,7 @@ function InfiniteScroller() {
                     height={600}
                     width={500}
                     image={
-                      'http://localhost:3000' + meme.filePath.split('backend')[1]
+                      baseURL + meme.filePath.split('backend')[1]
                     }
                   ></CardMedia>
                   <CardContent sx={{ textAlign: 'center' }}>
