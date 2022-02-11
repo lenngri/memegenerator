@@ -6,10 +6,15 @@ import RegisterScreen from './components/screens/RegisterScreen';
 import ForgotPasswordScreen from './components/screens/ForgotPasswordScreen';
 import OverviewScreen from './components/screens/OverviewScreen';
 import ProfileScreen from './components/screens/ProfileScreen';
-import { useStoreState } from 'easy-peasy';
+import { useStoreState, useStoreRehydrated } from 'easy-peasy';
 
 function App() {
+  const isRehydrated = useStoreRehydrated();
   const isLoggedIn = useStoreState((state) => state.userSession.isLoggedIn);
+  console.log('Rehydrated:', isRehydrated);
+  console.log('Logged in:', isLoggedIn);
+
+  if (!isRehydrated) return <p>Loading...</p>;
 
   return (
     <Router>
@@ -32,7 +37,7 @@ function App() {
             </Route>
           </>
         )}
-        {/* <Route path='*' element={<Navigate to={isLoggedIn ? '/editor' : '/login'} />} /> */}
+        <Route path='*' element={<Navigate to={isLoggedIn ? '/editor' : '/login'} />} />
       </Routes>
     </Router>
   );
