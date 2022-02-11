@@ -12,11 +12,14 @@ const model = {
     templateNew: null,
   },
   stageRef: null,
-  userSession: persist({
-    isLoggedIn: false,
-    user: null,
-    token: null,
-  }),
+  userSession: persist(
+    {
+      isLoggedIn: false,
+      user: null,
+      token: null,
+    },
+    { storage: localStorage }
+  ),
   // THUNKS
   fetchImgflip: thunk(async (actions) => {
     const res = await axios.get('https://api.imgflip.com/get_memes');
