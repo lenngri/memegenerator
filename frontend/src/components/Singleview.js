@@ -69,7 +69,7 @@ const Singleview = ({ openSingleView, setOpenSingleView, memeIndex }) => {
           aria-describedby='scroll-dialog-description'
         >
           <DialogTitle id='scroll-dialog-title'>
-            {serverMemes[shownIndex].fileName}
+            {serverMemes[shownIndex].title}
             <IconButton
               aria-label='close'
               onClick={handleClose}
