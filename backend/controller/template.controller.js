@@ -1,4 +1,4 @@
-const path = require('path')
+const { join } = require('path')
 const Template = require('../database/models/template.model');
 // helper functions
 const { fileSizeFormatter } = require('../helpers/fileSizeFormatter.helper')
@@ -65,7 +65,7 @@ exports.uploadSingle = async function(req, res, next) {
             file = {
                 name: fileName,
                 mimetype: data.extension,
-                path: path.join(`./uploads/template/${req.body.userID}/${fileName}.${data.extension.split("/")[1]}`),
+                path: `./uploads/template/${req.body.userID}/${fileName}.${data.extension.split("/")[1]}`,
                 size: fileSizeFormatter(data.image.toString('base64').length)
             }
 
@@ -85,7 +85,7 @@ exports.uploadSingle = async function(req, res, next) {
                     console.log(error.message)
                 }
                 res.status(200).send(template)
-                writeFile(template.filePath, data.image)
+                writeFile(join(__dirname, '../', template.filePath), data.image)
                 console.log('Saved template with ID: ' + template.id + " at " + template.filePath)
             })
         }

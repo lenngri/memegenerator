@@ -91,7 +91,7 @@ exports.uploadSingle = async function(req, res, next) {
             const file = {
                 name: fileName,
                 mimetype: data.extension,
-                path: join(`./uploads/meme/${req.body.userID}/${fileName}.${data.extension.split('/')[1]}`),
+                path: `./uploads/meme/${req.body.userID}/${fileName}.${data.extension.split('/')[1]}`,
                 size: fileSizeFormatter(data.image.toString('base64').length)
             }
 
@@ -114,11 +114,12 @@ exports.uploadSingle = async function(req, res, next) {
             })
 
             console.log("contacting database")
+            console.log(join(__dirname, '../', meme.filePath), data.image)
 
             await meme.save( function(error, meme) {
                 if(error) console.log(error.message)
                 res.status(200).json(meme)
-                writeFile(meme.filePath, data.image)
+                writeFile(join(__dirname, '../', meme.filePath), data.image)
                 console.log("saved meme with ID: " + meme.id + " at " + meme.filePath)
             })
 
