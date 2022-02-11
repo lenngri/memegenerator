@@ -12,7 +12,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Singleview from './Singleview';
-import axios from 'axios'
+import axios from 'axios';
 
 function InfiniteScroller() {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ function InfiniteScroller() {
 
   const [counter, setCounter] = useState(2);
   // const serverTemplates = useStoreState((state) => state.serverTemplates);
-  const setServerTemplates = useStoreActions((actions) => actions.setServerTemplates);
+  const setServerMemes = useStoreActions((actions) => actions.setServerMemes);
   const [memes, setMemes] = useState([]);
   const [memeIndex, setMemeIndex] = useState(null);
 
@@ -31,11 +31,11 @@ function InfiniteScroller() {
   }, []);
 
   const fetchMemes = () => {
-    axios.get(process.env.REACT_APP_BURL + '/api/template/retrieve').then((res) => {
-        setServerTemplates(res.data);
-        setCounter(counter + 1);
-        const _memes = res.data.slice(0, counter);
-        setMemes(_memes);
+    axios.get(process.env.REACT_APP_BURL + '/api/meme/retrieve').then((res) => {
+      setServerMemes(res.data.data.memes);
+      setCounter(counter + 1);
+      const _memes = res.data.data.memes.slice(0, counter);
+      setMemes(_memes);
     });
   };
 
@@ -47,7 +47,6 @@ function InfiniteScroller() {
   };
 
   const handleView = (event) => {
-    console.log(event.target.parentNode.parentNode);
     const button = event.target;
     const cardBody = button.parentNode.parentNode;
     setMemeIndex(Number(cardBody.childNodes[0].alt));
@@ -93,9 +92,7 @@ function InfiniteScroller() {
                     alt={index}
                     height={600}
                     width={500}
-                    image={
-                      baseURL + meme.filePath.split('backend')[1]
-                    }
+                    image={baseURL + meme.filePath.split('backend')[1]}
                   ></CardMedia>
                   <CardContent sx={{ textAlign: 'center' }}>
                     <Typography gutterBottom variant='h5'>

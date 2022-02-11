@@ -21,7 +21,7 @@ import { useStoreState } from 'easy-peasy';
 const WIDTH = 600;
 
 const Singleview = ({ openSingleView, setOpenSingleView, memeIndex }) => {
-  const serverTemplates = useStoreState((state) => state.serverTemplates);
+  const serverMemes = useStoreState((state) => state.serverMemes);
   const [open, setOpen] = useState(false);
   const [shownIndex, setShownIndex] = useState(null);
   const [autoPlayFlag, setAutoPlayFlag] = useState(false);
@@ -38,7 +38,7 @@ const Singleview = ({ openSingleView, setOpenSingleView, memeIndex }) => {
   }, [openSingleView, memeIndex]);
 
   useInterval(() => {
-    if (autoPlayFlag && shownIndex < serverTemplates.length - 1) {
+    if (autoPlayFlag && shownIndex < serverMemes.length - 1) {
       setShownIndex(shownIndex + 1);
     } else if (autoPlayFlag) {
       setShownIndex(0);
@@ -56,7 +56,7 @@ const Singleview = ({ openSingleView, setOpenSingleView, memeIndex }) => {
 
   return (
     <>
-      {serverTemplates[shownIndex] ? (
+      {serverMemes[shownIndex] ? (
         <Dialog
           open={open}
           onClose={handleClose}
@@ -66,7 +66,7 @@ const Singleview = ({ openSingleView, setOpenSingleView, memeIndex }) => {
           aria-describedby='scroll-dialog-description'
         >
           <DialogTitle id='scroll-dialog-title'>
-            <Typography variant='h6'>{serverTemplates[shownIndex].fileName}</Typography>
+            <Typography variant='h6'>{serverMemes[shownIndex].fileName}</Typography>
             <IconButton
               aria-label='close'
               onClick={handleClose}
@@ -93,11 +93,11 @@ const Singleview = ({ openSingleView, setOpenSingleView, memeIndex }) => {
             >
               <CardContent>
                 <Box width={WIDTH}>
-                  {serverTemplates[shownIndex] ? (
+                  {serverMemes[shownIndex] ? (
                     <CardMedia
                       component='img'
                       id='img'
-                      image={extractImageURL(serverTemplates[shownIndex].filePath)}
+                      image={extractImageURL(serverMemes[shownIndex].filePath)}
                       title='Picture'
                       alt='pic'
                     ></CardMedia>
@@ -106,7 +106,7 @@ const Singleview = ({ openSingleView, setOpenSingleView, memeIndex }) => {
                   )}
                 </Box>
                 <Typography variant='body2' color='text.secondary' sx={{ mt: 2 }}>
-                  {serverTemplates[shownIndex].description}
+                  {serverMemes[shownIndex].description}
                 </Typography>
               </CardContent>
             </Card>
@@ -118,9 +118,7 @@ const Singleview = ({ openSingleView, setOpenSingleView, memeIndex }) => {
             >
               {!autoPlayFlag ? 'Play' : 'Stop'}
             </Button>
-            <Button
-              onClick={() => setShownIndex(Math.floor(Math.random() * serverTemplates.length))}
-            >
+            <Button onClick={() => setShownIndex(Math.floor(Math.random() * serverMemes.length))}>
               Random
             </Button>
             <Button
@@ -130,7 +128,7 @@ const Singleview = ({ openSingleView, setOpenSingleView, memeIndex }) => {
               Previous
             </Button>
             <Button
-              disabled={shownIndex === serverTemplates.length - 1 ? true : false}
+              disabled={shownIndex === serverMemes.length - 1 ? true : false}
               onClick={() => setShownIndex(shownIndex + 1)}
             >
               Next

@@ -30,7 +30,7 @@ const model = {
   }),
   fetchServerMemes: thunk(async (actions) => {
     const res = await axios.get(process.env.REACT_APP_BURL + '/api/meme/retrieve');
-    actions.setServerMemes(res.data);
+    actions.setServerMemes(res.data.data.memes);
     console.log('Fetched templates from server with status code:', res.status);
   }),
   // ACTIONS
@@ -41,7 +41,7 @@ const model = {
     state.serverTemplates = templates;
   }),
   setServerMemes: action((state, memes) => {
-    state.setServerMemes = memes;
+    state.serverMemes = memes;
   }),
   setMemeToEdit: action((state, { image, templateObject, templateNew }) => {
     // setMemeToEdit image
