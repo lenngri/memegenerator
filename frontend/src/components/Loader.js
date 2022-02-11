@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const Loading = styled.div`
   text-align: center;
@@ -63,7 +63,7 @@ const Loading = styled.div`
 export const Loader = () => {
   return (
     <Loading>
-      <div class="lds-ellipsis">
+      <div className='lds-ellipsis'>
         <div></div>
         <div></div>
         <div></div>

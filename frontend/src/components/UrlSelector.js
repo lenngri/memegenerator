@@ -1,15 +1,17 @@
 import * as React from 'react';
+import { useStoreActions, useStoreState } from 'easy-peasy';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useStoreActions } from 'easy-peasy';
 import Alert from '@mui/material/Alert';
+import { generateTemplateObject } from './generateTemplateObject';
 
 export default function URLSelector() {
-  const setTemplate = useStoreActions((actions) => actions.setTemplate);
+  const setMemeToEdit = useStoreActions((actions) => actions.setMemeToEdit);
+  const user = useStoreState((state) => state.userSession.user);
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState();
   const [alert, setAlert] = React.useState(false);
@@ -29,34 +31,36 @@ export default function URLSelector() {
   const image = new Image();
   // image.src = `"${name}"`;
   image.src = name;
+  image.crossorigin = 'anonymous';
 
   return (
     <div>
-      <Button variant="contained" onClick={handleClickOpen}>
+      <Button variant='contained' onClick={handleClickOpen}>
         Use URL
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Please insert an URL</DialogTitle>
-        {alert ? <Alert severity="error">Please choose a file</Alert> : null}
+        {alert ? <Alert severity='error'>Please choose a file</Alert> : null}
 
         <DialogContent sx={{ width: 400 }}>
           <TextField
             autoFocus
-            margin="dense"
-            id="name"
-            label="URL"
-            type="email"
+            margin='dense'
+            id='name'
+            label='URL'
+            type='email'
             fullWidth
-            variant="standard"
+            variant='standard'
             onChange={handleChange}
           />
         </DialogContent>
         <DialogActions>
           <Button
-            variant="contained"
+            variant='contained'
             onClick={(e) => {
               if (name) {
-                setTemplate(image);
+                const templateObject = generateTemplateObject(user.id, 'web-url', image);
+                setMemeToEdit({ image, templateObject, templateNew: true });
                 handleClose();
                 setAlert(false);
               } else {

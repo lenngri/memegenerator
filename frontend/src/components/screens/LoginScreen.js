@@ -3,8 +3,9 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+// Incase of remembering the user
+// import FormControlLabel from '@mui/material/FormControlLabel';
+// import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
@@ -15,12 +16,13 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import backgroundLogo from '../../assets/backgroundlogo4.jpg';
 import { useStoreActions } from 'easy-peasy';
+import axios from 'axios';
 
 function Copyright(props) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+    <Typography variant='body2' color='text.secondary' align='center' {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://imgflip.com/i/3vmmo4">
+      <Link color='inherit' href='https://imgflip.com/i/3vmmo4'>
         Burrito Memes
       </Link>{' '}
       {new Date().getFullYear()}
@@ -32,28 +34,38 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function LoginScreen() {
+  const setUser = useStoreActions((actions) => actions.setUser);
+  const setToken = useStoreActions((actions) => actions.setToken);
   const setLoggedIn = useStoreActions((actions) => actions.setLoggedIn);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    // register the user via API
+    axios
+      .post(process.env.REACT_APP_BURL + '/api/user/login', {
+        email: data.get('email'),
+        password: data.get('password'),
+      })
+      .then(function (response) {
+        if (response.data.success) {
+          setToken(response.data.token);
+          setUser(response.data.user);
+          setLoggedIn(true);
+          navigate('/editor');
+        }
+      })
+      .catch(function (res, error) {
+        alert('Email or password wrong.');
+        console.log(res, error);
+      });
   };
 
   const navigate = useNavigate();
-  //auth button handler
-  const onClick = () => {
-    setLoggedIn(true);
-    navigate('profile');
-  };
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container component="main" sx={{ height: '100vh' }}>
+      <Grid container component='main' sx={{ height: '100vh' }}>
         <CssBaseline />
         <Grid
           item
@@ -82,51 +94,45 @@ export default function LoginScreen() {
             <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
               <LockOutlinedIcon />
             </Avatar>
-            <Typography component="h1" variant="h5">
+            <Typography component='h1' variant='h5'>
               Sign in
             </Typography>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+            <Box component='form' noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <TextField
-                margin="normal"
+                margin='normal'
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id='email'
+                label='Email Address'
+                name='email'
+                autoComplete='email'
                 autoFocus
               />
               <TextField
-                margin="normal"
+                margin='normal'
                 required
                 fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
+                name='password'
+                label='Password'
+                type='password'
+                id='password'
+                autoComplete='current-password'
               />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-                onClick={onClick}
-              >
+              {/* <FormControlLabel
+                control={<Checkbox value='remember' color='primary' />}
+                label='Remember me'
+              /> */}
+              <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
                 Sign In
               </Button>
               <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2" onClick={() => navigate('/forgotpassword')}>
+                {/* <Grid item xs>
+                  <Link href='#' variant='body2' onClick={() => navigate('/forgotpassword')}>
                     Forgot password?
                   </Link>
-                </Grid>
+                </Grid> */}
                 <Grid item>
-                  <Link href="#" variant="body2" onClick={() => navigate('/register')}>
+                  <Link href='#' variant='body2' onClick={() => navigate('/register')}>
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>

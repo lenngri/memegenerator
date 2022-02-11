@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -10,9 +10,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 
 export default function ServerTemplateSelector() {
-  const setTemplate = useStoreActions((actions) => actions.setTemplate);
+  const setMemeToEdit = useStoreActions((actions) => actions.setMemeToEdit);
   const serverTemplates = useStoreState((state) => state.serverTemplates);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const scroll = 'paper';
 
   const handleClickOpen = () => () => {
@@ -23,19 +23,22 @@ export default function ServerTemplateSelector() {
     setOpen(false);
   };
 
-  const descriptionElementRef = React.useRef(null);
-  React.useEffect(() => {
-    if (open) {
-      const { current: descriptionElement } = descriptionElementRef;
-      if (descriptionElement !== null) {
-        descriptionElement.focus();
-      }
-    }
-  }, [open]);
+  const handleClickTemplate = (e) => {
+    setMemeToEdit({
+      image: e.target,
+      templateObject: serverTemplates[Number(e.target.alt)],
+    });
+    handleClose();
+  };
+
+  let baseURL;
+  // source: https://stackoverflow.com/questions/6042007/how-to-get-the-host-url-using-javascript-from-the-current-page (11.02.2022)
+  if (process.env.REACT_APP_BURL === '') baseURL = window.location.host;
+  else baseURL = process.env.REACT_APP_BURL;
 
   return (
     <div>
-      <Button variant="contained" onClick={handleClickOpen('paper')}>
+      <Button variant='contained' onClick={handleClickOpen('paper')}>
         Burrito Templates
       </Button>
       <Dialog
@@ -45,13 +48,13 @@ export default function ServerTemplateSelector() {
         maxWidth={'xl'}
         fullWidth={true}
         // fullScreen={true}
-        aria-labelledby="scroll-dialog-title"
-        aria-describedby="scroll-dialog-description"
+        aria-labelledby='scroll-dialog-title'
+        aria-describedby='scroll-dialog-description'
       >
-        <DialogTitle id="scroll-dialog-title">
+        <DialogTitle id='scroll-dialog-title'>
           Select a template from Burrito Memes.
           <IconButton
-            aria-label="close"
+            aria-label='close'
             onClick={handleClose}
             sx={{
               position: 'absolute',
@@ -65,22 +68,16 @@ export default function ServerTemplateSelector() {
         <DialogContent dividers={scroll === 'paper'}>
           <Container sx={{ justifyContent: 'center', display: 'flex' }}>
             <Box>
-              <ImageList style={{ cursor: 'pointer' }} variant="masonry" cols={3} gap={8}>
+              <ImageList style={{ cursor: 'pointer' }} variant='masonry' cols={3} gap={8}>
                 {serverTemplates ? (
-                  serverTemplates.map((item) => (
+                  serverTemplates.map((item, index) => (
                     <ImageListItem key={item._id}>
                       <img
-                        src={
-                          'http://localhost:3000' +
-                          item.filePath.substr(1, item.filePath.length - 1)
-                        }
-                        alt={item.fileName}
-                        crossOrigin="Anonymous" // Source: https://konvajs.org/docs/posts/Tainted_Canvas.html (13.01.2022)
-                        onClick={(e) => {
-                          setTemplate(e.target);
-                          handleClose();
-                        }}
-                        loading="lazy"
+                        src={baseURL + item.filePath.split('backend')[1]}
+                        alt={index}
+                        crossOrigin='Anonymous' // Source: https://konvajs.org/docs/posts/Tainted_Canvas.html (13.01.2022)
+                        onClick={handleClickTemplate}
+                        loading='lazy'
                       />
                     </ImageListItem>
                   ))

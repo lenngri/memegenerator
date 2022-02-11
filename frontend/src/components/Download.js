@@ -13,7 +13,7 @@ const Download = () => {
   // Source: https://developer.mozilla.org/de/docs/Web/API/HTMLCanvasElement/toDataURL (08.01.2021)
   const [open, setOpen] = React.useState(false);
   const stageRef = useStoreState((state) => state.stageRef);
-  const template = useStoreState((state) => state.template);
+  const memeToEdit = useStoreState((state) => state.memeToEdit);
   const [sliderValue, setSliderValue] = React.useState(100);
 
   const handleClickOpen = () => {
@@ -27,7 +27,6 @@ const Download = () => {
   const downloadMeme = () => {
     var link = document.createElement('a');
     link.download = 'thismeme.jpg';
-    // console.log(stageRef.current.toJSON());
     link.href = stageRef.current.toDataURL({
       mimeType: 'image/jpeg',
       quality: sliderValue / 100,
@@ -53,7 +52,7 @@ const Download = () => {
   return (
     <>
       <Button
-        disabled={!template ? true : false}
+        disabled={!memeToEdit.image ? true : false}
         variant='contained'
         onClick={handleClickOpen}
         startIcon={<DownloadIcon />}
