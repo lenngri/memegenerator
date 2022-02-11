@@ -92,7 +92,7 @@ function InfiniteScroller() {
         >
           <Grid container>
             {memes.map((meme, index) => (
-              <Grid item key={meme.id} xs={12} sm={12} md={12} sx={{ mb: 4 }}>
+              <Grid item key={meme._id} xs={12} sm={12} md={12} sx={{ mb: 4 }}>
                 <Card
                   sx={{
                     display: 'flex',
