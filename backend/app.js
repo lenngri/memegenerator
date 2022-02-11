@@ -5,7 +5,9 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser', );
 const logger = require('morgan');
-const cors = require('cors')
+const cors = require('cors');
+const canvas = require('canvas');
+const Konva = require('konva/cmj').default;
 
 const userRouter = require('./routes/user.routes');
 const templateRouter = require('./routes/template.routes');

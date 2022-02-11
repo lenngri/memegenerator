@@ -9,7 +9,7 @@ const {
 
 router.route('/retrieve').get(retrieve);
 router.route('/uploadSingle').post(uploadSingle);
-router.route('/createSingle').post(createSingle)
+router.route('/createSingle').post(createSingle);
 
 
 const {

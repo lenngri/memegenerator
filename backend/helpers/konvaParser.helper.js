@@ -1,4 +1,4 @@
-const memeFromKonvaObject = (konvaObject, backgroundImage) => {
+exports.memeFromKonvaObject = (konvaObject, backgroundImage) => {
   // create stage (konva canvas object) from konvaObject
   const stage = Konva.Node.create(konvaObject);
 

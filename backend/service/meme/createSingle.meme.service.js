@@ -1,25 +1,25 @@
+const { memeFromKonvaObject } = require('../../helpers/konvaParser.helper');
+const Template = require('../../database/models/template.model')
+const { join } = require('path')
+
 
 exports.createSingleMemeService = async function(req, res) {
 
+    console.log("running create single meme route")
 
-    const memeFromKonvaObject = (konvaObject, backgroundImage) => {
-        // create stage (konva canvas object) from konvaObject
-        const stage = Konva.Node.create(konvaObject);
-      
-        // create Konva Image instance from background image
-        const background = new Konva.Image({
-          image: backgroundImage,
-          width: stage.width(),
-          height: stage.height(),
-        });
-        // fetch layer to add background image to
-        const layer = stage.getLayers()[0];
-      
-        // append the background image to the layer
-        layer.add(background);
-      
-        // move the background image to the background
-        background.moveToBottom();
-        return stage.toDataURL();
-      };
+
+    try {
+
+        const template = await Template.findOne({_id: req.body.templateID})
+        const filePath = join(__dirname, template.filePath)
+
+    } catch (error) {
+
+        console.log(error)
+
+    }
+
+
+    const meme = memeFromKonvaObject(newMeme.konva, filePath) 
+    if(meme) console.log("theres a meme!")
 }
