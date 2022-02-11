@@ -32,6 +32,7 @@ export default function ServerTemplateSelector() {
   };
 
   let baseURL;
+  // source: https://stackoverflow.com/questions/6042007/how-to-get-the-host-url-using-javascript-from-the-current-page (11.02.2022)
   if (process.env.REACT_APP_BURL === '') baseURL = window.location.host;
   else baseURL = process.env.REACT_APP_BURL;
 

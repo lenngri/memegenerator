@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useStoreActions } from 'easy-peasy';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useStoreActions, useStoreState } from 'easy-peasy';
 import { Loader } from './Loader';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Button from '@mui/material/Button';
@@ -15,15 +15,32 @@ import Singleview from './Singleview';
 import axios from 'axios';
 
 function InfiniteScroller() {
+  // use central state
   const navigate = useNavigate();
   const setMemeToEdit = useStoreActions((actions) => actions.setMemeToEdit);
-  const [openSingleView, setOpenSingleView] = useState(false);
-
-  const [counter, setCounter] = useState(2);
-  // const serverTemplates = useStoreState((state) => state.serverTemplates);
   const setServerMemes = useStoreActions((actions) => actions.setServerMemes);
+  const serverMemes = useStoreState((actions) => actions.serverMemes);
+
+  // use local state
+  const [openSingleView, setOpenSingleView] = useState(false);
+  const [counter, setCounter] = useState(2);
   const [memes, setMemes] = useState([]);
   const [memeIndex, setMemeIndex] = useState(null);
+  // catch parameter from URL
+  const { paramMemeID } = useParams();
+
+  // if there is a memeID passed as parameter, check it and open single view
+  useEffect(() => {
+    if (paramMemeID !== undefined) {
+      // source: https://stackoverflow.com/questions/26468557/return-index-value-from-filter-method-javascript (11.02.2021)
+      const paramMemeIndex = serverMemes.findIndex((meme) => meme._id === paramMemeID);
+      console.log('URL contains existing meme id, open single view.');
+      if (paramMemeIndex > -1) {
+        setMemeIndex(paramMemeIndex);
+        setOpenSingleView(true);
+      }
+    }
+  }, [paramMemeID, serverMemes]);
 
   useEffect(() => {
     fetchMemes();
@@ -75,7 +92,7 @@ function InfiniteScroller() {
         >
           <Grid container>
             {memes.map((meme, index) => (
-              <Grid item key={meme.id} xs={12} sm={12} md={12} sx={{ mb: 4 }}>
+              <Grid item key={meme._id} xs={12} sm={12} md={12} sx={{ mb: 4 }}>
                 <Card
                   sx={{
                     display: 'flex',

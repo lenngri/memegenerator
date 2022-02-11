@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useStoreState } from 'easy-peasy';
+import { useNavigate } from 'react-router-dom';
 
 const WIDTH = 600;
 
@@ -27,6 +28,7 @@ const Singleview = ({ openSingleView, setOpenSingleView, memeIndex }) => {
   const [autoPlayFlag, setAutoPlayFlag] = useState(false);
   const scroll = 'paper';
   const delay = 3000;
+  const navigate = useNavigate();
 
   let baseURL;
   if (process.env.REACT_APP_BURL === '') baseURL = window.location.host;
@@ -48,6 +50,7 @@ const Singleview = ({ openSingleView, setOpenSingleView, memeIndex }) => {
   const handleClose = () => {
     setOpen(false);
     setOpenSingleView(false);
+    navigate('/overview');
   };
 
   const extractImageURL = (filePath) => {
@@ -66,7 +69,7 @@ const Singleview = ({ openSingleView, setOpenSingleView, memeIndex }) => {
           aria-describedby='scroll-dialog-description'
         >
           <DialogTitle id='scroll-dialog-title'>
-            <Typography variant='h6'>{serverMemes[shownIndex].fileName}</Typography>
+            {serverMemes[shownIndex].fileName}
             <IconButton
               aria-label='close'
               onClick={handleClose}

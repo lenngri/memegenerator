@@ -45,22 +45,22 @@ const NavBar = () => {
   // }
 
   return (
-    <AppBar position="static" style={{ background: '#000000' }}>
-      <Container maxWidth="xl">
+    <AppBar position='static' style={{ background: '#000000' }}>
+      <Container maxWidth='xl'>
         <Toolbar disableGutters>
           <Button>
             <img
               src={Logo}
-              alt="new"
+              alt='new'
               style={{ height: 60, width: 70, paddingRight: 10.0 }}
               onClick={() => navigate('/editor')}
             />
           </Button>
 
           <Typography
-            variant="h6"
+            variant='h6'
             noWrap
-            component="div"
+            component='div'
             sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
             onClick={() => navigate('/editor')}
           >
@@ -69,17 +69,17 @@ const NavBar = () => {
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
+              size='large'
+              aria-label='account of current user'
+              aria-controls='menu-appbar'
+              aria-haspopup='true'
               onClick={handleOpenNavMenu}
-              color="inherit"
+              color='inherit'
             >
               <MenuIcon />
             </IconButton>
             <Menu
-              id="menu-appbar"
+              id='menu-appbar'
               anchorEl={anchorElNav}
               anchorOrigin={{
                 vertical: 'bottom',
@@ -98,22 +98,22 @@ const NavBar = () => {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                  <Typography textAlign='center'>{page}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
           <Typography
-            variant="h6"
+            variant='h6'
             noWrap
-            component="div"
+            component='div'
             sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
           >
             Navigation
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             <Button
-              key="Editor"
+              key='Editor'
               onClick={() => navigate('/editor')}
               sx={{ my: 2, color: 'white', display: 'block' }}
             >
@@ -121,7 +121,7 @@ const NavBar = () => {
             </Button>
 
             <Button
-              key="Overview"
+              key='Overview'
               onClick={() => navigate('/overview')}
               sx={{ my: 2, color: 'white', display: 'block' }}
             >
@@ -130,14 +130,14 @@ const NavBar = () => {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            <Tooltip title='Open settings'>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="P" src={require('../assets/burrito.jpg')} />
+                <Avatar alt='P' src={'../assets/burrito.jpg'} />
               </IconButton>
             </Tooltip>
             <Menu
               sx={{ mt: '45px' }}
-              id="menu-appbar"
+              id='menu-appbar'
               anchorEl={anchorElUser}
               anchorOrigin={{
                 vertical: 'top',
@@ -151,16 +151,16 @@ const NavBar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <MenuItem key="Profile" onClick={() => navigate('/profile')}>
-                <Typography textAlign="center">Profile</Typography>
+              <MenuItem key='Profile' onClick={() => navigate('/profile')}>
+                <Typography textAlign='center'>Profile</Typography>
               </MenuItem>
               <MenuItem
-                key="Logout"
+                key='Logout'
                 onClick={() => {
                   setLoggedIn(false);
                 }}
               >
-                <Typography textAlign="center">Logout</Typography>
+                <Typography textAlign='center'>Logout</Typography>
               </MenuItem>
             </Menu>
           </Box>

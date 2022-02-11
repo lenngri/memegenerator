@@ -95,7 +95,7 @@ export default function ProfileScreen() {
                     type='submit'
                     fullWidth
                     variant='contained'
-                    sx={{ color: 'red', backgroundColor: 'white', msHyphenateLimitLines: 2 }}
+                    sx={{ color: 'red', backgroundColor: 'white', msHyphenateLimitLines: 2, my: 2 }}
                   >
                     Logout
                   </Button>
