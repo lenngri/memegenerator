@@ -28,6 +28,7 @@ exports.addVote = async function(req, res) {
         _id: new mongoose.Types.ObjectId(),
         value: req.body.value,
         userID: req.body.userID,
+        value: req.body.value,
         createdAt: Date.now()
     }
 
