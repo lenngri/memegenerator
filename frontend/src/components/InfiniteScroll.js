@@ -121,7 +121,7 @@ function InfiniteScroller() {
                     alt={index}
                     height={600}
                     width={500}
-                    image={baseURL + meme.filePath.split('backend')[1]}
+                    image={baseURL + meme.filePath}
                   ></CardMedia>
                   <CardContent sx={{ textAlign: 'center' }}>
                     <Typography gutterBottom variant='h5'>

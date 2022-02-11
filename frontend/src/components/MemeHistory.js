@@ -29,7 +29,7 @@ export default function MemeHistory() {
               filteredMemes.map((item, index) => (
                 <ImageListItem key={item._id}>
                   <img
-                    src={baseURL + item.filePath.split('backend')[1]}
+                    src={baseURL + item.filePath}
                     alt={index}
                     crossOrigin='Anonymous' // Source: https://konvajs.org/docs/posts/Tainted_Canvas.html (13.01.2022)
                     // onClick={handleClickTemplate}

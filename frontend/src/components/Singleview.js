@@ -53,10 +53,6 @@ const Singleview = ({ openSingleView, setOpenSingleView, memeIndex }) => {
     navigate('/overview');
   };
 
-  const extractImageURL = (filePath) => {
-    return baseURL + filePath.split('backend')[1];
-  };
-
   return (
     <>
       {serverMemes[shownIndex] ? (
@@ -100,7 +96,7 @@ const Singleview = ({ openSingleView, setOpenSingleView, memeIndex }) => {
                     <CardMedia
                       component='img'
                       id='img'
-                      image={extractImageURL(serverMemes[shownIndex].filePath)}
+                      image={baseURL + serverMemes[shownIndex].filePath}
                       title='Picture'
                       alt='pic'
                     ></CardMedia>

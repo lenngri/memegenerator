@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import { FormControlLabel, Checkbox } from '@mui/material';
 import axios from 'axios';
+import Konva from 'konva';
 
 const MemeUpload = () => {
   // central state
@@ -66,6 +67,7 @@ const MemeUpload = () => {
     // clear the state and close dialog
     clearState();
     setOpen(!open);
+    alert('You saved the meme.');
   };
 
   const sendMeme = (templateID) => {
@@ -87,6 +89,7 @@ const MemeUpload = () => {
       votes: [],
       comments: [],
     };
+
     // send the meme object to the server
     console.log('Send meme object to the server:', body);
     axios
@@ -98,6 +101,21 @@ const MemeUpload = () => {
         console.log(res);
         console.log(error);
       });
+  };
+
+  const memeFromJSON = () => {
+    const konvaObject = stageRef.current.toObject();
+
+    const stage = Konva.Node.create(konvaObject, 'container');
+    const background = new Konva.Image({
+      image: memeToEdit.image,
+      width: stage.width(),
+      height: stage.height(),
+    });
+    const layer = stage.getLayers()[0];
+    layer.add(background);
+    background.moveToBottom();
+    console.log(stage.toDataURL());
   };
 
   return (
@@ -161,8 +179,10 @@ const MemeUpload = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleUploadMeme}>Save</Button>
+          <Button onClick={memeFromJSON}>memeFromJSON</Button>
         </DialogActions>
       </Dialog>
+      <div id='container'></div>
     </>
   );
 };
