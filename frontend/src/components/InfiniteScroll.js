@@ -99,6 +99,7 @@ function InfiniteScroller() {
                       {meme.fileName}
                     </Typography>
                     <Typography>{meme.description}</Typography>
+                    <Typography>Number of votes: {meme.votes.length}</Typography>
                   </CardContent>
                   <CardActions sx={{ width: '100%', justifyContent: 'center' }}>
                     <Button size='large' onClick={handleView}>
