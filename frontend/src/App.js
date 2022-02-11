@@ -15,6 +15,8 @@ function App() {
   if (!isRehydrated) return <p>Loading...</p>;
 
   return (
+    // Router implementation following:
+    // Source: https://reactrouter.com/docs/en/v6/getting-started/tutorial#adding-a-no-match-route (11.02.2022)
     <Router>
       <Routes>
         {!isLoggedIn && (
