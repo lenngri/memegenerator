@@ -4,7 +4,7 @@ const memeFromKonvaObject = (konvaObject, backgroundImage) => {
 
   // create Konva Image instance from background image
   const background = new Konva.Image({
-    image: memeToEdit.image,
+    image: backgroundImage,
     width: stage.width(),
     height: stage.height(),
   });
