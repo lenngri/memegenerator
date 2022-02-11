@@ -10,6 +10,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import PersonIcon from '@mui/icons-material/Person';
 import NavBar from '../NavBar';
+import MemeHistory from '../MemeHistory';
 
 const theme = createTheme();
 
@@ -31,7 +32,7 @@ export default function ProfileScreen() {
       <NavBar />
 
       <ThemeProvider theme={theme}>
-        <Container component="main">
+        <Container component='main'>
           <CssBaseline />
           <Box
             sx={{
@@ -64,34 +65,34 @@ export default function ProfileScreen() {
                 >
                   <PersonIcon />
                 </Avatar>
-                <Typography component="h1" variant="h5">
+                <Typography component='h1' variant='h5'>
                   Account Details
                 </Typography>
-                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                  <Typography component="h6" variant="h6">
+                <Box component='form' onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                  <Typography component='h6' variant='h6'>
                     Username
                   </Typography>
-                  <Typography component="h6" variant="subtitle1" style={{ paddingBottom: 20.0 }}>
+                  <Typography component='h6' variant='subtitle1' style={{ paddingBottom: 20.0 }}>
                     John Doe
                   </Typography>
 
-                  <Typography component="h6" variant="h6">
+                  <Typography component='h6' variant='h6'>
                     Email address
                   </Typography>
-                  <Typography component="h6" variant="subtitle1">
+                  <Typography component='h6' variant='subtitle1'>
                     johndoe@gmail.com
                   </Typography>
 
-                  <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                  <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
                     Edit
                   </Button>
                   <Button
                     onClick={() => {
                       setLoggedIn(false);
                     }}
-                    type="submit"
+                    type='submit'
                     fullWidth
-                    variant="contained"
+                    variant='contained'
                     sx={{ color: 'red', backgroundColor: 'white', mb: 2 }}
                   >
                     Logout
@@ -100,6 +101,10 @@ export default function ProfileScreen() {
               </Box>
             </Paper>
           </Box>
+          <Typography variant='h5' sx={{ mt: 3 }}>
+            Your Memes
+          </Typography>
+          <MemeHistory />
         </Container>
       </ThemeProvider>
     </div>
