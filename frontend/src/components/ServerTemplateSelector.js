@@ -70,7 +70,7 @@ export default function ServerTemplateSelector() {
                       <img
                         src={
                           'http://localhost:3001' +
-                          item.filePath.substr(1, item.filePath.length - 1)
+                          item.filePath.split('backend')[1]
                         }
                         alt={index}
                         crossOrigin='Anonymous' // Source: https://konvajs.org/docs/posts/Tainted_Canvas.html (13.01.2022)
