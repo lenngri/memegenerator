@@ -27,12 +27,12 @@ function InfiniteScroller() {
   const [memes, setMemes] = useState([]);
   const [memeIndex, setMemeIndex] = useState(null);
   const { memeID } = useParams();
-  console.log(memeID);
 
+  // if there is a memeID passed as parameter, check it and open single view
   useEffect(() => {
     if (memeID !== undefined) {
       const singleViewIndex = serverMemes.findIndex((meme) => meme._id === memeID);
-      console.log('ID provided via URL parameter matches meme at index:', singleViewIndex);
+      console.log('URL contains existing meme id, open single view.');
       if (singleViewIndex > -1) {
         setMemeIndex(singleViewIndex);
         setOpenSingleView(true);
