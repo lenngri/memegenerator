@@ -71,7 +71,7 @@ const Editor = () => {
 
   const captionProps = {
     align: 'center',
-    fontSize: fontSize,
+    fontSize: Number(fontSize),
     fontFamily: 'Verdana',
     fontStyle: fontStyle,
     fill: captionColor,
@@ -130,6 +130,7 @@ const Editor = () => {
           )}
           <Stack direction='row' spacing={1} sx={{ mt: 3, mb: 2 }}>
             <TextField
+              value={topText}
               disabled={!image ? true : false}
               size='small'
               id='outlined-required'
@@ -137,6 +138,7 @@ const Editor = () => {
               onChange={(e) => setTopText(e.target.value)}
             />
             <TextField
+              value={bottomText}
               disabled={!image ? true : false}
               size='small'
               id='outlined-required'
@@ -144,6 +146,7 @@ const Editor = () => {
               onChange={(e) => setBottomText(e.target.value)}
             />
             <TextField
+              value={midText}
               disabled={!image ? true : false}
               size='small'
               id='outlined-required'

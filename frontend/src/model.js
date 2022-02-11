@@ -54,7 +54,7 @@ const model = {
     else state.memeToEdit.templateObject = null;
     // set templateNew flag
     state.memeToEdit.templateNew = templateNew;
-    console.log('New editor memeToEdit set.', image, templateObject, templateNew);
+    console.log('New editor memeToEdit set.');
   }),
   setStageRef: action((state, stageRef) => {
     state.stageRef = stageRef;
