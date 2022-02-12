@@ -46,7 +46,7 @@ exports.uploadSingleMemeService = async function(req, res) {
                 isPrivate: req.body.isPrivate,
                 isHidden: req.body.isHidden,
                 isDraft: req.body.isDraft,
-                likes: req.body.likes,
+                votes: req.body.likes,
                 comments: req.body
             })
 
