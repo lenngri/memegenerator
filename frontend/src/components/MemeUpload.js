@@ -12,6 +12,7 @@ import {
 import { FormControlLabel, Checkbox } from '@mui/material';
 import axios from 'axios';
 import marks from '../tools/sliderMarks';
+import getCaptions from '../tools/getCaptions';
 
 const MemeUpload = () => {
   // central state
@@ -35,19 +36,6 @@ const MemeUpload = () => {
     setIsDraft(false);
     setIsHidden(false);
     setIsPrivate(false);
-  };
-
-  const getCaptions = (konvaObject) => {
-    const layer0Children = konvaObject.children[0].children;
-    console.log(layer0Children);
-    const captionsArray = [];
-    for (let i = 0; i < layer0Children.length; i++) {
-      if (layer0Children[i].className === 'Text') {
-        if (layer0Children[i].attrs.text === undefined) captionsArray.push('');
-        else captionsArray.push(layer0Children[i].attrs.text);
-      }
-    }
-    return captionsArray;
   };
 
   const handleUploadMeme = async () => {
