@@ -23,9 +23,13 @@ exports.updateMemeService = async function (req, res) {
       
         console.log("constructing upload object");
 
+        console.log(req.body)
+
         console.log("writing buffer to file");
         const data = parseURI(req.body.meme);
         const fileName = Date.now().toString();
+
+        console.log(data)
 
       const file = {
         name: fileName,
