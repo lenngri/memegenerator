@@ -10,7 +10,7 @@ const Vote = ({ meme, buttonProps }) => {
   const handleVote = () => {
     const voteObject = {
       memeID: meme._id,
-      userID: user.id,
+      userID: user._id,
     };
     console.log('Vote on meme, sending voteObject to server.', voteObject);
     axios.put(process.env.REACT_APP_BURL + '/api/meme/like/add', voteObject).then((res) => {

@@ -24,7 +24,6 @@ const DownloadServer = () => {
         variant='contained'
         onClick={downloadMeme}
         startIcon={<DownloadIcon />}
-        sx={{ my: 1 }}
       >
         Download
       </Button>

@@ -81,7 +81,7 @@ export default function LocalFileSelector({ ButtonText }) {
           <Button
             onClick={(e) => {
               if (preview) {
-                const templateObject = generateTemplateObject(user.id, 'localFile', image);
+                const templateObject = generateTemplateObject(user._id, 'localFile', image);
                 setEditorState({ image, templateObject, templateNew: true, memeObject: null });
                 handleClose();
                 setAlert(false);

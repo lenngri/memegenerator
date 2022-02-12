@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useStoreActions } from 'easy-peasy';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -103,9 +102,6 @@ export default function ProfileScreen() {
               </Box>
             </Paper>
           </Box>
-          <Typography variant='h5' sx={{ mt: 3 }}>
-            Your Memes
-          </Typography>
           <MemeHistory />
         </Container>
       </ThemeProvider>

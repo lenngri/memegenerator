@@ -11,7 +11,8 @@ import URLSelector from '../uploadOptions/UrlSelector';
 import DownloadServer from '../DownloadServer';
 import CameraUpload from '../uploadOptions/CameraUpload';
 import DrawTemplateSelector from '../uploadOptions/DrawTemplateSelector';
-import MemeUpload from '../MemeUpload';
+import GenerateSaveMeme from '../GenerateSaveMeme';
+import UpdateMeme from '../UpdateMeme';
 import Share from '../Share';
 import ShowMeme from '../ShowMeme';
 
@@ -46,9 +47,19 @@ const EditorScreen = ({ logout }) => {
           Generate and save your meme to the server. Afterwards, you can view, share or download it.
         </Typography>
       </Container>
-      <Container sx={{ justifyContent: 'space-around', textAlign: 'center', display: 'flex' }}>
+      <Container sx={{ justifyContent: 'space-around', display: 'flex' }}>
         <Stack direction='row' spacing={1} sx={{ my: 1 }}>
-          <MemeUpload />
+          <GenerateSaveMeme />
+          <UpdateMeme />
+        </Stack>
+      </Container>
+      <Container sx={{ textAlign: 'center' }}>
+        <Typography color='text.secondary'>
+          Afterwards, you can view, share or download it.
+        </Typography>
+      </Container>
+      <Container sx={{ justifyContent: 'space-around', display: 'flex' }}>
+        <Stack direction='row' spacing={1} sx={{ my: 1 }}>
           {/* <Download /> */}
           <DownloadServer />
           <ShowMeme />
