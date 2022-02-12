@@ -15,7 +15,7 @@ import axios from 'axios';
 import marks from '../tools/sliderMarks';
 import getCaptions from '../tools/getCaptions';
 
-const MemeUpload = () => {
+const UpdateMeme = () => {
   // central state
   const editorState = useStoreState((state) => state.editor);
   const stageRef = useStoreState((state) => state.editor.stageRef);
@@ -48,24 +48,9 @@ const MemeUpload = () => {
     setOpen(!open);
   };
 
-  const handleUploadMeme = async (generateServer) => {
-    // check, whether the template is new
-    if (editorState.templateNew) {
-      try {
-        const templateResponse = await axios.post(
-          process.env.REACT_APP_BURL + '/api/template/uploadSingle',
-          editorState.templateObject
-        );
-        console.log('Sent new template, server responeded:', templateResponse);
-        sendMeme(templateResponse.data._id, generateServer);
-      } catch (error) {
-        alert('Something went wrong, please try again.');
-        console.log(error);
-      }
-    } else {
-      console.log('Existing template with ID:', editorState.templateObject.templateID);
-      sendMeme(editorState.templateObject._id, generateServer);
-    }
+  const handleUpdateMeme = async () => {
+    console.log('Updating meme with ID:', editorState.memeObject._id);
+    sendMeme(editorState.templateObject._id);
 
     // clear the state and close dialog
     clearState();
@@ -73,21 +58,14 @@ const MemeUpload = () => {
     setSuccess(true);
   };
 
-  const sendMeme = (templateID, generateServer) => {
+  const sendMeme = (templateID) => {
     // get meta data and image from the current editor canvas
     const konvaObject = stageRef.current.toObject();
-    let dataURL;
-    let route;
-    if (!generateServer) {
-      dataURL = stageRef.current.toDataURL({
-        mimeType: 'image/jpeg',
-        quality: sliderValue / 100,
-      });
-      route = '/api/meme/uploadSingle';
-    } else {
-      dataURL = null;
-      route = '/api/meme/createSingle';
-    }
+    const dataURL = stageRef.current.toDataURL({
+      mimeType: 'image/jpeg',
+      quality: sliderValue / 100,
+    });
+    const route = '/api/meme/update';
     // construct meme object
     const body = {
       userID: user._id,
@@ -117,6 +95,7 @@ const MemeUpload = () => {
       .catch((res, error) => {
         console.log('Server responded with:', res);
         console.log('Error:', error);
+        alert('Sorry, your meme could not be updated!');
       });
   };
 
@@ -133,9 +112,9 @@ const MemeUpload = () => {
       <Button
         variant='contained'
         onClick={() => setOpen(!open)}
-        disabled={!editorState.image ? true : false}
+        disabled={!editorState.memeObject || !editorState.templateObject ? true : false}
       >
-        Generate & Save
+        Update Meme
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Generate & Save</DialogTitle>
@@ -210,8 +189,7 @@ const MemeUpload = () => {
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => handleUploadMeme(false)}>Generate Local</Button>
-          <Button onClick={() => handleUploadMeme(true)}>Generate Server</Button>
+          <Button onClick={() => handleUpdateMeme()}>Generate Local</Button>
         </DialogActions>
       </Dialog>
       <Snackbar
@@ -221,11 +199,11 @@ const MemeUpload = () => {
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
         <Alert onClose={handleSnackClose} severity='success' sx={{ width: '100%' }}>
-          You saved your meme!
+          Your meme was updated!
         </Alert>
       </Snackbar>
     </>
   );
 };
 
-export default MemeUpload;
+export default UpdateMeme;

@@ -5,6 +5,7 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import { Button, TextField, Stack, Typography } from '@mui/material';
 import { CompactPicker } from 'react-color';
+import getAttributes from '../tools/getAttributes';
 
 const C_WIDTH = 600;
 const C_HEIGHT = 600;
@@ -16,18 +17,44 @@ const Editor = () => {
   const setEditorState = useStoreActions((actions) => actions.setEditorState);
   // captions state
   const [topText, setTopText] = useState('');
+  const [topTextPosition, setTopTextPosition] = useState(null);
   const [bottomText, setBottomText] = useState('');
+  const [bottomTextPosition, setBottomTextPosition] = useState(null);
   const [midText, setMidText] = useState('');
+  const [midTextPosition, setMidTextPosition] = useState(null);
   // text style state
   const [fontSize, setFontSize] = useState(30);
   const [captionColor, setColor] = useState('black');
   const [fontStyle, setFontStyle] = useState('bold');
   const [outlined, setOutlined] = useState(true);
+  // editor dimensions state
   const [editorDims, setEditorDims] = useState({ width: C_WIDTH, height: C_HEIGHT });
 
   // load image from store
 
-  const { image } = useStoreState((state) => state.editor);
+  const { image, memeObject } = useStoreState((state) => state.editor);
+
+  // if memeObject is available, load its state to the editor to continue editing
+  useEffect(() => {
+    if (image && memeObject) {
+      console.log('Meme object available. Load state to editor.');
+      const attrsArray = getAttributes(memeObject.konva);
+      console.log(attrsArray);
+      // set individual text
+      setTopText(attrsArray[0].text);
+      setTopTextPosition({ x: attrsArray[0].x, y: attrsArray[0].y });
+      setBottomText(attrsArray[1].text);
+      setBottomTextPosition({ x: attrsArray[1].x, y: attrsArray[1].y });
+      setMidText(attrsArray[2].text);
+      setMidTextPosition({ x: attrsArray[2].x, y: attrsArray[2].y });
+      // set joint attributes
+      setFontSize(attrsArray[0].fontSize);
+      setColor(attrsArray[0].fill);
+      setFontStyle(attrsArray[0].fontStyle);
+      if (attrsArray[0].stroke === 'white') setOutlined(true);
+      else setOutlined(false);
+    }
+  }, [image, memeObject]);
 
   useEffect(() => {
     if (image) {
@@ -72,13 +99,15 @@ const Editor = () => {
   else stroke = undefined;
 
   const captionProps = {
-    align: 'center',
     fontSize: Number(fontSize),
     fontFamily: 'Verdana',
     fontStyle: fontStyle,
     fill: captionColor,
     stroke: stroke,
     strokeWidth: 1.5,
+  };
+  const staticCaptionProps = {
+    align: 'center',
     onMouseEnter: grabCursor,
     onMouseLeave: defaultCursor,
     draggable: true,
@@ -103,31 +132,41 @@ const Editor = () => {
                 <Layer>
                   <Image image={image} width={editorDims.width} height={editorDims.height} />
                   <Text
-                    x={editorDims.width * 0.25}
-                    y={editorDims.height * 0.1}
+                    id='caption'
+                    x={topTextPosition ? topTextPosition.x : editorDims.width * 0.25}
+                    y={topTextPosition ? topTextPosition.y : editorDims.height * 0.1}
                     text={topText}
                     {...captionProps}
+                    {...staticCaptionProps}
                   ></Text>
                   <Text
-                    x={editorDims.width * 0.25}
-                    y={editorDims.height * 0.9}
+                    id='caption'
+                    x={bottomTextPosition ? bottomTextPosition.x : editorDims.width * 0.25}
+                    y={bottomTextPosition ? bottomTextPosition.y : editorDims.height * 0.9}
                     text={bottomText}
                     {...captionProps}
+                    {...staticCaptionProps}
                   ></Text>
                   <Text
-                    x={editorDims.width * 0.25}
-                    y={editorDims.height * 0.5}
+                    id='caption'
+                    x={midTextPosition ? midTextPosition.x : editorDims.width * 0.25}
+                    y={midTextPosition ? midTextPosition.y : editorDims.height * 0.5}
                     text={midText}
                     {...captionProps}
+                    {...staticCaptionProps}
                   ></Text>
                 </Layer>
               </Stage>
             </Box>
           ) : (
             <>
-              <Typography variant='body1' color='gray' gutterBottom component='div'>
-                Please choose a template first.
-              </Typography>
+              <Box width={600} height={400} boxShadow={1}>
+                <Container sx={{ textAlign: 'center', my: 20 }}>
+                  <Typography variant='body1' color='gray' gutterBottom component='div'>
+                    Please choose a template first...
+                  </Typography>
+                </Container>
+              </Box>
             </>
           )}
           <Stack direction='row' spacing={1} sx={{ mt: 3, mb: 2 }}>

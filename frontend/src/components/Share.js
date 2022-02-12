@@ -24,7 +24,12 @@ const Share = () => {
 
   return (
     <>
-      <Button disabled={!memeObject ? true : false} variant='contained' onClick={handleShare}>
+      <Button
+        disabled={!memeObject ? true : false}
+        variant='contained'
+        onClick={handleShare}
+        size='small'
+      >
         Share
       </Button>
       <Snackbar

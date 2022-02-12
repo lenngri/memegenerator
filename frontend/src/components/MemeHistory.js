@@ -1,28 +1,57 @@
+import { useEffect } from 'react';
 import { Box } from '@mui/system';
-import { Container, ImageList, ImageListItem } from '@mui/material';
-import { useStoreState } from 'easy-peasy';
+import { Container, Typography, ImageList, ImageListItem } from '@mui/material';
+import { useStoreState, useStoreActions } from 'easy-peasy';
+import { useNavigate } from 'react-router-dom';
 
 export default function MemeHistory() {
-  // const setEditorState = useStoreActions((actions) => actions.setEditorState);
+  const fetchServerMemes = useStoreActions((actions) => actions.fetchServerMemes);
+  const fetchServerTemplates = useStoreActions((actions) => actions.fetchServerTemplates);
+  const setEditorState = useStoreActions((actions) => actions.setEditorState);
   const serverMemes = useStoreState((state) => state.serverMemes);
+  const serverTemplates = useStoreState((state) => state.serverTemplates);
   const user = useStoreState((state) => state.userSession.user);
-
-  // const handleClickTemplate = (e) => {
-  //   setEditorState({
-  //     image: e.target,
-  //     templateObject: serverMemes[Number(e.target.alt)],
-  //   });
-  // };
-
-  const filteredMemes = serverMemes.filter((meme) => meme.userID === user.id);
+  const navigate = useNavigate();
 
   let baseURL;
   if (process.env.REACT_APP_BURL === '') baseURL = window.location.host;
   else baseURL = process.env.REACT_APP_BURL;
 
+  useEffect(() => {
+    fetchServerMemes();
+    fetchServerTemplates();
+  }, [fetchServerMemes, fetchServerTemplates]);
+
+  const handleEdit = (e) => {
+    console.log(e.target);
+    const memeObject = serverMemes[Number(e.target.alt)];
+    // filter in the serverTemplates array for the template with the corresponding ID
+    // select first and only element of the array
+    const templateObject = serverTemplates.filter(
+      (template) => template._id === memeObject.templateID
+    )[0];
+    console.log(templateObject);
+    const image = new Image();
+    image.onload = function () {
+      setEditorState({
+        image,
+        memeObject,
+        templateObject,
+      });
+      navigate('/editor');
+    };
+    image.src = baseURL + templateObject.filePath;
+  };
+
+  const filteredMemes = serverMemes.filter((meme) => meme.userID === user._id);
+
   return (
     <div>
-      <Container sx={{ justifyContent: 'center', display: 'flex' }}>
+      <Container sx={{ justifyContent: 'center' }}>
+        <Typography variant='h5' sx={{ mt: 3 }}>
+          Your Meme History
+        </Typography>
+        <Typography color='text.secondary'>Click on a meme to edit.</Typography>
         <Box>
           <ImageList style={{ cursor: 'pointer' }} variant='masonry' cols={3} gap={8}>
             {filteredMemes ? (
@@ -32,8 +61,8 @@ export default function MemeHistory() {
                     src={baseURL + item.filePath}
                     alt={index}
                     crossOrigin='Anonymous' // Source: https://konvajs.org/docs/posts/Tainted_Canvas.html (13.01.2022)
-                    // onClick={handleClickTemplate}
                     loading='lazy'
+                    onClick={handleEdit}
                   />
                 </ImageListItem>
               ))

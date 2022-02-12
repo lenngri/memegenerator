@@ -52,11 +52,11 @@ const model = {
   // editor state actions
   setEditorState: action((state, { image, templateObject, templateNew, memeObject }) => {
     // set image
-    if (templateObject !== undefined) state.editor.image = image;
+    if (image !== undefined) state.editor.image = image;
     // set templateObject
     if (templateObject !== undefined) state.editor.templateObject = templateObject;
     // set templateNew flag
-    if (templateObject !== undefined) state.editor.templateNew = templateNew;
+    if (templateNew !== undefined) state.editor.templateNew = templateNew;
     // set memeObject
     if (memeObject !== undefined) state.editor.memeObject = memeObject;
     // Finished
