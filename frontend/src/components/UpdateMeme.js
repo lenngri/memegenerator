@@ -68,6 +68,7 @@ const UpdateMeme = () => {
     const route = '/api/meme/update';
     // construct meme object
     const body = {
+      _id: editorState.memeObject._id,
       userID: user._id,
       templateID: templateID,
       title: title,
@@ -81,7 +82,6 @@ const UpdateMeme = () => {
       votes: [],
       comments: [],
     };
-
     // send the meme object to the server
     console.log(`Send meme object to ${route}:`, body);
     axios
