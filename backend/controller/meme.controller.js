@@ -2,6 +2,7 @@
 const { retrieveMemeService } = require('../service/meme/retrieve.meme.service')
 const { uploadSingleMemeService } = require('../service/meme/uploadSingle.meme.service')
 const { createSingleMemeService } = require('../service/meme/createSingle.meme.service')
+const { createManyService} = require('../service/meme/createMany.meme.service')
 
 
 exports.retrieve = async function(req, res, next) {
@@ -23,5 +24,9 @@ exports.createSingle = async function(req, res, next) {
 
 };
 
+exports.createMany = async function(req, res, next) {
+    
+    await createManyService(req, res, next)
+}
 
 

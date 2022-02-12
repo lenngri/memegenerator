@@ -9,7 +9,9 @@ exports.retrieveMemeService = async function (req, res) {
         userID: req.body.userID || "",
         templateID: req.body.templateID || "",
         title: req.body.title || "",
-        private: req.body.private || "",
+        isPrivate: req.body.private || "",
+        isHidden: req.body.hidden || "",
+        isDraft: req.body.draft || "",
         newest: req.body.newest ? new Date(req.body.newest.year, req.body.newest.month-1, req.body.newest.day, 23, 59) : "",
         oldest: req.body.oldest ? new Date(req.body.oldest.year, req.body.oldest.month-1, req.body.oldest.day, 00, 00) : "",
         maxNumber: req.body.maxNumber || ""

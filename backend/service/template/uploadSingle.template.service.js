@@ -25,7 +25,7 @@ exports.uploadSingleTemplateService = async function(req, res) {
             file = {
                 name: fileName,
                 mimetype: data.extension,
-                path: `./uploads/template/${req.body.userID}/${fileName}.${data.extension.split("/")[1]}`,
+                path: `uploads/template/${req.body.userID}/${fileName}.${data.extension.split("/")[1]}`,
                 size: fileSizeFormatter(data.image.toString('base64').length)
             }
 
