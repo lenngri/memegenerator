@@ -70,7 +70,6 @@ const GenerateSaveMeme = () => {
     // clear the state and close dialog
     clearState();
     setOpen(!open);
-    setSuccess(true);
   };
 
   const sendMeme = (templateID, generateServer) => {
@@ -113,6 +112,7 @@ const GenerateSaveMeme = () => {
         const memeObject = res.data.meme;
         memeObject.stableURL = res.data.stableURL;
         setEditorState({ memeObject });
+        setSuccess(true);
       })
       .catch((res, error) => {
         console.log('Server responded with:', res);
