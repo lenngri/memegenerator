@@ -85,7 +85,7 @@ const UpdateMeme = () => {
     // send the meme object to the server
     console.log(`Send meme object to ${route}:`, body);
     axios
-      .post(process.env.REACT_APP_BURL + route, body)
+      .put(process.env.REACT_APP_BURL + route, body)
       .then((res) => {
         console.log('Server responded with:', res);
         const memeObject = res.data.meme;
