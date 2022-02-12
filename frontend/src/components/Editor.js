@@ -17,8 +17,11 @@ const Editor = () => {
   const setEditorState = useStoreActions((actions) => actions.setEditorState);
   // captions state
   const [topText, setTopText] = useState('');
+  const [topTextPosition, setTopTextPosition] = useState(null);
   const [bottomText, setBottomText] = useState('');
+  const [bottomTextPosition, setBottomTextPosition] = useState(null);
   const [midText, setMidText] = useState('');
+  const [midTextPosition, setMidTextPosition] = useState(null);
   // text style state
   const [fontSize, setFontSize] = useState(30);
   const [captionColor, setColor] = useState('black');
@@ -39,14 +42,15 @@ const Editor = () => {
       console.log(attrsArray);
       // set individual text
       setTopText(attrsArray[0].text);
+      setTopTextPosition({ x: attrsArray[0].x, y: attrsArray[0].y });
       setBottomText(attrsArray[1].text);
+      setBottomTextPosition({ x: attrsArray[1].x, y: attrsArray[1].y });
       setMidText(attrsArray[2].text);
+      setMidTextPosition({ x: attrsArray[2].x, y: attrsArray[2].y });
       // set joint attributes
       setFontSize(attrsArray[0].fontSize);
       setColor(attrsArray[0].fill);
       setFontStyle(attrsArray[0].fontStyle);
-      console.log(attrsArray[0].stroke);
-      console.log(attrsArray[0].stroke === 'white');
       if (attrsArray[0].stroke === 'white') setOutlined(true);
       else setOutlined(false);
     }
@@ -129,24 +133,24 @@ const Editor = () => {
                   <Image image={image} width={editorDims.width} height={editorDims.height} />
                   <Text
                     id='caption'
-                    x={editorDims.width * 0.25}
-                    y={editorDims.height * 0.1}
+                    x={topTextPosition ? topTextPosition.x : editorDims.width * 0.25}
+                    y={topTextPosition ? topTextPosition.y : editorDims.height * 0.1}
                     text={topText}
                     {...captionProps}
                     {...staticCaptionProps}
                   ></Text>
                   <Text
                     id='caption'
-                    x={editorDims.width * 0.25}
-                    y={editorDims.height * 0.9}
+                    x={bottomTextPosition ? bottomTextPosition.x : editorDims.width * 0.25}
+                    y={bottomTextPosition ? bottomTextPosition.y : editorDims.height * 0.9}
                     text={bottomText}
                     {...captionProps}
                     {...staticCaptionProps}
                   ></Text>
                   <Text
                     id='caption'
-                    x={editorDims.width * 0.25}
-                    y={editorDims.height * 0.5}
+                    x={midTextPosition ? midTextPosition.x : editorDims.width * 0.25}
+                    y={midTextPosition ? midTextPosition.y : editorDims.height * 0.5}
                     text={midText}
                     {...captionProps}
                     {...staticCaptionProps}
