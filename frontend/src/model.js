@@ -2,7 +2,7 @@ import { action, thunk, persist } from 'easy-peasy';
 import axios from 'axios';
 
 const model = {
-  
+
   // STATE
   imgflipTemplates: [],
   serverTemplates: [],
@@ -51,7 +51,7 @@ const model = {
     state.serverMemes = memes;
   }),
   // editor state actions
-  setEditorState: action((state, { image, templateObject, templateNew }) => {
+  setEditorState: action((state, { image, templateObject, templateNew, memeObject }) => {
     // set image
     state.editor.image = image;
     // set templateObject
@@ -59,6 +59,10 @@ const model = {
     else state.editor.templateObject = null;
     // set templateNew flag
     state.editor.templateNew = templateNew;
+    // set memeObject
+    if (memeObject !== undefined) state.editor.memeObject = memeObject;
+    else state.editor.memeObject = null;
+    // Finished
     console.log('Editor state updated.');
   }),
   setStageRef: action((state, stageRef) => {

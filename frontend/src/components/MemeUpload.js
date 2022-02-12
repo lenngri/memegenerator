@@ -16,7 +16,7 @@ import Konva from 'konva';
 const MemeUpload = () => {
   // central state
   const editorState = useStoreState((state) => state.editor);
-  const stageRef = useStoreState((state) => state.editorState.stageRef);
+  const stageRef = useStoreState((state) => state.editor.stageRef);
   const user = useStoreState((state) => state.userSession.user);
 
   // local state
