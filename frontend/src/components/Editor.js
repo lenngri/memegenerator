@@ -5,6 +5,7 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import { Button, TextField, Stack, Typography } from '@mui/material';
 import { CompactPicker } from 'react-color';
+import getCaptions from '../tools/getCaptions';
 
 const C_WIDTH = 600;
 const C_HEIGHT = 600;
@@ -27,7 +28,19 @@ const Editor = () => {
 
   // load image from store
 
-  const { image } = useStoreState((state) => state.editor);
+  const { image, memeObject } = useStoreState((state) => state.editor);
+
+  // if memeObject is available, load its state to the editor to continue editing
+  useEffect(() => {
+    if (image && memeObject) {
+      console.log('Meme object available. Load state to editor.');
+      const captionsArray = getCaptions(memeObject.konva);
+      console.log(captionsArray);
+      setTopText(captionsArray[0]);
+      setBottomText(captionsArray[1]);
+      setMidText(captionsArray[2]);
+    }
+  }, [image, memeObject]);
 
   useEffect(() => {
     if (image) {
