@@ -4,12 +4,14 @@ const router = express.Router();
 const {
     retrieve,
     uploadSingle,
-    createSingle
+    createSingle,
+    createMany
 }  = require('../controller/meme.controller')
 
 router.route('/retrieve').get(retrieve);
 router.route('/uploadSingle').post(uploadSingle);
 router.route('/createSingle').post(createSingle);
+router.route('/createMany').post(createMany);
 
 
 const {

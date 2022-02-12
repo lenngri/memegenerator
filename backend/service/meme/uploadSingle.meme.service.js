@@ -28,7 +28,7 @@ exports.uploadSingleMemeService = async function(req, res) {
             const file = {
                 name: fileName,
                 mimetype: data.extension,
-                path: `./uploads/meme/${req.body.userID}/${fileName}.${data.extension.split('/')[1]}`,
+                path: `uploads/meme/${req.body.userID}/${fileName}.${data.extension.split('/')[1]}`,
                 size: fileSizeFormatter(data.image.toString('base64').length)
             }
 
@@ -56,10 +56,10 @@ exports.uploadSingleMemeService = async function(req, res) {
                 if(error) console.log(error.message)
                 const proxyHost = req.headers["x-forwarded-host"];
                 const host = proxyHost ? proxyHost : req.headers.host;
-                const stableURL = "http://" + host + "/overview/" + meme._id;
+                const link = "http://" + host + "/" + memes[i].filePath;
                 res.status(200).json({
                     meme: meme,
-                    stableURL: stableURL
+                    stableURL: link
                 })
                 writeFile(join(__dirname, '../../', meme.filePath), data.image)
                 console.log("saved meme with ID: " + meme.id + " at " + meme.filePath)
