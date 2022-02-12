@@ -14,23 +14,25 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Singleview from './Singleview';
 import axios from 'axios';
+import Vote from './Vote';
+import Votes from './Votes';
 
 function InfiniteScroller() {
   // use central state
-  const navigate = useNavigate();
-  const setEditorState = useStoreActions((actions) => actions.setEditorState);
   const setServerMemes = useStoreActions((actions) => actions.setServerMemes);
   const serverMemes = useStoreState((actions) => actions.serverMemes);
 
   // use local state
   const [openSingleView, setOpenSingleView] = useState(false);
-  const [counter, setCounter] = useState(2);
+  const [counter, setCounter] = useState(1);
   const [memes, setMemes] = useState([]);
   const [memeIndex, setMemeIndex] = useState(null);
   // catch parameter from URL
   const { paramMemeID } = useParams();
   // initalize clipboard
   const clipboard = useClipboard();
+
+  console.log('Rerender Overview');
 
   let baseURL;
   if (process.env.REACT_APP_BURL === '') baseURL = window.location.host;
@@ -67,12 +69,6 @@ function InfiniteScroller() {
     return button.parentNode.parentNode.childNodes[0];
   };
 
-  const handleEdit = (event) => {
-    const cardMedia = getCardMediaFromButton(event.target);
-    setEditorState({ image: cardMedia });
-    navigate('/editor');
-  };
-
   const handleView = (event) => {
     const cardMedia = getCardMediaFromButton(event.target);
     setMemeIndex(Number(cardMedia.alt));
@@ -84,6 +80,14 @@ function InfiniteScroller() {
     const meme = memes[Number(cardMedia.alt)];
     clipboard.copy(window.location.origin + '/overview/' + meme._id);
     alert(`Link to share meme copied! \n ${window.location.origin + '/overview/' + meme._id}`);
+  };
+
+  const calculateVoteScore = (votes) => {
+    // console.log(score);
+    const upVotes = votes.filter((v) => v.value === 1).length;
+    const downVotes = votes.filter((v) => v.value === -1).length;
+    console.log(`Calculating Votes: ${upVotes} - ${downVotes} = ${upVotes - downVotes}`);
+    return upVotes - downVotes;
   };
 
   return (
@@ -128,20 +132,17 @@ function InfiniteScroller() {
                       {meme.title}
                     </Typography>
                     <Typography>{meme.description}</Typography>
-                    <Typography>Number of votes: {meme.votes.length}</Typography>
+                    {/* <Typography>Number of votes: {calculateVoteScore(meme.votes)}</Typography> */}
                   </CardContent>
                   <CardActions sx={{ width: '100%', justifyContent: 'center' }}>
                     <Button size='large' onClick={handleView}>
                       View
                     </Button>
-                    <Button size='large' onClick={handleEdit}>
-                      Edit
-                    </Button>
                     <Button size='large'>Comment</Button>
-                    <Button size='large'>Vote</Button>
                     <Button size='large' onClick={handleShare}>
                       Share
                     </Button>
+                    <Votes meme={meme} />
                   </CardActions>
                 </Card>
               </Grid>
