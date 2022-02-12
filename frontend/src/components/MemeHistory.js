@@ -22,16 +22,17 @@ export default function MemeHistory() {
     fetchServerTemplates();
   }, [fetchServerMemes, fetchServerTemplates]);
 
+  const filteredMemes = serverMemes.filter((meme) => meme.userID === user._id);
+
   const handleEdit = (e) => {
-    console.log(e.target);
-    const memeObject = serverMemes[Number(e.target.alt)];
+    const memeObject = filteredMemes[Number(e.target.alt)];
     // filter in the serverTemplates array for the template with the corresponding ID
     // select first and only element of the array
     const templateObject = serverTemplates.filter(
       (template) => template._id === memeObject.templateID
     )[0];
-    console.log(templateObject);
     const image = new Image();
+    image.crossOrigin = 'anonymous';
     image.onload = function () {
       setEditorState({
         image,
@@ -42,8 +43,6 @@ export default function MemeHistory() {
     };
     image.src = baseURL + templateObject.filePath;
   };
-
-  const filteredMemes = serverMemes.filter((meme) => meme.userID === user._id);
 
   return (
     <div>

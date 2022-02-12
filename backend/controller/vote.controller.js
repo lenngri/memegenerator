@@ -34,14 +34,21 @@ exports.updateVote = async function(req, res) {
     if (!(newVote.value === 1 || newVote.value === -1)) return res.status(400).send({success: false, message: "votes can only have value of 1 or -1"})
 
     // checks if votes array includes vote. If not, then adds vote. If yes, checks vot value and updates vote value
-    votes = votes.filter((element) => element.userID !== newVote.userID)
-    votes.push(newVote)
+    const oldVote = votes.find((element) => element.userID === newVote.userID)
+
+    if(!oldVote) {
+        votes.push(newVote)
+    } else if (oldVote.value == newVote.value) {
+        votes = votes.filter((element) => element.userID !== newVote.userID)
+    } else { 
+        votes = votes.filter((element) => element.userID !== newVote.userID)
+        votes.push(newVote)
+    }
 
     // creates update variable and pushes new vote
     const update = { votes: votes }
 
     // guard clause to make sure vote was pushed to update variable
-    if(!update.votes.some(element => element._id === newVote._id)) return res.status(500).send({success: false, message: 'adding vote failed because it was not found in staging area'})
     console.log("successfully staged vote for commit")
 
     // find meme according to filter variable and update with votes array

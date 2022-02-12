@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { Box, Slider, Button, TextField, IconButton, Stack } from '@mui/material';
 import { Snackbar, Alert } from '@mui/material';
@@ -34,9 +34,16 @@ const UpdateMeme = () => {
   // IN CASE OF MANAGING THE generateServer Flag via local state
   // const [generateServer, setGenerateServer] = useState(false);
 
+  useEffect(() => {
+    if (editorState.memeObject) {
+      setTitle(editorState.memeObject.title);
+      setDescription(editorState.memeObject.description);
+    }
+  }, [editorState.memeObject]);
+
   const clearState = () => {
-    setTitle('Title');
-    setDescription('Description');
+    setTitle(editorState.memeObject.title);
+    setDescription(editorState.memeObject.description);
     setIsDraft(false);
     setIsHidden(false);
     setIsPrivate(false);
@@ -55,7 +62,6 @@ const UpdateMeme = () => {
     // clear the state and close dialog
     clearState();
     setOpen(!open);
-    setSuccess(true);
   };
 
   const sendMeme = (templateID) => {
@@ -68,6 +74,7 @@ const UpdateMeme = () => {
     const route = '/api/meme/update';
     // construct meme object
     const body = {
+      _id: editorState.memeObject._id,
       userID: user._id,
       templateID: templateID,
       title: title,
@@ -81,16 +88,16 @@ const UpdateMeme = () => {
       votes: [],
       comments: [],
     };
-
     // send the meme object to the server
     console.log(`Send meme object to ${route}:`, body);
     axios
-      .post(process.env.REACT_APP_BURL + route, body)
+      .put(process.env.REACT_APP_BURL + route, body)
       .then((res) => {
         console.log('Server responded with:', res);
         const memeObject = res.data.meme;
         memeObject.stableURL = res.data.stableURL;
         setEditorState({ memeObject });
+        setSuccess(true);
       })
       .catch((res, error) => {
         console.log('Server responded with:', res);
@@ -114,94 +121,104 @@ const UpdateMeme = () => {
         onClick={() => setOpen(!open)}
         disabled={!editorState.memeObject || !editorState.templateObject ? true : false}
       >
-        Update Meme
+        Update & Save
       </Button>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Generate & Save</DialogTitle>
-        <IconButton
-          aria-label='close'
-          onClick={handleClose}
-          sx={{
-            position: 'absolute',
-            right: 8,
-            top: 8,
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-        <DialogContent>
-          <DialogContentText>To save the meme, please specify the fields below.</DialogContentText>
-          <TextField
-            autoFocus
-            margin='dense'
-            id='name'
-            label='Title'
-            fullWidth
-            variant='standard'
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <TextField
-            margin='dense'
-            id='name'
-            label='Description'
-            fullWidth
-            variant='standard'
-            onChange={(e) => setDescription(e.target.value)}
-          />
-          <Stack direction='row' spacing={1} sx={{ mb: 3 }}>
-            <FormControlLabel
-              control={<Checkbox />}
-              label='Draft'
-              onClick={() => setIsDraft(!isDraft)}
-            />
-            <FormControlLabel
-              control={<Checkbox />}
-              label='Unlisted'
-              onClick={() => setIsHidden(!isHidden)}
-            />
-            <FormControlLabel
-              control={<Checkbox />}
-              label='Private'
-              onClick={() => setIsPrivate(!isPrivate)}
-            />
-          </Stack>
-          {/* In case of managing generateServer flag over local state */}
-          {/* <Stack direction='row' spacing={1} sx={{ mb: 3 }}>
+      {editorState.memeObject ? (
+        <>
+          <Dialog open={open} onClose={handleClose}>
+            <DialogTitle>Update & Save</DialogTitle>
+            <IconButton
+              aria-label='close'
+              onClick={handleClose}
+              sx={{
+                position: 'absolute',
+                right: 8,
+                top: 8,
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+            <DialogContent>
+              <DialogContentText>
+                To save the meme, please specify the fields below.
+              </DialogContentText>
+              <TextField
+                autoFocus
+                value={title}
+                margin='dense'
+                id='name'
+                label='Title'
+                fullWidth
+                variant='standard'
+                onChange={(e) => setTitle(e.target.value)}
+              />
+              <TextField
+                margin='dense'
+                value={description}
+                id='name'
+                label='Description'
+                fullWidth
+                variant='standard'
+                onChange={(e) => setDescription(e.target.value)}
+              />
+              <Stack direction='row' spacing={1} sx={{ mb: 3 }}>
+                <FormControlLabel
+                  control={<Checkbox />}
+                  label='Draft'
+                  onClick={() => setIsDraft(!isDraft)}
+                />
+                <FormControlLabel
+                  control={<Checkbox />}
+                  label='Unlisted'
+                  onClick={() => setIsHidden(!isHidden)}
+                />
+                <FormControlLabel
+                  control={<Checkbox />}
+                  label='Private'
+                  onClick={() => setIsPrivate(!isPrivate)}
+                />
+              </Stack>
+              {/* In case of managing generateServer flag over local state */}
+              {/* <Stack direction='row' spacing={1} sx={{ mb: 3 }}>
             <FormControlLabel
               control={<Checkbox />}
               label='Generate on server?'
               onClick={() => setGenerateServer(!generateServer)}
             />
           </Stack> */}
-          <DialogContentText>Image Quality in %:</DialogContentText>
-          <Box sx={{ mx: 3 }}>
-            <Slider
-              defaultValue={100}
-              aria-label='Default'
-              valueLabelDisplay='on'
-              marks={marks}
-              onChange={(e) => {
-                setSliderValue(e.target.value);
-              }}
-              min={1}
-              max={100}
-            />
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => handleUpdateMeme()}>Generate Local</Button>
-        </DialogActions>
-      </Dialog>
-      <Snackbar
-        open={success}
-        autoHideDuration={4000}
-        onClose={handleSnackClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert onClose={handleSnackClose} severity='success' sx={{ width: '100%' }}>
-          Your meme was updated!
-        </Alert>
-      </Snackbar>
+              <DialogContentText>Image Quality in %:</DialogContentText>
+              <Box sx={{ mx: 3 }}>
+                <Slider
+                  defaultValue={100}
+                  aria-label='Default'
+                  valueLabelDisplay='on'
+                  marks={marks}
+                  onChange={(e) => {
+                    setSliderValue(e.target.value);
+                  }}
+                  min={1}
+                  max={100}
+                />
+              </Box>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => handleUpdateMeme()}>Update & Save</Button>
+            </DialogActions>
+          </Dialog>
+          <Snackbar
+            open={success}
+            autoHideDuration={4000}
+            onClose={handleSnackClose}
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          >
+            <Alert onClose={handleSnackClose} severity='success' sx={{ width: '100%' }}>
+              Your meme was updated!
+            </Alert>
+          </Snackbar>
+        </>
+      ) : (
+        <></>
+      )}
     </>
   );
 };

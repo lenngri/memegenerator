@@ -6,6 +6,11 @@ const { join } = require('path')
 const Template = require('../../database/models/template.model');
 
 exports.uploadSingleTemplateService = async function(req, res) {
+
+    console.log("running upload template route")
+    console.log(req.body)
+
+
     try {
 
         if (!req.body.template) {

@@ -6,7 +6,7 @@ const {
     login,
     forgotpassword,
     resetpassword,
-    registerExternal
+    external
 } = require('../controller/user.controller');
 
 router.route("/register").post(register);
@@ -17,6 +17,6 @@ router.route("/forgotpassword").post(forgotpassword);
 
 router.route("/resetpassword/:resetToken").put(resetpassword);
 
-router.route("/external/register").post(registerExternal)
+router.route("/external/register").post(external)
 
 module.exports = router;
