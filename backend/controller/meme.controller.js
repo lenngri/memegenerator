@@ -1,10 +1,4 @@
-const fs = require('fs');
-const{ join } = require('path');
-const Meme = require('../database/models/meme.model');
 // helper functions
-const { fileSizeFormatter } = require('../helpers/fileSizeFormatter.helper')
-const { writeFile } = require('../helpers/fileSaver.helper')
-const { parseURI } = require('../helpers/uriParser.helper')
 const { retrieveMemeService } = require('../service/meme/retrieve.meme.service')
 const { uploadSingleMemeService } = require('../service/meme/uploadSingle.meme.service')
 const { createSingleMemeService } = require('../service/meme/createSingle.meme.service')
