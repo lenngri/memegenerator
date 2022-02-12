@@ -90,7 +90,7 @@ const MemeUpload = () => {
     }
     // construct meme object
     const body = {
-      userID: user.id,
+      userID: user._id,
       templateID: templateID,
       title: title,
       description: description,

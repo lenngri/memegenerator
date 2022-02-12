@@ -3,6 +3,7 @@ const { retrieveMemeService } = require('../service/meme/retrieve.meme.service')
 const { uploadSingleMemeService } = require('../service/meme/uploadSingle.meme.service')
 const { createSingleMemeService } = require('../service/meme/createSingle.meme.service')
 const { createManyService} = require('../service/meme/createMany.meme.service')
+const { updateMemeService } = require('../service/meme/update.meme.service')
 
 // allows retrieval of memes in all constellations of search parameters
 exports.retrieve = async function(req, res, next) {

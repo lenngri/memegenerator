@@ -5,15 +5,15 @@ const {
     retrieve,
     uploadSingle,
     createSingle,
-    createMany
+    createMany,
+    updateMeme
 }  = require('../controller/meme.controller')
 
 router.route('/retrieve').get(retrieve);
 router.route('/uploadSingle').post(uploadSingle);
 router.route('/createSingle').post(createSingle);
 router.route('/createMany').post(createMany);
-
-router.route('/update').put(update)
+router.route('/update').put(updateMeme)
 
 
 const {

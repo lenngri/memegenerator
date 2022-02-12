@@ -56,7 +56,7 @@ exports.uploadSingleMemeService = async function(req, res) {
                 if(error) console.log(error.message)
                 const proxyHost = req.headers["x-forwarded-host"];
                 const host = proxyHost ? proxyHost : req.headers.host;
-                const link = "http://" + host + "/" + memes[i].filePath;
+                const link = "http://" + host + "/" + meme.filePath;
                 res.status(200).json({
                     meme: meme,
                     stableURL: link
