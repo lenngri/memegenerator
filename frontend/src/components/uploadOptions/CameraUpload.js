@@ -9,7 +9,7 @@ import Alert from '@mui/material/Alert';
 import { Typography, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import Webcam from 'react-webcam';
-import { generateTemplateObject } from './generateTemplateObject';
+import { generateTemplateObject } from '../../tools/generateTemplateObject';
 
 // https://www.npmjs.com/package/react-webcam
 

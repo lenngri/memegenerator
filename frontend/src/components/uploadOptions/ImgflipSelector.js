@@ -8,7 +8,7 @@ import { Box } from '@mui/system';
 import { Container, ImageList, ImageListItem, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import { generateTemplateObject } from './generateTemplateObject';
+import { generateTemplateObject } from '../../tools/generateTemplateObject';
 
 export default function ImgflipSelector() {
   const setMemeToEdit = useStoreActions((actions) => actions.setMemeToEdit);

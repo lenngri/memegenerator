@@ -6,9 +6,10 @@ const model = {
   imgflipTemplates: [],
   serverTemplates: [],
   serverMemes: [],
-  memeToEdit: {
+  editor: {
     image: null,
     templateObject: null,
+    memeObject: null,
     templateNew: null,
   },
   stageRef: null,
