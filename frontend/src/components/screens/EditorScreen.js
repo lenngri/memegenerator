@@ -12,6 +12,7 @@ import DownloadServer from '../DownloadServer';
 import CameraUpload from '../uploadOptions/CameraUpload';
 import DrawTemplateSelector from '../uploadOptions/DrawTemplateSelector';
 import MemeUpload from '../MemeUpload';
+import Share from '../Share';
 
 const EditorScreen = ({ logout }) => {
   const fetchImgflip = useStoreActions((actions) => actions.fetchImgflip);
@@ -44,6 +45,7 @@ const EditorScreen = ({ logout }) => {
           <MemeUpload />
           {/* <Download /> */}
           <DownloadServer />
+          <Share />
         </Stack>
       </Container>
     </div>
