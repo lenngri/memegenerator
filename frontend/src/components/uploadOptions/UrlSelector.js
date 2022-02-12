@@ -10,7 +10,7 @@ import Alert from '@mui/material/Alert';
 import { generateTemplateObject } from '../../tools/generateTemplateObject';
 
 export default function URLSelector() {
-  const setMemeToEdit = useStoreActions((actions) => actions.setMemeToEdit);
+  const setEditorState = useStoreActions((actions) => actions.setEditorState);
   const user = useStoreState((state) => state.userSession.user);
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState();
@@ -60,7 +60,7 @@ export default function URLSelector() {
               if (name) {
                 console.log('Set image from web url to editor:', image)
                 const templateObject = generateTemplateObject(user.id, 'web-url', image);
-                setMemeToEdit({ image, templateObject, templateNew: true });
+                setEditorState({ image, templateObject, templateNew: true });
                 handleClose();
                 setAlert(false);
               } else {

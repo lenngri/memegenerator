@@ -10,7 +10,7 @@ import DrawCanvas from '../DrawCanvas';
 import { generateTemplateObject } from '../../tools/generateTemplateObject';
 
 export default function DrawTemplateSelector({ ButtonText }) {
-  const setMemeToEdit = useStoreActions((actions) => actions.setMemeToEdit);
+  const setEditorState = useStoreActions((actions) => actions.setEditorState);
   const user = useStoreState((state) => state.userSession.user);
   const [open, setOpen] = React.useState(false);
 
@@ -62,7 +62,7 @@ export default function DrawTemplateSelector({ ButtonText }) {
             onClick={(e) => {
               if (preview) {
                 const templateObject = generateTemplateObject(user.id, 'draw', image);
-                setMemeToEdit({ image, templateObject, templateNew: true });
+                setEditorState({ image, templateObject, templateNew: true });
                 handleClose();
                 setAlert(false);
               } else {

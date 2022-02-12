@@ -10,7 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 
 export default function ServerTemplateSelector() {
-  const setMemeToEdit = useStoreActions((actions) => actions.setMemeToEdit);
+  const setEditorState = useStoreActions((actions) => actions.setEditorState);
   const serverTemplates = useStoreState((state) => state.serverTemplates);
   const [open, setOpen] = useState(false);
   const scroll = 'paper';
@@ -24,7 +24,7 @@ export default function ServerTemplateSelector() {
   };
 
   const handleClickTemplate = (e) => {
-    setMemeToEdit({
+    setEditorState({
       image: e.target,
       templateObject: serverTemplates[Number(e.target.alt)],
     });

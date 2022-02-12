@@ -11,7 +11,7 @@ import { generateTemplateObject } from '../../tools/generateTemplateObject';
 
 export default function LocalFileSelector({ ButtonText }) {
   const user = useStoreState((state) => state.userSession.user);
-  const setMemeToEdit = useStoreActions((actions) => actions.setMemeToEdit);
+  const setEditorState = useStoreActions((actions) => actions.setEditorState);
   const [open, setOpen] = React.useState(false);
 
   const descriptionElementRef = React.useRef(null);
@@ -82,7 +82,7 @@ export default function LocalFileSelector({ ButtonText }) {
             onClick={(e) => {
               if (preview) {
                 const templateObject = generateTemplateObject(user.id, 'localFile', image);
-                setMemeToEdit({ image, templateObject, templateNew: true });
+                setEditorState({ image, templateObject, templateNew: true });
                 handleClose();
                 setAlert(false);
               } else {

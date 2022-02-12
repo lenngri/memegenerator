@@ -15,8 +15,8 @@ import Konva from 'konva';
 
 const MemeUpload = () => {
   // central state
-  const memeToEdit = useStoreState((state) => state.memeToEdit);
-  const stageRef = useStoreState((state) => state.stageRef);
+  const editorState = useStoreState((state) => state.editor);
+  const stageRef = useStoreState((state) => state.editorState.stageRef);
   const user = useStoreState((state) => state.userSession.user);
 
   // local state
@@ -50,11 +50,11 @@ const MemeUpload = () => {
 
   const handleUploadMeme = async () => {
     // check, whether the template is new
-    if (memeToEdit.templateNew) {
+    if (editorState.templateNew) {
       try {
         const templateResponse = await axios.post(
           process.env.REACT_APP_BURL + '/api/template/uploadSingle',
-          memeToEdit.templateObject
+          editorState.templateObject
         );
         console.log('Sent new template, server responeded:', templateResponse);
         sendMeme(templateResponse.data._id);
@@ -63,8 +63,8 @@ const MemeUpload = () => {
         console.log(error);
       }
     } else {
-      console.log('Existing template with ID:', memeToEdit.templateObject.templateID);
-      sendMeme(memeToEdit.templateObject._id);
+      console.log('Existing template with ID:', editorState.templateObject.templateID);
+      sendMeme(editorState.templateObject._id);
     }
 
     // clear the state and close dialog
@@ -111,7 +111,7 @@ const MemeUpload = () => {
 
     const stage = Konva.Node.create(konvaObject, 'container');
     const background = new Konva.Image({
-      image: memeToEdit.image,
+      image: editorState.image,
       width: stage.width(),
       height: stage.height(),
     });
@@ -126,7 +126,7 @@ const MemeUpload = () => {
       <Button
         variant='contained'
         onClick={() => setOpen(!open)}
-        disabled={!memeToEdit.image ? true : false}
+        disabled={!editorState.image ? true : false}
       >
         Save Meme
       </Button>

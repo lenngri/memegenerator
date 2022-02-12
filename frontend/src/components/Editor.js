@@ -24,9 +24,9 @@ const Editor = () => {
   const [outlined, setOutlined] = useState(true);
   const [editorDims, setEditorDims] = useState({ width: C_WIDTH, height: C_HEIGHT });
 
-  // load memeToEdit from store
+  // load image from store
 
-  const { image } = useStoreState((state) => state.memeToEdit);
+  const { image } = useStoreState((state) => state.editor);
 
   useEffect(() => {
     if (image) {

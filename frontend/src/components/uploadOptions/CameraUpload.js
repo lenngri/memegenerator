@@ -14,7 +14,7 @@ import { generateTemplateObject } from '../../tools/generateTemplateObject';
 // https://www.npmjs.com/package/react-webcam
 
 export default function CameraUpload({ ButtonText }) {
-  const setMemeToEdit = useStoreActions((actions) => actions.setMemeToEdit);
+  const setEditorState = useStoreActions((actions) => actions.setEditorState);
   const user = useStoreState((state) => state.userSession.user);
   const [preview, setPreview] = React.useState();
   const [imgSrc, setImgSrc] = React.useState(null);
@@ -37,7 +37,7 @@ export default function CameraUpload({ ButtonText }) {
   const handleSetTemplate = (e) => {
     if (preview) {
       const templateObject = generateTemplateObject(user.id, 'webcam', image);
-      setMemeToEdit({ image, templateObject, templateNew: true });
+      setEditorState({ image, templateObject, templateNew: true });
       setImgSrc(null);
       setPreview(null);
       setAlert(false);

@@ -11,7 +11,7 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import { generateTemplateObject } from '../../tools/generateTemplateObject';
 
 export default function ImgflipSelector() {
-  const setMemeToEdit = useStoreActions((actions) => actions.setMemeToEdit);
+  const setEditorState = useStoreActions((actions) => actions.setEditorState);
   const imgflipTemplates = useStoreState((state) => state.imgflipTemplates);
   const user = useStoreState((state) => state.userSession.user);
 
@@ -67,7 +67,7 @@ export default function ImgflipSelector() {
                       crossOrigin='Anonymous' // Source: https://konvajs.org/docs/posts/Tainted_Canvas.html (13.01.2022)
                       onClick={(e) => {
                         const templateObject = generateTemplateObject(user.id, 'imgflip', e.target);
-                        setMemeToEdit({ image: e.target, templateObject, templateNew: true });
+                        setEditorState({ image: e.target, templateObject, templateNew: true });
                         handleClose();
                       }}
                       loading='lazy'
