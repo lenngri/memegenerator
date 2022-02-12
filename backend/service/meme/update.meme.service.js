@@ -8,6 +8,7 @@ const Meme = require("../../database/models/meme.model");
 
 exports.updateMemeService = async function (req, res) {
   console.log("running update meme route");
+  console.log(req.body)
 
   try {
     if (!req.body._id) {
@@ -16,7 +17,8 @@ exports.updateMemeService = async function (req, res) {
         .json({ success: false, message: "no meme object attached" });
     } else {
 
-        const oldMeme = Meme.findOne({id: req.body.id})
+
+        const oldMeme = Meme.findOne({id: req.body._id})
         if(!oldMeme) return res.status(404).json({success: false, message: "could not find existing meme to update"})
       
         console.log("constructing upload object");

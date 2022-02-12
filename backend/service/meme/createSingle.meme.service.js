@@ -20,7 +20,7 @@ exports.createSingleMemeService = async function (req, res) {
       const template = await Template.findOne({ _id: req.body.templateID });
 
       // create new meme from konva object
-      const dataURI = memeFromKonvaObject(req.body.konva, template.filePath);
+      const dataURI = memeFromKonvaObject(req.body.konva, join(__dirname, "/../../" + template.filePath));
       if (!dataURI) console.log("failed to create meme in konvaParser.helper");
 
       console.log("constructing upload object");
