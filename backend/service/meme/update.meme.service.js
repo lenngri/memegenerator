@@ -54,11 +54,13 @@ exports.updateMemeService = async function (req, res) {
       console.log("contacting database");
 
 
-      Meme.findOneAndUpdate({_id: req.body._id}, newMeme, function (error, meme) {
+      Meme.findOneAndUpdate({_id: req.body._id}, newMeme, {new: true}, function (error, meme) {
         if (error) console.log(error.message);
         const proxyHost = req.headers["x-forwarded-host"];
         const host = proxyHost ? proxyHost : req.headers.host;
         const link = "http://" + host + "/" + meme.filePath;
+
+        console.log(meme)
 
         res.status(200).json({
           meme: meme,
