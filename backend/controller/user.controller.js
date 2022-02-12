@@ -3,22 +3,22 @@ const User = require('../database/models/user.model');
 const ErrorResponse = require('../helpers/errorResponse.helper');
 const sendEmail = require('../helpers/sendEmail.helper');
 
-const { registerUserService } = require('../service/user/register.user.service')
-const { loginUserService } = require('../service/user/login.user.service')
-const { registerExternalService } = require('../service/user/registerExternal.user.service')
+const { registerUserService } = require('../service/user/register.user.service');
+const { loginUserService } = require('../service/user/login.user.service');
+const { registerExternalService } = require('../service/user/registerExternal.user.service');
 
 exports.register = async function (req, res, next) {
-  registerUserService(req, res, next)
+  registerUserService(req, res, next);
 };
 
 exports.login = async function (req, res, next) {
- loginUserService(req, res, next)
+  loginUserService(req, res, next);
 };
 
 exports.registerExternal = async function (req, res, next) {
-  console.log('running /user/external/register route')
-  registerExternalService(req, res, next)
-}
+  console.log('running /user/external/register route');
+  registerExternalService(req, res, next);
+};
 
 exports.forgotpassword = async (req, res, next) => {
   const { email } = req.body;
@@ -99,7 +99,7 @@ const sendToken = (user, statusCode, res) => {
     success: true,
     token: token,
     user: {
-      id: user.id,
+      id: user._id,
       email: user.email,
       username: user.username,
     },

@@ -61,7 +61,7 @@ export default function DrawTemplateSelector({ ButtonText }) {
           <Button
             onClick={(e) => {
               if (preview) {
-                const templateObject = generateTemplateObject(user.id, 'draw', image);
+                const templateObject = generateTemplateObject(user._id, 'draw', image);
                 setEditorState({ image, templateObject, templateNew: true, memeObject: null });
                 handleClose();
                 setAlert(false);

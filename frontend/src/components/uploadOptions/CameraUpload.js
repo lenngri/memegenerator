@@ -36,7 +36,7 @@ export default function CameraUpload({ ButtonText }) {
 
   const handleSetTemplate = (e) => {
     if (preview) {
-      const templateObject = generateTemplateObject(user.id, 'webcam', image);
+      const templateObject = generateTemplateObject(user._id, 'webcam', image);
       setEditorState({ image, templateObject, templateNew: true, memeObject: null });
       setImgSrc(null);
       setPreview(null);

@@ -43,7 +43,7 @@ export default function MemeHistory() {
     image.src = baseURL + templateObject.filePath;
   };
 
-  const filteredMemes = serverMemes.filter((meme) => meme.userID === user.id);
+  const filteredMemes = serverMemes.filter((meme) => meme.userID === user._id);
 
   return (
     <div>
