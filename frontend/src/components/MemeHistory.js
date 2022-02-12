@@ -34,6 +34,7 @@ export default function MemeHistory() {
     )[0];
     console.log(templateObject);
     const image = new Image();
+    image.crossOrigin = 'anonymous';
     image.onload = function () {
       setEditorState({
         image,

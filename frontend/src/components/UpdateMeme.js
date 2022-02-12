@@ -65,6 +65,8 @@ const UpdateMeme = () => {
       mimeType: 'image/jpeg',
       quality: sliderValue / 100,
     });
+    console.log(stageRef.current);
+    console.log(dataURL);
     const route = '/api/meme/update';
     // construct meme object
     const body = {
