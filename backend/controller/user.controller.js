@@ -3,47 +3,22 @@ const User = require('../database/models/user.model');
 const ErrorResponse = require('../helpers/errorResponse.helper');
 const sendEmail = require('../helpers/sendEmail.helper');
 
-exports.register = async (req, res, next) => {
-  const { username, email, password } = req.body;
+const { registerUserService } = require('../service/user/register.user.service')
+const { loginUserService } = require('../service/user/login.user.service')
+const { registerExternalService } = require('../service/user/registerExternal.user.service')
 
-  try {
-    const user = await User.create({
-      username,
-      email,
-      password,
-    });
-
-    sendToken(user, 200, res);
-  } catch (error) {
-    next(error);
-  }
+exports.register = async function (req, res, next) {
+  registerUserService(req, res, next)
 };
 
-exports.login = async (req, res, next) => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    return next(new ErrorResponse('Please provide an email and a password', 400));
-  }
-
-  try {
-    const user = await User.findOne({ email }).select('+password');
-
-    if (!user) {
-      return next(new ErrorResponse('Invalid credentials', 401));
-    }
-
-    const isMatch = await user.matchPasswords(password);
-
-    if (!isMatch) {
-      return next(new ErrorResponse('Invalid credentials', 401));
-    }
-
-    sendToken(user, 200, res);
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
+exports.login = async function (req, res, next) {
+ loginUserService(req, res, next)
 };
+
+exports.registerExternal = async function (req, res, next) {
+  console.log('running /user/external/register route')
+  registerExternalService(req, res, next)
+}
 
 exports.forgotpassword = async (req, res, next) => {
   const { email } = req.body;
