@@ -47,7 +47,7 @@ exports.addComment = async function(req, res, next) {
     // source: https://mongoosejs.com/docs/tutorials/findoneandupdate.html
     Meme.findOneAndUpdate(filter, update, {new: true, strict: true}, function(error, meme){
         if(error){
-            res.status(404).send(error)
+            return res.status(404).send(error)
         }
         res.status(200).send(meme)
         console.log('successfully updated meme and added comment with id: ' + newComment._id)

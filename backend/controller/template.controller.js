@@ -1,5 +1,3 @@
-const { join } = require('path')
-const Template = require('../database/models/template.model');
 // helper functions
 const { retrieveTemplateService } = require('../service/template/retrieve.template.service');
 const { uploadSingleTemplateService } = require('../service/template/uploadSingle.template.service');
