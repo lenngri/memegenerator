@@ -24,7 +24,7 @@ function InfiniteScroller() {
 
   // use local state
   const [openSingleView, setOpenSingleView] = useState(false);
-  const [counter, setCounter] = useState(1);
+  const [counter, setCounter] = useState(2);
   const [memes, setMemes] = useState([]);
   const [memeIndex, setMemeIndex] = useState(null);
   // catch parameter from URL
