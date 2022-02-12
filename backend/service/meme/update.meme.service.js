@@ -17,7 +17,7 @@ exports.updateMemeService = async function (req, res) {
     } else {
 
 
-        const oldMeme = await Meme.findOne({id: req.body._id})
+        const oldMeme = await Meme.findOne({_id: req.body._id})
         if(!oldMeme) return res.status(404).json({success: false, message: "could not find existing meme to update"})
       
         console.log("constructing upload object");
@@ -53,14 +53,15 @@ exports.updateMemeService = async function (req, res) {
 
       console.log("contacting database");
 
+      console.log(req.body._id)
+      console.log(oldMeme.id)
+
 
       Meme.findOneAndUpdate({_id: req.body._id}, newMeme, {new: true}, function (error, meme) {
         if (error) console.log(error.message);
         const proxyHost = req.headers["x-forwarded-host"];
         const host = proxyHost ? proxyHost : req.headers.host;
         const link = "http://" + host + "/" + meme.filePath;
-
-        console.log(meme)
 
         res.status(200).json({
           meme: meme,
