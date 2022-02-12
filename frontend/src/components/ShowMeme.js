@@ -13,7 +13,12 @@ const ShowMeme = () => {
 
   return (
     <>
-      <Button disabled={!memeObject ? true : false} variant='contained' onClick={handleShow}>
+      <Button
+        disabled={!memeObject ? true : false}
+        variant='contained'
+        onClick={handleShow}
+        size='small'
+      >
         Show
       </Button>
     </>

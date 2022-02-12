@@ -160,9 +160,13 @@ const Editor = () => {
             </Box>
           ) : (
             <>
-              <Typography variant='body1' color='gray' gutterBottom component='div'>
-                Please choose a template first.
-              </Typography>
+              <Box width={600} height={400} boxShadow={1}>
+                <Container sx={{ textAlign: 'center', my: 20 }}>
+                  <Typography variant='body1' color='gray' gutterBottom component='div'>
+                    Please choose a template first...
+                  </Typography>
+                </Container>
+              </Box>
             </>
           )}
           <Stack direction='row' spacing={1} sx={{ mt: 3, mb: 2 }}>
