@@ -2,13 +2,12 @@ const { parseURI } = require("../../helpers/uriParser.helper");
 const { fileSizeFormatter } = require("../../helpers/fileSizeFormatter.helper");
 const { writeFile } = require("../../helpers/fileSaver.helper");
 const { join } = require("path");
-const { unlinkSync } = require("fs");
+const fs = require("fs");
 
 const Meme = require("../../database/models/meme.model");
 
 exports.updateMemeService = async function (req, res) {
   console.log("running update meme route");
-  console.log(req.body)
 
   try {
     if (!req.body._id) {
@@ -18,18 +17,14 @@ exports.updateMemeService = async function (req, res) {
     } else {
 
 
-        const oldMeme = Meme.findOne({id: req.body._id})
+        const oldMeme = await Meme.findOne({id: req.body._id})
         if(!oldMeme) return res.status(404).json({success: false, message: "could not find existing meme to update"})
       
         console.log("constructing upload object");
 
-        console.log(req.body)
-
         console.log("writing buffer to file");
         const data = parseURI(req.body.meme);
-        const fileName = Date.now().toString();
-
-        console.log(data)
+        const fileName = oldMeme.fileName;
 
       const file = {
         name: fileName,
@@ -38,15 +33,15 @@ exports.updateMemeService = async function (req, res) {
         size: fileSizeFormatter(data.image.toString("base64").length),
       };
 
-      const newMeme = new Meme({
+      const newMeme = ({
         userID: req.body.userID,
         templateID: req.body.templateID,
         title: req.body.title,
         description: req.body.description,
         memeCaptions: req.body.memeCaptions,
-        fileName: file.name,
+        fileName: oldMeme.fileName,
         fileType: file.mimetype,
-        filePath: file.path,
+        filePath: oldMeme.filePath,
         fileSize: file.size,
         konva: req.body.konva,
         isPrivate: req.body.isPrivate,
@@ -58,23 +53,24 @@ exports.updateMemeService = async function (req, res) {
 
       console.log("contacting database");
 
-      await Meme.findOneAndUpdate({_id: oldMeme.id}, newMeme, {new: true, strict: true}, function (error, meme) {
+
+      Meme.findOneAndUpdate({_id: req.body._id}, newMeme, function (error, meme) {
         if (error) console.log(error.message);
         const proxyHost = req.headers["x-forwarded-host"];
         const host = proxyHost ? proxyHost : req.headers.host;
-        const link = "http://" + host + "/" + memes[i].filePath;
+        const link = "http://" + host + "/" + meme.filePath;
+
         res.status(200).json({
           meme: meme,
           stableURL: link,
         });
-        writeFile(join(__dirname, "../../", meme.filePath), data.image);
-        console.log("saved meme with ID: " + meme.id + " at " + meme.filePath);
-        fs.unlinkSync(join(__dirname, "../../", oldMeme.filePath));
-        console.log("deleted old meme with name: " + oldMeme.fileName + "");
+
+        writeFile(join(__dirname, "../../", oldMeme.filePath), data.image);
+        console.log("updated meme with ID: " + meme.id + " at " + meme.filePath);
       });
     }
   } catch (error) {
+    res.status(500).send(error)
     console.log(error);
-    res.status(500).send(error);
   }
 };
