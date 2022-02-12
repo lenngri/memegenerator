@@ -5,7 +5,7 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import { Button, TextField, Stack, Typography } from '@mui/material';
 import { CompactPicker } from 'react-color';
-import getCaptions from '../tools/getCaptions';
+import getAttributes from '../tools/getAttributes';
 
 const C_WIDTH = 600;
 const C_HEIGHT = 600;
@@ -24,6 +24,7 @@ const Editor = () => {
   const [captionColor, setColor] = useState('black');
   const [fontStyle, setFontStyle] = useState('bold');
   const [outlined, setOutlined] = useState(true);
+  // editor dimensions state
   const [editorDims, setEditorDims] = useState({ width: C_WIDTH, height: C_HEIGHT });
 
   // load image from store
@@ -34,11 +35,20 @@ const Editor = () => {
   useEffect(() => {
     if (image && memeObject) {
       console.log('Meme object available. Load state to editor.');
-      const captionsArray = getCaptions(memeObject.konva);
-      console.log(captionsArray);
-      setTopText(captionsArray[0]);
-      setBottomText(captionsArray[1]);
-      setMidText(captionsArray[2]);
+      const attrsArray = getAttributes(memeObject.konva);
+      console.log(attrsArray);
+      // set individual text
+      setTopText(attrsArray[0].text);
+      setBottomText(attrsArray[1].text);
+      setMidText(attrsArray[2].text);
+      // set joint attributes
+      setFontSize(attrsArray[0].fontSize);
+      setColor(attrsArray[0].fill);
+      setFontStyle(attrsArray[0].fontStyle);
+      console.log(attrsArray[0].stroke);
+      console.log(attrsArray[0].stroke === 'white');
+      if (attrsArray[0].stroke === 'white') setOutlined(true);
+      else setOutlined(false);
     }
   }, [image, memeObject]);
 
@@ -85,13 +95,15 @@ const Editor = () => {
   else stroke = undefined;
 
   const captionProps = {
-    align: 'center',
     fontSize: Number(fontSize),
     fontFamily: 'Verdana',
     fontStyle: fontStyle,
     fill: captionColor,
     stroke: stroke,
     strokeWidth: 1.5,
+  };
+  const staticCaptionProps = {
+    align: 'center',
     onMouseEnter: grabCursor,
     onMouseLeave: defaultCursor,
     draggable: true,
@@ -116,22 +128,28 @@ const Editor = () => {
                 <Layer>
                   <Image image={image} width={editorDims.width} height={editorDims.height} />
                   <Text
+                    id='caption'
                     x={editorDims.width * 0.25}
                     y={editorDims.height * 0.1}
                     text={topText}
                     {...captionProps}
+                    {...staticCaptionProps}
                   ></Text>
                   <Text
+                    id='caption'
                     x={editorDims.width * 0.25}
                     y={editorDims.height * 0.9}
                     text={bottomText}
                     {...captionProps}
+                    {...staticCaptionProps}
                   ></Text>
                   <Text
+                    id='caption'
                     x={editorDims.width * 0.25}
                     y={editorDims.height * 0.5}
                     text={midText}
                     {...captionProps}
+                    {...staticCaptionProps}
                   ></Text>
                 </Layer>
               </Stage>
