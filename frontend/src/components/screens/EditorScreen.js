@@ -7,7 +7,7 @@ import ServerTemplateSelector from '../uploadOptions/ServerTemplateSelector';
 import ImgflipSelector from '../uploadOptions/ImgflipSelector';
 import LocalFileSelector from '../uploadOptions/LocalFileSelector';
 import URLSelector from '../uploadOptions/UrlSelector';
-import Download from '../Download';
+// import Download from '../Download';
 import DownloadServer from '../DownloadServer';
 import CameraUpload from '../uploadOptions/CameraUpload';
 import DrawTemplateSelector from '../uploadOptions/DrawTemplateSelector';
@@ -42,7 +42,7 @@ const EditorScreen = ({ logout }) => {
       <Container sx={{ justifyContent: 'space-around', display: 'flex' }}>
         <Stack direction='row' spacing={1} sx={{ my: 1 }}>
           <MemeUpload />
-          <Download />
+          {/* <Download /> */}
           <DownloadServer />
         </Stack>
       </Container>
