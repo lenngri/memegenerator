@@ -23,8 +23,6 @@ function getDataUrl(img) {
     canvas.width = img.naturalWidth;
     canvas.height = img.naturalHeight;
   }
-  console.log('Width', canvas.width);
-  console.log('height', canvas.height);
   // Draw the image to canvas and convert to Data URL
   ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
   return canvas.toDataURL('image/jpeg');

@@ -1,6 +1,5 @@
 const getCaptions = (konvaObject) => {
   const layer0Children = konvaObject.children[0].children;
-  console.log(layer0Children);
   const captionsArray = [];
   for (let i = 0; i < layer0Children.length; i++) {
     if (layer0Children[i].className === 'Text') {

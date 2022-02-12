@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { Box, Slider, Button, TextField, IconButton, Stack } from '@mui/material';
+import { Snackbar, Alert } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import {
   Dialog,
@@ -29,6 +30,9 @@ const MemeUpload = () => {
   const [isDraft, setIsDraft] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
   const [isPrivate, setIsPrivate] = useState(false);
+  const [success, setSuccess] = useState(false);
+  // IN CASE OF MANAGING THE generateServer Flag via local state
+  // const [generateServer, setGenerateServer] = useState(false);
 
   const clearState = () => {
     setTitle('Title');
@@ -36,9 +40,15 @@ const MemeUpload = () => {
     setIsDraft(false);
     setIsHidden(false);
     setIsPrivate(false);
+    // setGenerateServer(false);
   };
 
-  const handleUploadMeme = async () => {
+  const handleClose = () => {
+    clearState();
+    setOpen(!open);
+  };
+
+  const handleUploadMeme = async (generateServer) => {
     // check, whether the template is new
     if (editorState.templateNew) {
       try {
@@ -47,29 +57,37 @@ const MemeUpload = () => {
           editorState.templateObject
         );
         console.log('Sent new template, server responeded:', templateResponse);
-        sendMeme(templateResponse.data._id);
+        sendMeme(templateResponse.data._id, generateServer);
       } catch (error) {
         alert('Something went wrong, please try again.');
         console.log(error);
       }
     } else {
       console.log('Existing template with ID:', editorState.templateObject.templateID);
-      sendMeme(editorState.templateObject._id);
+      sendMeme(editorState.templateObject._id, generateServer);
     }
 
     // clear the state and close dialog
     clearState();
     setOpen(!open);
-    alert('You saved the meme.');
+    setSuccess(true);
   };
 
-  const sendMeme = (templateID) => {
+  const sendMeme = (templateID, generateServer) => {
     // get meta data and image from the current editor canvas
     const konvaObject = stageRef.current.toObject();
-    const dataURL = stageRef.current.toDataURL({
-      mimeType: 'image/jpeg',
-      quality: sliderValue / 100,
-    });
+    let dataURL;
+    let route;
+    if (!generateServer) {
+      dataURL = stageRef.current.toDataURL({
+        mimeType: 'image/jpeg',
+        quality: sliderValue / 100,
+      });
+      route = '/api/meme/uploadSingle';
+    } else {
+      dataURL = null;
+      route = '/api/meme/createSingle';
+    }
     // construct meme object
     const body = {
       userID: user.id,
@@ -87,20 +105,27 @@ const MemeUpload = () => {
     };
 
     // send the meme object to the server
-    console.log('Send meme object to the server:', body);
+    console.log(`Send meme object to ${route}:`, body);
     axios
-      .post(process.env.REACT_APP_BURL + '/api/meme/uploadSingle', body)
+      .post(process.env.REACT_APP_BURL + route, body)
       .then((res) => {
-        console.log('Server responded with meme object:', res);
+        console.log('Server responded with:', res);
         const memeObject = res.data.meme;
         memeObject.stableURL = res.data.stableURL;
-        console.log(memeObject);
         setEditorState({ memeObject });
       })
       .catch((res, error) => {
-        console.log(res);
-        console.log(error);
+        console.log('Server responded with:', res);
+        console.log('Error:', error);
       });
+  };
+
+  const handleSnackClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setSuccess(false);
   };
 
   return (
@@ -112,11 +137,11 @@ const MemeUpload = () => {
       >
         Save Meme
       </Button>
-      <Dialog open={open} onClose={() => setOpen(!open)}>
+      <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Save Meme</DialogTitle>
         <IconButton
           aria-label='close'
-          onClick={() => setOpen(!open)}
+          onClick={handleClose}
           sx={{
             position: 'absolute',
             right: 8,
@@ -161,6 +186,14 @@ const MemeUpload = () => {
               onClick={() => setIsPrivate(!isPrivate)}
             />
           </Stack>
+          {/* In case of managing generateServer flag over local state */}
+          {/* <Stack direction='row' spacing={1} sx={{ mb: 3 }}>
+            <FormControlLabel
+              control={<Checkbox />}
+              label='Generate on server?'
+              onClick={() => setGenerateServer(!generateServer)}
+            />
+          </Stack> */}
           <DialogContentText>Image Quality in %:</DialogContentText>
           <Box sx={{ mx: 3 }}>
             <Slider
@@ -177,10 +210,20 @@ const MemeUpload = () => {
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleUploadMeme}>Save</Button>
+          <Button onClick={() => handleUploadMeme(false)}>Generate Local</Button>
+          <Button onClick={() => handleUploadMeme(true)}>Generate Server</Button>
         </DialogActions>
       </Dialog>
-      <div id='container'></div>
+      <Snackbar
+        open={success}
+        autoHideDuration={4000}
+        onClose={handleSnackClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert onClose={handleSnackClose} severity='success' sx={{ width: '100%' }}>
+          You saved your meme!
+        </Alert>
+      </Snackbar>
     </>
   );
 };
