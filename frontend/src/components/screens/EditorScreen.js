@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useStoreActions } from 'easy-peasy';
-import { Container, Stack } from '@mui/material';
+import { Container, Stack, Typography } from '@mui/material';
 import NavBar from '../NavBar';
 import Editor from '../Editor';
 import ServerTemplateSelector from '../uploadOptions/ServerTemplateSelector';
@@ -41,7 +41,12 @@ const EditorScreen = ({ logout }) => {
         </Stack>
       </Container>
       <Editor />
-      <Container sx={{ justifyContent: 'space-around', display: 'flex' }}>
+      <Container sx={{ textAlign: 'center' }}>
+        <Typography color='text.secondary'>
+          Generate and save your meme to the server. Afterwards, you can view, share or download it.
+        </Typography>
+      </Container>
+      <Container sx={{ justifyContent: 'space-around', textAlign: 'center', display: 'flex' }}>
         <Stack direction='row' spacing={1} sx={{ my: 1 }}>
           <MemeUpload />
           {/* <Download /> */}

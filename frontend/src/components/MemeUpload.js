@@ -135,10 +135,10 @@ const MemeUpload = () => {
         onClick={() => setOpen(!open)}
         disabled={!editorState.image ? true : false}
       >
-        Save Meme
+        Generate & Save
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Save Meme</DialogTitle>
+        <DialogTitle>Generate & Save</DialogTitle>
         <IconButton
           aria-label='close'
           onClick={handleClose}
