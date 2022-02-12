@@ -67,7 +67,12 @@ export default function ImgflipSelector() {
                       crossOrigin='Anonymous' // Source: https://konvajs.org/docs/posts/Tainted_Canvas.html (13.01.2022)
                       onClick={(e) => {
                         const templateObject = generateTemplateObject(user.id, 'imgflip', e.target);
-                        setEditorState({ image: e.target, templateObject, templateNew: true });
+                        setEditorState({
+                          image: e.target,
+                          templateObject,
+                          templateNew: true,
+                          memeObject: null,
+                        });
                         handleClose();
                       }}
                       loading='lazy'

@@ -32,6 +32,7 @@ const Download = () => {
       quality: sliderValue / 100,
     });
     link.click();
+    setOpen(false);
   };
 
   const marks = [
@@ -52,7 +53,7 @@ const Download = () => {
   return (
     <>
       <Button
-        disabled={!editorState.image ? true : false}
+        disabled={!editorState.memeObject ? true : false}
         variant='contained'
         onClick={handleClickOpen}
         startIcon={<DownloadIcon />}
@@ -88,7 +89,6 @@ const Download = () => {
             onClick={(e) => {
               downloadMeme(e.target.value);
             }}
-            autoFocus
           >
             Download
           </Button>

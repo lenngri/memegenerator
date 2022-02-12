@@ -13,6 +13,7 @@ const Editor = () => {
   // Source Editor Canvas: https://www.youtube.com/watch?v=-AwG8yF06Po
   const stageRef = useRef(null);
   const setStageRef = useStoreActions((actions) => actions.setStageRef);
+  const setEditorState = useStoreActions((actions) => actions.setEditorState);
   // captions state
   const [topText, setTopText] = useState('');
   const [bottomText, setBottomText] = useState('');
@@ -63,6 +64,7 @@ const Editor = () => {
     setFontStyle('bold');
     setFontSize('30');
     setOutlined('true');
+    setEditorState({ memeObject: null });
   };
 
   let stroke;

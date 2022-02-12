@@ -27,6 +27,7 @@ export default function ServerTemplateSelector() {
     setEditorState({
       image: e.target,
       templateObject: serverTemplates[Number(e.target.alt)],
+      memeObject: null,
     });
     handleClose();
   };

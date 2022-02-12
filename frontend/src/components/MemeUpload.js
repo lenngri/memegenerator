@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useStoreState } from 'easy-peasy';
+import { useStoreState, useStoreActions } from 'easy-peasy';
 import { Button, TextField, IconButton, Stack } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import {
@@ -17,6 +17,7 @@ const MemeUpload = () => {
   // central state
   const editorState = useStoreState((state) => state.editor);
   const stageRef = useStoreState((state) => state.editor.stageRef);
+  const setEditorState = useStoreActions((actions) => actions.setEditorState);
   const user = useStoreState((state) => state.userSession.user);
 
   // local state
@@ -98,7 +99,11 @@ const MemeUpload = () => {
     axios
       .post(process.env.REACT_APP_BURL + '/api/meme/uploadSingle', body)
       .then((res) => {
-        console.log(res);
+        console.log('Server responded with meme object:', res);
+        const memeObject = res.data.meme;
+        memeObject.stableURL = res.data.stableURL;
+        console.log(memeObject);
+        setEditorState({ memeObject });
       })
       .catch((res, error) => {
         console.log(res);

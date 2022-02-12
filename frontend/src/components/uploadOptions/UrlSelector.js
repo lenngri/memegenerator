@@ -58,9 +58,9 @@ export default function URLSelector() {
             variant='contained'
             onClick={(e) => {
               if (name) {
-                console.log('Set image from web url to editor:', image)
+                console.log('Set image from web url to editor:', image);
                 const templateObject = generateTemplateObject(user.id, 'web-url', image);
-                setEditorState({ image, templateObject, templateNew: true });
+                setEditorState({ image, templateObject, templateNew: true, memeObject: null });
                 handleClose();
                 setAlert(false);
               } else {
