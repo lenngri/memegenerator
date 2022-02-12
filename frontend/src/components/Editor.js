@@ -39,7 +39,6 @@ const Editor = () => {
     if (image && memeObject) {
       console.log('Meme object available. Load state to editor.');
       const attrsArray = getAttributes(memeObject.konva);
-      console.log(attrsArray);
       // set individual text
       setTopText(attrsArray[0].text);
       setTopTextPosition({ x: attrsArray[0].x, y: attrsArray[0].y });
