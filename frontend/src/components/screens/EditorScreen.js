@@ -8,6 +8,7 @@ import ImgflipSelector from '../uploadOptions/ImgflipSelector';
 import LocalFileSelector from '../uploadOptions/LocalFileSelector';
 import URLSelector from '../uploadOptions/UrlSelector';
 import Download from '../Download';
+import DownloadServer from '../DownloadServer';
 import CameraUpload from '../uploadOptions/CameraUpload';
 import DrawTemplateSelector from '../uploadOptions/DrawTemplateSelector';
 import MemeUpload from '../MemeUpload';
@@ -42,6 +43,7 @@ const EditorScreen = ({ logout }) => {
         <Stack direction='row' spacing={1} sx={{ my: 1 }}>
           <MemeUpload />
           <Download />
+          <DownloadServer />
         </Stack>
       </Container>
     </div>
