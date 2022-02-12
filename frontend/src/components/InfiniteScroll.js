@@ -18,7 +18,7 @@ import axios from 'axios';
 function InfiniteScroller() {
   // use central state
   const navigate = useNavigate();
-  const setMemeToEdit = useStoreActions((actions) => actions.setMemeToEdit);
+  const setEditorState = useStoreActions((actions) => actions.setEditorState);
   const setServerMemes = useStoreActions((actions) => actions.setServerMemes);
   const serverMemes = useStoreState((actions) => actions.serverMemes);
 
@@ -69,7 +69,7 @@ function InfiniteScroller() {
 
   const handleEdit = (event) => {
     const cardMedia = getCardMediaFromButton(event.target);
-    setMemeToEdit({ image: cardMedia });
+    setEditorState({ image: cardMedia });
     navigate('/editor');
   };
 

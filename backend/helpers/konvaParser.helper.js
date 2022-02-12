@@ -1,3 +1,5 @@
+// source: https://konvajs.org/docs/data_and_serialization/Complex_Load.html (11.02.2022)
+
 exports.memeFromKonvaObject = (konvaObject, filePath) => {
   // create stage (konva canvas object) from konvaObject
   const stage = Konva.Node.create(konvaObject);

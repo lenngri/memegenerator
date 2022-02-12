@@ -3,12 +3,12 @@ import { Container, ImageList, ImageListItem } from '@mui/material';
 import { useStoreState } from 'easy-peasy';
 
 export default function MemeHistory() {
-  // const setMemeToEdit = useStoreActions((actions) => actions.setMemeToEdit);
+  // const setEditorState = useStoreActions((actions) => actions.setEditorState);
   const serverMemes = useStoreState((state) => state.serverMemes);
   const user = useStoreState((state) => state.userSession.user);
 
   // const handleClickTemplate = (e) => {
-  //   setMemeToEdit({
+  //   setEditorState({
   //     image: e.target,
   //     templateObject: serverMemes[Number(e.target.alt)],
   //   });

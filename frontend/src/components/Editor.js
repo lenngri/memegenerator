@@ -13,6 +13,7 @@ const Editor = () => {
   // Source Editor Canvas: https://www.youtube.com/watch?v=-AwG8yF06Po
   const stageRef = useRef(null);
   const setStageRef = useStoreActions((actions) => actions.setStageRef);
+  const setEditorState = useStoreActions((actions) => actions.setEditorState);
   // captions state
   const [topText, setTopText] = useState('');
   const [bottomText, setBottomText] = useState('');
@@ -24,9 +25,9 @@ const Editor = () => {
   const [outlined, setOutlined] = useState(true);
   const [editorDims, setEditorDims] = useState({ width: C_WIDTH, height: C_HEIGHT });
 
-  // load memeToEdit from store
+  // load image from store
 
-  const { image } = useStoreState((state) => state.memeToEdit);
+  const { image } = useStoreState((state) => state.editor);
 
   useEffect(() => {
     if (image) {
@@ -63,6 +64,7 @@ const Editor = () => {
     setFontStyle('bold');
     setFontSize('30');
     setOutlined('true');
+    setEditorState({ memeObject: null });
   };
 
   let stroke;
@@ -71,7 +73,7 @@ const Editor = () => {
 
   const captionProps = {
     align: 'center',
-    fontSize: fontSize,
+    fontSize: Number(fontSize),
     fontFamily: 'Verdana',
     fontStyle: fontStyle,
     fill: captionColor,
@@ -130,6 +132,7 @@ const Editor = () => {
           )}
           <Stack direction='row' spacing={1} sx={{ mt: 3, mb: 2 }}>
             <TextField
+              value={topText}
               disabled={!image ? true : false}
               size='small'
               id='outlined-required'
@@ -137,6 +140,7 @@ const Editor = () => {
               onChange={(e) => setTopText(e.target.value)}
             />
             <TextField
+              value={bottomText}
               disabled={!image ? true : false}
               size='small'
               id='outlined-required'
@@ -144,6 +148,7 @@ const Editor = () => {
               onChange={(e) => setBottomText(e.target.value)}
             />
             <TextField
+              value={midText}
               disabled={!image ? true : false}
               size='small'
               id='outlined-required'

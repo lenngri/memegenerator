@@ -9,12 +9,12 @@ import Alert from '@mui/material/Alert';
 import { Typography, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import Webcam from 'react-webcam';
-import { generateTemplateObject } from './generateTemplateObject';
+import { generateTemplateObject } from '../../tools/generateTemplateObject';
 
 // https://www.npmjs.com/package/react-webcam
 
 export default function CameraUpload({ ButtonText }) {
-  const setMemeToEdit = useStoreActions((actions) => actions.setMemeToEdit);
+  const setEditorState = useStoreActions((actions) => actions.setEditorState);
   const user = useStoreState((state) => state.userSession.user);
   const [preview, setPreview] = React.useState();
   const [imgSrc, setImgSrc] = React.useState(null);
@@ -37,7 +37,7 @@ export default function CameraUpload({ ButtonText }) {
   const handleSetTemplate = (e) => {
     if (preview) {
       const templateObject = generateTemplateObject(user.id, 'webcam', image);
-      setMemeToEdit({ image, templateObject, templateNew: true });
+      setEditorState({ image, templateObject, templateNew: true, memeObject: null });
       setImgSrc(null);
       setPreview(null);
       setAlert(false);
@@ -50,7 +50,6 @@ export default function CameraUpload({ ButtonText }) {
   const capture = React.useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
     setImgSrc(imageSrc);
-    console.log(imageSrc);
     setPreview(imageSrc);
   }, [webcamRef, setImgSrc]);
 

@@ -6,12 +6,13 @@ const model = {
   imgflipTemplates: [],
   serverTemplates: [],
   serverMemes: [],
-  memeToEdit: {
+  editor: {
     image: null,
     templateObject: null,
+    memeObject: null,
     templateNew: null,
+    stageRef: null,
   },
-  stageRef: null,
   userSession: persist(
     {
       isLoggedIn: false,
@@ -20,6 +21,7 @@ const model = {
     },
     { storage: localStorage }
   ),
+
   // THUNKS
   fetchImgflip: thunk(async (actions) => {
     const res = await axios.get('https://api.imgflip.com/get_memes');
@@ -36,6 +38,7 @@ const model = {
     actions.setServerMemes(res.data.data.memes);
     console.log('Fetched templates from server with status code:', res.status);
   }),
+
   // ACTIONS
   setImgflip: action((state, templates) => {
     state.imgflipTemplates = templates;
@@ -46,21 +49,24 @@ const model = {
   setServerMemes: action((state, memes) => {
     state.serverMemes = memes;
   }),
-  setMemeToEdit: action((state, { image, templateObject, templateNew }) => {
-    // setMemeToEdit image
-    state.memeToEdit.image = image;
+  // editor state actions
+  setEditorState: action((state, { image, templateObject, templateNew, memeObject }) => {
+    // set image
+    if (templateObject !== undefined) state.editor.image = image;
     // set templateObject
-    if (templateObject !== undefined) state.memeToEdit.templateObject = templateObject;
-    else state.memeToEdit.templateObject = null;
+    if (templateObject !== undefined) state.editor.templateObject = templateObject;
     // set templateNew flag
-    state.memeToEdit.templateNew = templateNew;
-    console.log('New editor memeToEdit set.', image, templateObject, templateNew);
+    if (templateObject !== undefined) state.editor.templateNew = templateNew;
+    // set memeObject
+    if (memeObject !== undefined) state.editor.memeObject = memeObject;
+    // Finished
+    console.log('Editor state updated.');
   }),
   setStageRef: action((state, stageRef) => {
-    state.stageRef = stageRef;
+    state.editor.stageRef = stageRef;
     console.log('New stageRef set.');
   }),
-  // user login actions
+  // user session actions
   setLoggedIn: action((state, auth) => {
     state.userSession.isLoggedIn = auth;
     console.log(auth ? 'User logged in.' : 'User logged out.');

@@ -3,14 +3,17 @@ import { useStoreActions } from 'easy-peasy';
 import { Container, Stack } from '@mui/material';
 import NavBar from '../NavBar';
 import Editor from '../Editor';
-import ServerTemplateSelector from '../ServerTemplateSelector';
-import ImgflipSelector from '../ImgflipSelector';
-import LocalFileSelector from '../LocalFileSelector';
-import URLSelector from '../UrlSelector';
-import Download from '../Download';
-import CameraUpload from '../CameraUpload';
-import DrawTemplateSelector from '../DrawTemplateSelector';
+import ServerTemplateSelector from '../uploadOptions/ServerTemplateSelector';
+import ImgflipSelector from '../uploadOptions/ImgflipSelector';
+import LocalFileSelector from '../uploadOptions/LocalFileSelector';
+import URLSelector from '../uploadOptions/UrlSelector';
+// import Download from '../Download';
+import DownloadServer from '../DownloadServer';
+import CameraUpload from '../uploadOptions/CameraUpload';
+import DrawTemplateSelector from '../uploadOptions/DrawTemplateSelector';
 import MemeUpload from '../MemeUpload';
+import Share from '../Share';
+import ShowMeme from '../ShowMeme';
 
 const EditorScreen = ({ logout }) => {
   const fetchImgflip = useStoreActions((actions) => actions.fetchImgflip);
@@ -41,7 +44,10 @@ const EditorScreen = ({ logout }) => {
       <Container sx={{ justifyContent: 'space-around', display: 'flex' }}>
         <Stack direction='row' spacing={1} sx={{ my: 1 }}>
           <MemeUpload />
-          <Download />
+          {/* <Download /> */}
+          <DownloadServer />
+          <ShowMeme />
+          <Share />
         </Stack>
       </Container>
     </div>
