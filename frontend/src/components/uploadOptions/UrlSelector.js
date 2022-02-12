@@ -29,9 +29,8 @@ export default function URLSelector() {
   };
 
   const image = new Image();
-  // image.src = `"${name}"`;
   image.src = name;
-  image.crossorigin = 'anonymous';
+  image.crossOrigin = 'anonymous';
 
   return (
     <div>
@@ -59,6 +58,7 @@ export default function URLSelector() {
             variant='contained'
             onClick={(e) => {
               if (name) {
+                console.log('Set image from web url to editor:', image)
                 const templateObject = generateTemplateObject(user.id, 'web-url', image);
                 setMemeToEdit({ image, templateObject, templateNew: true });
                 handleClose();
