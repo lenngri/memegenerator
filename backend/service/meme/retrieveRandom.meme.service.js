@@ -1,7 +1,7 @@
 const { removeEmpty } = require('../../helpers/removeEmpty.helper')
 const Meme = require('../../database/models/meme.model');
 
-exports.retrieveMemeService = async function (req, res) {
+exports.retrieveRandomService = async function (req, res) {
     console.log("getting random meme")
 
     const filters = {
@@ -12,8 +12,8 @@ exports.retrieveMemeService = async function (req, res) {
         isPrivate: req.body.private || "",
         isHidden: req.body.hidden || "",
         isDraft: req.body.draft || "",
-        newest: req.body.newest ? new Date(Date.parse(req.body.newest)) : "",
-        oldest: req.body.oldest ? new Date(Date.parse(req.body.oldest)) : "",
+        newest: req.body.newest ? new Date(req.body.newest.year, req.body.newest.month-1, req.body.newest.day, 23, 59) : "",
+        oldest: req.body.oldest ? new Date(req.body.oldest.year, req.body.oldest.month-1, req.body.oldest.day, 00, 00) : "",
         random: req.body.random || "",
         maxNumber: req.body.maxNumber || ""
     }
@@ -26,16 +26,15 @@ exports.retrieveMemeService = async function (req, res) {
         console.log("querying database")
 
         let memes = await Meme.find(query)
+        console.log("found " + memes.length + " memes according to query parameters")
 
-        if (query.newest) memes = memes.filter((element) => query.newest >= element.createdAt)
+        if (query.newest) memes = memes.filter((element) => query.oldest <= element.createdAt)
 
-        if (query.oldest) memes = memes.filter((element) => query.oldest <= element.createdAt)
+        if (query.oldest) memes = memes.filter((element) => query.newest >= element.createdAt)
 
         if (query.random) memes = memes.sort(() => Math.random() - 0.5)
 
-        if (query.maxNumber) memes = memes.slice(0, query.maxNumber)
-
-        console.log("found " + memes.length + " memes according to query parameters")
+        if (query.maxNumber) memes = memes.slice(0, query.maxNumber) 
 
         if(memes.length > 0) {
             res.status(200).json({

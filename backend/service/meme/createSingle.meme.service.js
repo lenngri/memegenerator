@@ -33,6 +33,7 @@ exports.createSingleMemeService = async function (req, res) {
         name: fileName,
         mimetype: data.extension,
         path: `/uploads/meme/${req.body.userID}/${fileName}.${
+
           data.extension.split("/")[1]
         }`,
         size: fileSizeFormatter(data.image.toString("base64").length),
