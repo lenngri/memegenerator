@@ -106,7 +106,7 @@ const Singleview = ({ openSingleView, setOpenSingleView, memeIndex }) => {
                     <CircularProgress />
                   )}
                 </Box>
-                <Typography variant='body' color='text.secondary' sx={{ mt: 2 }}>
+                <Typography color='text.primary' sx={{ mt: 2 }}>
                   {serverMemes[shownIndex].description}
                 </Typography>
               </CardContent>
