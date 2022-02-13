@@ -36,17 +36,21 @@ const theme = createTheme();
 
 export default function LoginScreen() {
   const auth0Client = useStoreState((state) => state.auth0Client);
+  const auth0Data = useStoreState((state) => state.userSession.auth0Data);
   const loggedIn = useStoreState((state) => state.loggedIn);
+  const token = useStoreState((state) => state.userSession.token);
   const setUser = useStoreActions((actions) => actions.setUser);
   const setToken = useStoreActions((actions) => actions.setToken);
   const setLoggedIn = useStoreActions((actions) => actions.setLoggedIn);
   const setAuth0Client = useStoreActions((actions) => actions.setAuth0Client);
+  const setAuth0Data = useStoreActions((actions) => actions.setAuth0Data);
 
   const configureAuth0Client = () => {
     console.log("configuring auth0Client")
     const auth0Config = {
       domain: 'dev-ttc1u0sj.us.auth0.com',
-      client_id: '4J1oZzOgZnhQhNzmoFWjXmZezUcRhuZ5'
+      client_id: '4J1oZzOgZnhQhNzmoFWjXmZezUcRhuZ5',
+      audience: 'burrito-memes'
     };
     return new Auth0Client(auth0Config);
   };
@@ -60,7 +64,9 @@ export default function LoginScreen() {
     return {
     auth0Login,
     auth0Logout,
-    loggedIn
+    loggedIn,
+    auth0Data,
+    token
   }};
 
   async function auth0Login () {
@@ -68,8 +74,15 @@ export default function LoginScreen() {
       console.log("auth0 login running")
       // Have Auth0 popup a login window and Wait for Auth0 to do the OIDC work for us.
       await auth0Client?.loginWithPopup();
+      // get Auth0 user data and store in state
+      const data = await auth0Client?.getUser();
+      setAuth0Data(JSON.stringify(data))
+      // get token from Auth0 Service and store in state
+      const auth0Token = await auth0Client?.getTokenSilently();
+      setToken(auth0Token)
       // Update the state to represent that the user has logged in.
       setLoggedIn(true);
+      console.log(token)
     } catch (e) {
       // If something goes wrong lets put it out to the console.
       console.error(e);
@@ -180,7 +193,6 @@ export default function LoginScreen() {
                 Sign In
               </Button>
               <Button onClick={() => auth0.auth0Login()}>Log in with Social</Button>
-              <p>Is Logged In : {auth0.loggedIn ? "yes" : "no"}</p>
               <Grid container>
                 {/* <Grid item xs>
                   <Link href='#' variant='body2' onClick={() => navigate('/forgotpassword')}>
