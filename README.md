@@ -88,13 +88,18 @@ To start the frontend in development mode on your local machine:
 
 #### Memes
 [x] Retrieve single memes or many memes according to filters, such as template, creating user, date range or random
+
 [x] Upload a single meme, which was generated in the frontend and save it to the DB, while saving the file to the directory structure
+
 [x] Create a single meme with meta data received from the frontend, on the server and save it to the DB, while saving the file to the directory structure
+
 [x] Create many memes from meta data received, save them to the db, while saving files to the server and return a list of URLs to access the created memes
+
 [x] Update a single meme, which was previously saved and edited as a draft
 
 #### Templates
 [x] Retrieve single templates or many templates according to filters, such as creating user
+
 [x] Upload single template and save to database and directory structure on server
 
 #### Comments
@@ -105,7 +110,9 @@ To start the frontend in development mode on your local machine:
 
 #### Authentication
 [x] Register new users while rejecting duplicate inputs. Password are being hashed with salt
+
 [x] Login users securely, checking passwords against a secret
+
 [x] Protect private routes by checking secure JWT tokens, both against our DB and social logins via Auth0 using hidden secrets
 
 ### What the Frontend can do
