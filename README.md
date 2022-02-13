@@ -84,9 +84,7 @@ To start the frontend in development mode on your local machine:
 1. Navigate to the `/frontend` directory
 2. Run `npm install`from the command line to install packages
 3. Create a .env file `/frontend` directory
-4. Put in place the following environment variables, according to [common .env syntax](https://www.npmjs.com/package/dotenv)
-    * REACT_APP_BURL (*full localhost address, where the development server is running*)
-5. Start the app by running `npm start`in the frontend directory
+4. Start the app by running `npm start`in the frontend directory
 
 ## What the Application can do
 
