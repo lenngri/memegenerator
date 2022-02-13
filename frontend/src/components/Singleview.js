@@ -19,6 +19,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useStoreState } from 'easy-peasy';
 import { useNavigate } from 'react-router-dom';
 import Votes from './Votes';
+import Comments from './Comments';
 
 const WIDTH = 600;
 
@@ -105,7 +106,7 @@ const Singleview = ({ openSingleView, setOpenSingleView, memeIndex }) => {
                     <CircularProgress />
                   )}
                 </Box>
-                <Typography variant='body' color='text.secondary' sx={{ mt: 2 }}>
+                <Typography color='text.primary' sx={{ mt: 2 }}>
                   {serverMemes[shownIndex].description}
                 </Typography>
               </CardContent>
@@ -136,6 +137,7 @@ const Singleview = ({ openSingleView, setOpenSingleView, memeIndex }) => {
                 <Votes meme={serverMemes[shownIndex]} />
               </CardActions>
             </Card>
+            <Comments meme={serverMemes[shownIndex]} width={WIDTH} />
           </DialogContent>
         </Dialog>
       ) : (

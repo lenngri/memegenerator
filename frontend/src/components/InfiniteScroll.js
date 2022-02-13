@@ -4,7 +4,7 @@ import { useStoreActions, useStoreState } from 'easy-peasy';
 import { useClipboard } from 'use-clipboard-copy';
 import { Loader } from './Loader';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -12,9 +12,14 @@ import CardMedia from '@mui/material/CardMedia';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import Divider from '@mui/material/Divider';
+import ShareIcon from '@mui/icons-material/Share';
+import OpenInFullIcon from '@mui/icons-material/OpenInFull';
+import CommentIcon from '@mui/icons-material/Comment';
 import Singleview from './Singleview';
 import axios from 'axios';
 import Votes from './Votes';
+import { CardHeader } from '@mui/material';
 
 function InfiniteScroller() {
   // use central state
@@ -62,21 +67,15 @@ function InfiniteScroller() {
     });
   };
 
-  const getCardMediaFromButton = (button) => {
-    return button.parentNode.parentNode.childNodes[0];
-  };
-
-  const handleView = (event) => {
-    const cardMedia = getCardMediaFromButton(event.target);
-    setMemeIndex(Number(cardMedia.alt));
+  const handleView = (index) => {
+    console.log('Open meme with index in single view:', index);
+    setMemeIndex(index);
     setOpenSingleView(true);
   };
 
-  const handleShare = (event) => {
-    const cardMedia = getCardMediaFromButton(event.target);
-    const meme = memes[Number(cardMedia.alt)];
-    clipboard.copy(window.location.origin + '/overview/' + meme._id);
-    alert(`Link to share meme copied! \n ${window.location.origin + '/overview/' + meme._id}`);
+  const handleShare = (id) => {
+    clipboard.copy(window.location.origin + '/overview/' + id);
+    alert(`Link to share meme copied! \n ${window.location.origin + '/overview/' + id}`);
   };
 
   return (
@@ -103,7 +102,6 @@ function InfiniteScroller() {
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',
-                    border: 1,
                     boxShadow: 4,
                     backgroundColor: '#D1D1D1',
                   }}
@@ -116,22 +114,29 @@ function InfiniteScroller() {
                     width={500}
                     image={baseURL + meme.filePath}
                   ></CardMedia>
-                  <CardContent sx={{ textAlign: 'center' }}>
-                    <Typography gutterBottom variant='h5'>
-                      {meme.title}
-                    </Typography>
-                    <Typography>{meme.description}</Typography>
+                  <CardContent sx={{ textAlign: 'center', py: 1 }}>
+                    <Typography variant='h5'>{meme.title}</Typography>
                     {/* <Typography>Number of votes: {calculateVoteScore(meme.votes)}</Typography> */}
                   </CardContent>
-                  <CardActions sx={{ width: '100%', justifyContent: 'center' }}>
-                    <Button size='large' onClick={handleView}>
-                      View
-                    </Button>
-                    <Button size='large'>Comment</Button>
-                    <Button size='large' onClick={handleShare}>
-                      Share
-                    </Button>
+                  <CardActions
+                    disableSpacing
+                    sx={{ width: '100%', justifyContent: 'center', pt: 0 }}
+                  >
+                    <IconButton onClick={(e) => handleView(index)}>
+                      <OpenInFullIcon />
+                    </IconButton>
+                    <IconButton onClick={(e) => handleShare(meme._id)}>
+                      <ShareIcon />
+                    </IconButton>
+                    <Divider orientation='vertical' sx={{ pl: 3 }}></Divider>
                     <Votes meme={meme} />
+                    <Divider orientation='vertical' sx={{ pl: 3 }}></Divider>
+                    <IconButton onClick={(e) => handleView(index)}>
+                      <CommentIcon />
+                    </IconButton>
+                    <Typography variant='h6' sx={{ pr: 6 }}>
+                      {meme.comments.length}
+                    </Typography>
                   </CardActions>
                 </Card>
               </Grid>
