@@ -36,6 +36,8 @@ To start the server in development mode on your local machine:
     * JWT_SECRET -- *a string, which will be used to generate a secure connection token*
     
     * JWT_EXPIRE -- *expiration time of token in minute*
+
+**FOR THE PURPOSE OF THIS HAND-IN WE HAVE PROVIDED A .ENV FILE. IT IS AVAILABLE FOR DOWNLOAD IN THE BACKEND DIRECTORY ON THE GIT REPO**
     
 5. Install npm packages, using the `npm install` command from the command line
 6. Start the development server by running the `npm start` command
@@ -120,6 +122,71 @@ To start the frontend in development mode on your local machine:
 [x] Protect private routes by checking secure JWT tokens, both against our DB and social logins via Auth0 using hidden secrets
 
 ### What the Frontend can do
+
+#### EDITOR
+
+##### Image Sources
+
+[X] Use templates from an API, such as ImgFlip
+
+[x] Use templates uploaded from the local machine
+
+[x] Use templates uploaded from a URL
+
+[x] Use templates uploaded from an image source, like a webcam
+
+[x] Use hand-drawn templates
+
+##### Text Edit
+
+[x] Add up to 3 text boxes, which can be freely modified by size, format, style and color
+
+[x] Text can be freely moved anywhere on the image
+
+[x] Viewing results live - "What you see is what you get"
+
+##### Meme Generation
+
+[x] Generate meme locally
+
+[x] Generate meme on server
+
+[x] Immediate visiual and text feedback when meme is generated
+
+##### Sharing
+
+[x] Download memes to disk
+
+[x] Share image URL
+
+##### Persistence
+
+[x] Continue to edit *any* meme as draft
+
+[x] Change template while text persits. Editor view can be left and editing continued later, seamlessly.
+
+#### Overview
+
+[x] Private memes or hidden memes remain hidden
+
+[x] Autoplay is enabled (3 second increments)
+
+[x] Liking and disliking of memes with immediate feedback - limited to one per user
+
+[x] Account-bound comments on memes
+
+#### Authentication
+
+[x] User registration
+
+[x] User login
+
+[x] No access to private screens. such as the profile or editor, without login
+
+[x] Social login via Auth0 service
+
+[x] Logging out securely
+
 
 
 
