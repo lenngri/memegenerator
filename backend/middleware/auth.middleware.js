@@ -1,16 +1,18 @@
 const jwt = require("jsonwebtoken");
 const jwks = require("jwks-rsa");
+const axios = require('axios')
 const User = require("../database/models/user.model");
+const ExternalUser = require("../database/models/user.model")
 const ErrorResponse = require("../helpers/errorResponse.helper");
 
 const client = jwks({
-    // JWKS url from the Auth0 Tenant
+  // JWKS url from the Auth0 Tenant
   jwksUri: "https://dev-ttc1u0sj.us.auth0.com/.well-known/jwks.json",
   cache: true,
   rateLimit: true,
   jwksRequestsPerMinute: 5,
   requestHeaders: {}, // Optional
-  timeout: 30000 //
+  timeout: 30000, //
 });
 
 exports.protect = async (req, res, next) => {
@@ -32,7 +34,7 @@ exports.protect = async (req, res, next) => {
 
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      console.log(decoded)
+      console.log(decoded);
 
       const user = await User.findById(decoded.id);
 
@@ -53,30 +55,37 @@ exports.protect = async (req, res, next) => {
   if (req.body.authOrigin === "external") {
     console.log("attempting to authenticate external user");
 
-    var decoded = jwt.decode(token, {complete: true})
-    const kid = decoded.header.kid
+    var decoded = jwt.decode(token, { complete: true });
+    const kid = decoded.header.kid;
 
     try {
-      
-        const signingKey = await client.getSigningKey(kid)
-        const secret = signingKey.publicKey || signingKey.rsaPublicKey
-    
-        const verified = jwt.verify(token, secret, {
+      const signingKey = await client.getSigningKey(kid);
+      const secret = signingKey.publicKey || signingKey.rsaPublicKey;
+
+      const verified = jwt.verify(token, secret, {
         audience: "burrito-memes",
         issuer: "https://dev-ttc1u0sj.us.auth0.com/",
-    });
+      });
 
-      console.log("verified:", verified)
+      const requestConfig = {
+        headers: { Authorization: `Bearer ${token}` }
+      };
 
-      //const user = await ExternalUser.findOne({email: req.body.email});
+      const response = await axios.get(verified.aud[1], requestConfig)
+      
 
-    //   if (!user) {
-    //     return next(new ErrorResponse("No user found with this ID", 404));
-    //   }
+      const externalUser = await response.data
 
-    //   req.user = user;
 
-      if(verified) next();
+      const user = await ExternalUser.findOne({ email: externalUser.email });
+
+      if (!user) {
+        return next(new ErrorResponse("No user found with this ID", 404));
+      }
+
+      req.user = user;
+
+      next();
     } catch (err) {
       return next(
         new ErrorResponse("Not authorized to access this route", 401)
