@@ -19,6 +19,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useStoreState } from 'easy-peasy';
 import { useNavigate } from 'react-router-dom';
 import Votes from './Votes';
+import Comment from './Comment';
 
 const WIDTH = 600;
 
@@ -136,6 +137,9 @@ const Singleview = ({ openSingleView, setOpenSingleView, memeIndex }) => {
                 <Votes meme={serverMemes[shownIndex]} />
               </CardActions>
             </Card>
+            {serverMemes[shownIndex].comments.map((comment) => (
+              <Comment comment={comment} width={WIDTH} />
+            ))}
           </DialogContent>
         </Dialog>
       ) : (
