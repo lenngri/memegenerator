@@ -10,7 +10,7 @@ exports.retrieveTemplateService = async function (req, res) {
       userID: req.body.userID || "",
       source: req.body.source || "",
       title: req.body.title || "",
-      private: req.body.private || ""
+      isPrivate: req.body.isPrivate || ""
     };
 
     const query = removeEmpty(filters)
