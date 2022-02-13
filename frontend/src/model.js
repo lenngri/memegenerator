@@ -18,6 +18,7 @@ const model = {
       isLoggedIn: false,
       user: null,
       token: null,
+      authorigin: null,
     },
     { storage: localStorage }
   ),
@@ -79,6 +80,10 @@ const model = {
   setToken: action((state, token) => {
     state.userSession.token = token;
     console.log('New token set.');
+  }),
+  setAuthOrigin: action((state, authorigin) => {
+    state.userSession.authorigin = authorigin
+    console.log('New authorigin set.')
   }),
   setAuth0Client: action((state, auth0Config) => {
     state.auth0Client = auth0Config;

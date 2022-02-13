@@ -43,7 +43,7 @@ export default function LoginScreen() {
   const setToken = useStoreActions((actions) => actions.setToken);
   const setLoggedIn = useStoreActions((actions) => actions.setLoggedIn);
   const setAuth0Client = useStoreActions((actions) => actions.setAuth0Client);
-  const setAuth0Data = useStoreActions((actions) => actions.setAuth0Data);
+  const setAuthOrigin = useStoreActions((actions) => actions.setAuthOrigin);
 
   const configureAuth0Client = () => {
     console.log("configuring auth0Client")
@@ -80,7 +80,9 @@ export default function LoginScreen() {
       // get token from Auth0 Service and store in state
       const auth0Token = await auth0Client?.getTokenSilently();
       setToken(auth0Token)
+      setAuthOrigin("external")
       if(auth0Token) setLoggedIn(true);
+      navigate('/editor')
     } catch (e) {
       console.error(e);
     }
@@ -101,6 +103,7 @@ export default function LoginScreen() {
         if (response.data.success) {
           setToken(response.data.token);
           setUser(response.data.user);
+          setAuthOrigin('local');
           setLoggedIn(true);
           navigate('/editor');
         }

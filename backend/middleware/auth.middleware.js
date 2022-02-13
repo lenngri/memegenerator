@@ -28,7 +28,7 @@ exports.protect = async (req, res, next) => {
   }
 
   if (!token) {
-    return next(new ErrorResponse("Not authorized to access this route", 401));
+    return res.json(401).json({success: false});
   }
 
   if (req.headers.authorigin === "local") {
@@ -41,40 +41,44 @@ exports.protect = async (req, res, next) => {
       const user = await User.findById(decoded.id);
 
       if (!user) {
-        return next(new ErrorResponse("No user found with this ID", 404));
+        return res.status(404).json({success: false});
       }
 
       req.user = user;
 
-      next();
+      res.status(200).json({success: true});
     } catch (err) {
-      return next(
-        new ErrorResponse("Not authorized to access this route", 401)
-      );
+      return res.json(401).json({success: false})
     }
   }
 
   if (req.headers.authorigin === "external") {
     console.log("attempting to authenticate external user");
 
-    var decoded = jwt.decode(token, { complete: true });
-    const kid = decoded.header.kid;
+    // console.log(req.headers)
+
+    // if (token) {
+    //   var decoded = jwt.decode(token, { complete: true });
+    //   const kid = decoded.header.kid;
+    // } else {
+    //   return res.status(401).json("jwt decode failed")
+    // }
 
     try {
-      const signingKey = await client.getSigningKey(kid);
-      const secret = signingKey.publicKey || signingKey.rsaPublicKey;
+      // const signingKey = await client.getSigningKey(kid);
+      // const secret = signingKey.publicKey || signingKey.rsaPublicKey;
 
-      const verified = jwt.verify(token, secret, {
-        audience: "burrito-memes",
-        issuer: "https://dev-ttc1u0sj.us.auth0.com/",
-      });
+      // const verified = jwt.verify(token, secret, {
+      //   audience: "burrito-memes",
+      //   issuer: "https://dev-ttc1u0sj.us.auth0.com/",
+      // });
 
-      const requestConfig = {
-        headers: { Authorization: `Bearer ${token}` }
-      };
+      // const requestConfig = {
+      //   headers: { Authorization: `Bearer ${token}` }
+      // };
 
-      const response = await axios.get(verified.aud[1], requestConfig)
-      
+      const response = await axios.get("https://dev-ttc1u0sj.us.auth0.com/userinfo", requestConfig)
+      console.log("response: ", response)
 
       const externalUser = await response.data
 
@@ -85,16 +89,14 @@ exports.protect = async (req, res, next) => {
       console.log(user)
 
       if (!user) {
-        return next(new ErrorResponse("No user found with this email", 404));
+        return res.status(404).json({success: false});
       }
 
       req.user = user;
 
-      next();
+      return res.status(200).json({success: true})
     } catch (err) {
-      return next(
-        new ErrorResponse("Not authorized to access this route", 401)
-      );
+      return res.status(401).json({success: false})
     }
   }
 };

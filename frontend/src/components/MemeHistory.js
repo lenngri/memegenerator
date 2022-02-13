@@ -22,7 +22,8 @@ export default function MemeHistory() {
     fetchServerTemplates();
   }, [fetchServerMemes, fetchServerTemplates]);
 
-  const filteredMemes = serverMemes.filter((meme) => meme.userID === user._id);
+  let filteredMemes
+  if (user) {filteredMemes = serverMemes.filter((meme) => meme.userID === user._id);}
 
   const handleEdit = (e) => {
     const memeObject = filteredMemes[Number(e.target.alt)];
@@ -45,32 +46,39 @@ export default function MemeHistory() {
   };
 
   return (
-    <div>
-      <Container sx={{ justifyContent: 'center' }}>
-        <Typography variant='h5' sx={{ mt: 3 }}>
-          Your Meme History
-        </Typography>
-        <Typography color='text.secondary'>Click on a meme to edit.</Typography>
-        <Box>
-          <ImageList style={{ cursor: 'pointer' }} variant='masonry' cols={3} gap={8}>
-            {filteredMemes ? (
-              filteredMemes.map((item, index) => (
-                <ImageListItem key={item._id}>
-                  <img
-                    src={baseURL + item.filePath}
-                    alt={index}
-                    crossOrigin='Anonymous' // Source: https://konvajs.org/docs/posts/Tainted_Canvas.html (13.01.2022)
-                    loading='lazy'
-                    onClick={handleEdit}
-                  />
-                </ImageListItem>
-              ))
-            ) : (
-              <></>
-            )}
-          </ImageList>
-        </Box>
-      </Container>
-    </div>
+      <div>
+        <Container sx={{ justifyContent: "center" }}>
+          <Typography variant="h5" sx={{ mt: 3 }}>
+            Your Meme History
+          </Typography>
+          <Typography color="text.secondary">
+            Click on a meme to edit.
+          </Typography>
+          <Box>
+            <ImageList
+              style={{ cursor: "pointer" }}
+              variant="masonry"
+              cols={3}
+              gap={8}
+            >
+              {filteredMemes ? (
+                filteredMemes.map((item, index) => (
+                  <ImageListItem key={item._id}>
+                    <img
+                      src={baseURL + item.filePath}
+                      alt={index}
+                      crossOrigin="Anonymous" // Source: https://konvajs.org/docs/posts/Tainted_Canvas.html (13.01.2022)
+                      loading="lazy"
+                      onClick={handleEdit}
+                    />
+                  </ImageListItem>
+                ))
+              ) : (
+                <></>
+              )}
+            </ImageList>
+          </Box>
+        </Container>
+      </div>
   );
 }

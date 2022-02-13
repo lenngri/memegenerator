@@ -22,6 +22,7 @@ export default function ProfileScreen() {
   const setAuth0Client = useStoreActions((actions) => actions.setAuth0Client);
   const setToken = useStoreActions((actions) => actions.setToken);
   const setUser = useStoreActions((actions) => actions.setUser);
+  const setAuthOrigin = useStoreActions((actions) => actions.setAuthOrigin);
 
   const configureAuth0Client = () => {
     console.log("configuring auth0Client")
@@ -56,13 +57,9 @@ export default function ProfileScreen() {
   const handleLogOut = async () => {
     try {
       await auth0Client?.logout();
-      console.log("auth0 logout")
+      setAuthOrigin(null);
       setToken(null);
-      console.log("token")
-      setUser(null);
-      console.log("user")
       setLoggedIn(false);
-      console.log("log out")
     } catch (error) {
       console.log(error)
     }
@@ -116,14 +113,14 @@ export default function ProfileScreen() {
                     Username
                   </Typography>
                   <Typography component='h6' variant='subtitle1' style={{ paddingBottom: 20.0 }}>
-                    {user.username}
+                    {user ? user.username : ""}
                   </Typography>
 
                   <Typography component='h6' variant='h6'>
                     Email address
                   </Typography>
                   <Typography component='h6' variant='subtitle1'>
-                    {user.email}
+                    {user ? user.email : ""}
                   </Typography>
 
                   {/* <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>

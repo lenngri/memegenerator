@@ -21,7 +21,7 @@ const pages = ['Editor', 'Overview', 'Logout'];
 const NavBar = () => {
   const auth0Client = useStoreState((state) => state.auth0Client);
   const setAuth0Client = useStoreActions((actions) => actions.setAuth0Client);
-  const setAuth0Data = useStoreActions((actions) => actions.setAuth0Data);
+  const setAuthOrigin = useStoreActions((actions) => actions.setAuthOrigin);
   const setLoggedIn = useStoreActions((actions) => actions.setLoggedIn);
   const setToken = useStoreActions((actions) => actions.setToken);
   const setUser = useStoreActions((actions) => actions.setUser);
@@ -66,13 +66,10 @@ const NavBar = () => {
   const handleLogOut = async () => {
     try {
       await auth0Client?.logout();
-      console.log("auth0 logout")
+      setAuthOrigin(null);
       setToken(null);
-      console.log("token")
-      setUser(null);
-      console.log("user")
+      // setUser(null);
       setLoggedIn(false);
-      console.log("log out")
     } catch (error) {
       console.log(error)
     }

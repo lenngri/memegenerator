@@ -1,3 +1,5 @@
+const Konva = require('konva/cmj').default;
+
 // source: https://konvajs.org/docs/data_and_serialization/Complex_Load.html (11.02.2022)
 
 exports.memeFromKonvaObject = (konvaObject, filePath) => {
