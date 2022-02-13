@@ -21,6 +21,7 @@ const model = {
     },
     { storage: localStorage }
   ),
+  auth0Client: null,
 
   // THUNKS
   fetchImgflip: thunk(async (actions) => {
@@ -79,6 +80,10 @@ const model = {
     state.userSession.token = token;
     console.log('New token set.');
   }),
+  setAuth0Client: action((state, auth0Config) => {
+    state.auth0Client = auth0Config;
+    console.log("New auth0Client set");
+  })
 };
 
 export default model;

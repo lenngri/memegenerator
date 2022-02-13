@@ -15,8 +15,9 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import backgroundLogo from '../../assets/backgroundlogo4.jpg';
-import { useStoreActions } from 'easy-peasy';
+import { useStoreActions, useStoreState } from 'easy-peasy';
 import axios from 'axios';
+import { Auth0Client } from '@auth0/auth0-spa-js';
 
 function Copyright(props) {
   return (
@@ -34,9 +35,62 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function LoginScreen() {
+  const auth0Client = useStoreState((state) => state.auth0Client);
+  const loggedIn = useStoreState((state) => state.loggedIn);
   const setUser = useStoreActions((actions) => actions.setUser);
   const setToken = useStoreActions((actions) => actions.setToken);
   const setLoggedIn = useStoreActions((actions) => actions.setLoggedIn);
+  const setAuth0Client = useStoreActions((actions) => actions.setAuth0Client);
+
+  const configureAuth0Client = () => {
+    console.log("configuring auth0Client")
+    const auth0Config = {
+      domain: 'dev-ttc1u0sj.us.auth0.com',
+      client_id: '4J1oZzOgZnhQhNzmoFWjXmZezUcRhuZ5'
+    };
+    return new Auth0Client(auth0Config);
+  };
+
+  if(!auth0Client){
+   setAuth0Client(configureAuth0Client());
+  }
+
+  function useAuth0(){
+    console.log("using Auth0")
+    return {
+    auth0Login,
+    auth0Logout,
+    loggedIn
+  }};
+
+  async function auth0Login () {
+    try {
+      console.log("auth0 login running")
+      // Have Auth0 popup a login window and Wait for Auth0 to do the OIDC work for us.
+      await auth0Client?.loginWithPopup();
+      // Update the state to represent that the user has logged in.
+      setLoggedIn(true);
+    } catch (e) {
+      // If something goes wrong lets put it out to the console.
+      console.error(e);
+    }
+  }
+
+  function auth0Logout() {
+    try {
+      // Call the client to log the user out.
+      auth0Client?.logout();
+      // Update the state to represent the user is logged out.
+      setLoggedIn(false);
+      //setUserData("All Logged out");
+      //setGravatar("");
+    } catch (e) {
+      // If something goes wrong put it out to the console.
+      console.error(e);
+    }
+  }
+
+  const auth0 = useAuth0()
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -125,6 +179,8 @@ export default function LoginScreen() {
               <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
                 Sign In
               </Button>
+              <Button onClick={() => auth0.auth0Login()}>Log in with Social</Button>
+              <p>Is Logged In : {auth0.loggedIn ? "yes" : "no"}</p>
               <Grid container>
                 {/* <Grid item xs>
                   <Link href='#' variant='body2' onClick={() => navigate('/forgotpassword')}>
