@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import { useClipboard } from 'use-clipboard-copy';
 import { Loader } from './Loader';
@@ -14,7 +14,6 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Singleview from './Singleview';
 import axios from 'axios';
-import Vote from './Vote';
 import Votes from './Votes';
 
 function InfiniteScroller() {
@@ -80,14 +79,6 @@ function InfiniteScroller() {
     const meme = memes[Number(cardMedia.alt)];
     clipboard.copy(window.location.origin + '/overview/' + meme._id);
     alert(`Link to share meme copied! \n ${window.location.origin + '/overview/' + meme._id}`);
-  };
-
-  const calculateVoteScore = (votes) => {
-    // console.log(score);
-    const upVotes = votes.filter((v) => v.value === 1).length;
-    const downVotes = votes.filter((v) => v.value === -1).length;
-    console.log(`Calculating Votes: ${upVotes} - ${downVotes} = ${upVotes - downVotes}`);
-    return upVotes - downVotes;
   };
 
   return (

@@ -14,12 +14,13 @@ const Votes = ({ meme }) => {
   useEffect(() => {
     calculateVoteScore(meme.votes);
     getVoteStatus(meme.votes);
+    //eslint-disable-next-line
   }, [meme.votes]);
 
   const getVoteStatus = (votes) => {
     const status = votes.filter((v) => v.userID === user._id)[0];
-    console.log(`MANUAL TRIGGER: Vote status for meme ${meme._id}:`, status.value);
     if (status) setVoteStatus(status.value);
+    else setVoteStatus(0);
   };
 
   const calculateVoteScore = (votes) => {
