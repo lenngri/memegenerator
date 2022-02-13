@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useInterval from '../tools/useInterval';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import {
@@ -14,10 +13,12 @@ import {
   CircularProgress,
   Typography,
   Divider,
+  CardActions,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useStoreState } from 'easy-peasy';
 import { useNavigate } from 'react-router-dom';
+import Votes from './Votes';
 
 const WIDTH = 600;
 
@@ -104,38 +105,38 @@ const Singleview = ({ openSingleView, setOpenSingleView, memeIndex }) => {
                     <CircularProgress />
                   )}
                 </Box>
-                <Typography variant='body2' color='text.secondary' sx={{ mt: 2 }}>
+                <Typography variant='body' color='text.secondary' sx={{ mt: 2 }}>
                   {serverMemes[shownIndex].description}
                 </Typography>
               </CardContent>
+              <CardActions sx={{ width: '100%', justifyContent: 'center' }}>
+                <Button
+                  color={!autoPlayFlag ? 'success' : 'error'}
+                  onClick={() => setAutoPlayFlag(!autoPlayFlag)}
+                >
+                  {!autoPlayFlag ? 'Play' : 'Stop'}
+                </Button>
+                <Button
+                  onClick={() => setShownIndex(Math.floor(Math.random() * serverMemes.length))}
+                >
+                  Random
+                </Button>
+                <Button
+                  disabled={shownIndex < 1 ? true : false}
+                  onClick={() => setShownIndex(shownIndex - 1)}
+                >
+                  Previous
+                </Button>
+                <Button
+                  disabled={shownIndex === serverMemes.length - 1 ? true : false}
+                  onClick={() => setShownIndex(shownIndex + 1)}
+                >
+                  Next
+                </Button>
+                <Votes meme={serverMemes[shownIndex]} />
+              </CardActions>
             </Card>
           </DialogContent>
-          <DialogActions>
-            <Button
-              color={!autoPlayFlag ? 'success' : 'error'}
-              onClick={() => setAutoPlayFlag(!autoPlayFlag)}
-            >
-              {!autoPlayFlag ? 'Play' : 'Stop'}
-            </Button>
-            <Button onClick={() => setShownIndex(Math.floor(Math.random() * serverMemes.length))}>
-              Random
-            </Button>
-            <Button
-              disabled={shownIndex < 1 ? true : false}
-              onClick={() => setShownIndex(shownIndex - 1)}
-            >
-              Previous
-            </Button>
-            <Button
-              disabled={shownIndex === serverMemes.length - 1 ? true : false}
-              onClick={() => setShownIndex(shownIndex + 1)}
-            >
-              Next
-            </Button>
-            {/* <Button color={'error'} onClick={handleClose}>
-              Close
-            </Button> */}
-          </DialogActions>
         </Dialog>
       ) : (
         <></>

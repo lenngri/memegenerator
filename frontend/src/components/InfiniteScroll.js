@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import { useClipboard } from 'use-clipboard-copy';
 import { Loader } from './Loader';
@@ -14,11 +14,10 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Singleview from './Singleview';
 import axios from 'axios';
+import Votes from './Votes';
 
 function InfiniteScroller() {
   // use central state
-  const navigate = useNavigate();
-  const setEditorState = useStoreActions((actions) => actions.setEditorState);
   const setServerMemes = useStoreActions((actions) => actions.setServerMemes);
   const serverMemes = useStoreState((actions) => actions.serverMemes);
 
@@ -65,12 +64,6 @@ function InfiniteScroller() {
 
   const getCardMediaFromButton = (button) => {
     return button.parentNode.parentNode.childNodes[0];
-  };
-
-  const handleEdit = (event) => {
-    const cardMedia = getCardMediaFromButton(event.target);
-    setEditorState({ image: cardMedia });
-    navigate('/editor');
   };
 
   const handleView = (event) => {
@@ -128,20 +121,17 @@ function InfiniteScroller() {
                       {meme.title}
                     </Typography>
                     <Typography>{meme.description}</Typography>
-                    <Typography>Number of votes: {meme.votes.length}</Typography>
+                    {/* <Typography>Number of votes: {calculateVoteScore(meme.votes)}</Typography> */}
                   </CardContent>
                   <CardActions sx={{ width: '100%', justifyContent: 'center' }}>
                     <Button size='large' onClick={handleView}>
                       View
                     </Button>
-                    <Button size='large' onClick={handleEdit}>
-                      Edit
-                    </Button>
                     <Button size='large'>Comment</Button>
-                    <Button size='large'>Vote</Button>
                     <Button size='large' onClick={handleShare}>
                       Share
                     </Button>
+                    <Votes meme={meme} />
                   </CardActions>
                 </Card>
               </Grid>
