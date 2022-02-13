@@ -61,6 +61,7 @@ const GenerateSaveMeme = () => {
       } catch (error) {
         alert('Something went wrong, please try again.');
         console.log(error);
+        clearState();
       }
     } else {
       console.log('Existing template with ID:', editorState.templateObject.templateID);
@@ -118,6 +119,7 @@ const GenerateSaveMeme = () => {
         console.log('Server responded with:', res);
         console.log('Error:', error);
         alert('Sorry, your meme could not be saved.');
+        clearState();
       });
   };
 

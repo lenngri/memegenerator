@@ -18,9 +18,9 @@ export default function MemeHistory() {
   else baseURL = process.env.REACT_APP_BURL;
 
   useEffect(() => {
-    fetchServerMemes();
+    fetchServerMemes({ userID: user._id });
     fetchServerTemplates();
-  }, [fetchServerMemes, fetchServerTemplates]);
+  }, [fetchServerMemes, fetchServerTemplates, user._id]);
 
   const filteredMemes = serverMemes.filter((meme) => meme.userID === user._id);
 
