@@ -10,11 +10,14 @@ exports.createManyService = async function (req, res) {
   console.log("running create many meme route");
 
   try {
+
     if (!req.body.memes) {
-      res.send({
-        status: false,
+
+      return res.status(400).send({
+        success: false,
         message: "No files uploaded!",
       });
+      
     } else {
 
       // initialises new empty array for created meme objects to be pushed into
@@ -24,26 +27,29 @@ exports.createManyService = async function (req, res) {
       for (entry of req.body.memes) {
       // retrieve template from database
       const template = await Template.findOne({ _id: entry.templateID });
+      console.log(template)
 
       // create new meme from konva object
-      const dataURI = await memeFromKonvaObject(entry.konva, template.filePath);
+      const dataURI = await memeFromKonvaObject(entry.konva, join(__dirname, "../../", template.filePath));
       if (!dataURI) return res.status(500).json({success: false, message: "failed to create meme in konvaParser.helper"});
 
-      console.log("constructing upload object");
 
+      // use dataURI parser helper function to create file from konva data URI
       console.log("writing buffer to file");
       const data = await parseURI(dataURI);
       const fileName = Date.now().toString();
 
+      // create file object with upload info
       const file = {
         name: fileName,
         mimetype: data.extension,
         path: `uploads/meme/${entry.userID}/${fileName}.${
           data.extension.split("/")[1]
         }`,
-        size: "16mb"//fileSizeFormatter(data.image.toString("base64").length),
+        size: fileSizeFormatter(data.image.toString("base64").length),
       };
 
+      //create meme object for upload to mongo
       const meme = new Meme({
         userID: entry.userID,
         templateID: entry.templateID,
@@ -58,15 +64,12 @@ exports.createManyService = async function (req, res) {
         isPrivate: entry.isPrivate,
         isHidden: entry.isHidden,
         isDraft: entry.isDraft,
-        likes: entry.likes,
-        comments: entry,
       });
 
+      // push meme and data to newMeme and newData arrays to upload with insertMany
       newMemes.push(meme)
       newData.push(data)
     }
-
-    console.log(newMemes)
 
       await Meme.insertMany(newMemes, function (error, memes) {
         if (error) console.log(error.message);
@@ -86,7 +89,7 @@ exports.createManyService = async function (req, res) {
         res.status(200).json({
           success: true,
           links: links,
-          //memes: memes
+          memes: memes
         });
       
       });

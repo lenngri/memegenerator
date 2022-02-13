@@ -48,7 +48,7 @@ exports.uploadSingleMemeService = async function(req, res) {
                 isHidden: req.body.isHidden,
                 isDraft: req.body.isDraft,
                 votes: req.body.likes,
-                comments: req.body
+                comments: req.body.comments
             })
 
             console.log("contacting database")

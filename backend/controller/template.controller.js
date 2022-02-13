@@ -9,12 +9,9 @@ exports.retrieve = async function(req, res, next) {
     
 };
 
-
 // uploads single file and saves it to the upload folder and database
 exports.uploadSingle = async function(req, res, next) {
-
-    uploadSingleTemplateService(req, res)
-
+     uploadSingleTemplateService(req, res)
 };
 
 

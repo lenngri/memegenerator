@@ -24,9 +24,9 @@ exports.retrieveTemplateService = async function (req, res) {
         console.log("found " + templates.length + " templates according to query parameters")
 
         if(templates.length > 0) {
-            res.status(200).json(templates)
+            return res.status(200).json(templates)
         } else {
-            res.status(500).json({"message" : "no templates match your query"})
+            return res.status(401).json({"message" : "no templates match your query"})
         }
         
     } catch (error) {

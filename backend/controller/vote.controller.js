@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 const Meme = require('../database/models/meme.model');
-const ErrorResponse = require('../helpers/errorResponse.helper')
 
 
 exports.updateVote = async function(req, res) {
@@ -8,7 +7,7 @@ exports.updateVote = async function(req, res) {
     console.log('running addVote route')
 
     // guard clause to make sure meme id is set
-    if (!req.body.memeID || !req.body.userID ) return res.status(400).send('request missing vote info')
+    if (!req.body.memeID || !req.body.userID ) return res.status(400).send({success: false, message: 'request missing vote info'})
 
     // queries meme objects to retrieve meme with ID from filter
     const meme = await Meme.findOne({_id: req.body.memeID})
@@ -17,7 +16,7 @@ exports.updateVote = async function(req, res) {
 
     // stores votes in votes variable
     let votes = meme.votes
-    if(!votes) return res.status(404).send('Meme votes could not be retrieved')
+    if(!votes) return res.status(404).send({success: false, message: 'Meme votes could not be retrieved'})
     console.log('successfully retrieved ' + votes.length + ' vote(s)')
 
     // creates update object from request body
@@ -47,9 +46,6 @@ exports.updateVote = async function(req, res) {
 
     // creates update variable and pushes new vote
     const update = { votes: votes }
-
-    // guard clause to make sure vote was pushed to update variable
-    console.log("successfully staged vote for commit")
 
     // find meme according to filter variable and update with votes array
     // source: https://mongoosejs.com/docs/tutorials/findoneandupdate.html
