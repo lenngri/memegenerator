@@ -9,7 +9,7 @@ const {
     updateMeme
 }  = require('../controller/meme.controller')
 
-router.route('/retrieve').get(retrieve);
+router.route('/retrieve').post(retrieve);
 router.route('/uploadSingle').post(uploadSingle);
 router.route('/createSingle').post(createSingle);
 router.route('/createMany').post(createMany);
