@@ -29,10 +29,14 @@ To start the server in development mode on your local machine:
 2. Navigate to the `/backend` directory
 3. Create a .env file in the `/backend` directory
 4. Put in place the following environment variables, according to [common .env syntax](https://www.npmjs.com/package/dotenv)
-    * MONGO_URI (*connection string allowing connection to MongoDB API*)
-    * PORT (*port where you want to run the development server on localhost -- this must not be the same as the frontend*)
-    * JWT_SECRET (*a string, which will be used to generate a secure connection token*)
-    * JWT_EXPIRE (*expiration time of token in minute*)
+    * MONGO_URI -- *connection string allowing connection to MongoDB API*
+    
+    * PORT -- *port where you want to run the development server on localhost -- this must not be the same as the frontend*
+    
+    * JWT_SECRET -- *a string, which will be used to generate a secure connection token*
+    
+    * JWT_EXPIRE -- *expiration time of token in minute*
+    
 5. Install npm packages, using the `npm install` command from the command line
 6. Start the development server by running the `npm start` command
 
