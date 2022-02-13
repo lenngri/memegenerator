@@ -21,10 +21,6 @@ const ExternalUserSchema = new Schema({
     }
 }, {timestamps: true});
 
-ExternalUserSchema.methods.getSignedToken = function() {
-    return jwt.sign({ id: this._id}, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE });
-};
-
 const ExternalUser = mongoose.model("ExternalUser", ExternalUserSchema);
 
 module.exports = ExternalUser;

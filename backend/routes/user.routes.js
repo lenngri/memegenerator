@@ -17,6 +17,6 @@ router.route("/forgotpassword").post(forgotpassword);
 
 router.route("/resetpassword/:resetToken").put(resetpassword);
 
-router.route("/external/register").post(external)
+router.route("/external").post(external)
 
 module.exports = router;

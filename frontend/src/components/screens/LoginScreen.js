@@ -75,8 +75,10 @@ export default function LoginScreen() {
       // Have Auth0 popup a login window and Wait for Auth0 to do the OIDC work for us.
       await auth0Client?.loginWithPopup();
       // get Auth0 user data and store in state
-      const data = await auth0Client?.getUser();
-      setAuth0Data(JSON.stringify(data))
+      const userData = await auth0Client?.getUser();
+      setAuth0Data(userData)
+      const response = await axios.post(process.env.REACT_APP_BURL + '/api/user/external', auth0Data)
+      console.log(response.data)
       // get token from Auth0 Service and store in state
       const auth0Token = await auth0Client?.getTokenSilently();
       setToken(auth0Token)

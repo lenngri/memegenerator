@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const jwks = require("jwks-rsa");
 const axios = require('axios')
 const User = require("../database/models/user.model");
-const ExternalUser = require("../database/models/user.model")
+const ExternalUser = require("../database/models/externalUser.model")
 const ErrorResponse = require("../helpers/errorResponse.helper");
 
 const client = jwks({
@@ -18,6 +18,8 @@ const client = jwks({
 exports.protect = async (req, res, next) => {
   let token = null;
 
+  console.log(req.headers)
+
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
@@ -29,7 +31,7 @@ exports.protect = async (req, res, next) => {
     return next(new ErrorResponse("Not authorized to access this route", 401));
   }
 
-  if (req.body.authOrigin === "local") {
+  if (req.headers.authorigin === "local") {
     console.log("attempting to authenticate local user");
 
     try {
@@ -52,7 +54,7 @@ exports.protect = async (req, res, next) => {
     }
   }
 
-  if (req.body.authOrigin === "external") {
+  if (req.headers.authorigin === "external") {
     console.log("attempting to authenticate external user");
 
     var decoded = jwt.decode(token, { complete: true });
@@ -76,11 +78,14 @@ exports.protect = async (req, res, next) => {
 
       const externalUser = await response.data
 
+      const email = externalUser.email.toString()
+      console.log(email)
 
-      const user = await ExternalUser.findOne({ email: externalUser.email });
+      const user = await ExternalUser.findOne({email: externalUser.email});
+      console.log(user)
 
       if (!user) {
-        return next(new ErrorResponse("No user found with this ID", 404));
+        return next(new ErrorResponse("No user found with this email", 404));
       }
 
       req.user = user;
