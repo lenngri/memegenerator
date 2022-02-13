@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Stage, Layer, Image, Text } from 'react-konva'; // Source: https://konvajs.org/ (13.01.2022)
+import { Stage, Layer, Image, Text, Rect } from 'react-konva'; // Source: https://konvajs.org/ (13.01.2022)
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
@@ -23,17 +23,19 @@ const Editor = () => {
   const [midText, setMidText] = useState('');
   const [midTextPosition, setMidTextPosition] = useState(null);
   // text style state
-  const [fontSize, setFontSize] = useState(30);
+  const [fontSize, setFontSize] = useState(26);
   const [captionColor, setColor] = useState('black');
   const [fontStyle, setFontStyle] = useState('bold');
   const [outlined, setOutlined] = useState(true);
   // editor dimensions state
   const [editorDims, setEditorDims] = useState({ width: C_WIDTH, height: C_HEIGHT });
+  const [canvasWidth, setCanvasWidth] = useState(C_WIDTH);
+  const [canvasHeight, setCanvasHeight] = useState(C_HEIGHT);
 
   // load image from store
 
   const { image, memeObject } = useStoreState((state) => state.editor);
-
+  console.log(canvasWidth, canvasHeight);
   // if memeObject is available, load its state to the editor to continue editing
   useEffect(() => {
     if (image && memeObject) {
@@ -55,21 +57,31 @@ const Editor = () => {
     }
   }, [image, memeObject]);
 
+  if (stageRef) console.log(stageRef.current);
+
   useEffect(() => {
     if (image) {
-      if (image.naturalWidth > C_WIDTH) {
-        setEditorDims({
-          width: C_WIDTH,
-          height: (image.naturalHeight * C_WIDTH) / image.naturalWidth,
-        });
-      } else {
-        setEditorDims({
-          width: image.naturalWidth,
-          height: image.naturalHeight,
-        });
-      }
+      setEditorDims({
+        width: image.width,
+        height: image.height,
+      });
+      setCanvasWidth(image.width);
+      setCanvasHeight(image.height);
+      // if (image.naturalWidth > C_WIDTH) {
+      //   setEditorDims({
+      //     width: C_WIDTH,
+      //     height: (image.naturalHeight * C_WIDTH) / image.naturalWidth,
+      //   });
+      // } else {
+      //   setEditorDims({
+      //     width: image.naturalWidth,
+      //     height: image.naturalHeight,
+      //   });
+      // }
     }
+
     setStageRef(stageRef);
+    console.log(stageRef.current);
   }, [image, setStageRef]);
 
   // Source for cursor event handling: https://konvajs.org/docs/styling/Mouse_Cursor.html (13.01.2022)
@@ -88,7 +100,7 @@ const Editor = () => {
     setBottomText('');
     setColor('black');
     setFontStyle('bold');
-    setFontSize('30');
+    setFontSize(26);
     setOutlined('true');
     setEditorState({ memeObject: null });
   };
@@ -127,8 +139,9 @@ const Editor = () => {
         >
           {image ? (
             <Box boxShadow={2}>
-              <Stage ref={stageRef} width={editorDims.width} height={editorDims.height}>
+              <Stage ref={stageRef} width={canvasWidth} height={canvasHeight}>
                 <Layer>
+                  <Rect width={canvasWidth} height={canvasHeight} fill='white'></Rect>
                   <Image image={image} width={editorDims.width} height={editorDims.height} />
                   <Text
                     id='caption'
@@ -201,6 +214,7 @@ const Editor = () => {
               Clear
             </Button>
           </Stack>
+
           <Stack direction='row' spacing={1} sx={{ mb: 2 }}>
             <TextField
               disabled={!image ? true : false}
@@ -209,7 +223,7 @@ const Editor = () => {
               type='number'
               size='small'
               width={10}
-              defaultValue={fontSize}
+              value={fontSize}
               onChange={(e) => setFontSize(Number(e.target.value))}
               InputLabelProps={{
                 shrink: true,
@@ -254,6 +268,33 @@ const Editor = () => {
               onClick={() => setOutlined(!outlined)}
             >
               Outlined
+            </Button>
+          </Stack>
+          <Stack direction='row' spacing={1} sx={{ mt: 3, mb: 2 }}>
+            <TextField
+              disabled={!image ? true : false}
+              value={canvasWidth}
+              size='small'
+              id='outlined-required'
+              label='Width'
+              type='number'
+              onChange={(e) => setCanvasWidth(Number(e.target.value))}
+            />
+            <TextField
+              disabled={!image ? true : false}
+              value={canvasHeight}
+              size='small'
+              id='outlined-required'
+              label='Height'
+              type='number'
+              onChange={(e) => setCanvasHeight(Number(e.target.value))}
+            />
+            <Button
+              disabled={!image ? true : false}
+              variant='contained'
+              onClick={handleClearEditor}
+            >
+              Append Images
             </Button>
           </Stack>
           <CompactPicker color={captionColor} onChange={(color) => setColor(color.hex)} />

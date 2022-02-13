@@ -7,6 +7,7 @@ import ForgotPasswordScreen from './components/screens/ForgotPasswordScreen';
 import OverviewScreen from './components/screens/OverviewScreen';
 import ProfileScreen from './components/screens/ProfileScreen';
 import { useStoreState, useStoreRehydrated } from 'easy-peasy';
+import axios from 'axios';
 
 function App() {
   const isRehydrated = useStoreRehydrated();
