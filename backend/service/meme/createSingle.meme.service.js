@@ -56,7 +56,7 @@ exports.createSingleMemeService = async function (req, res) {
         isHidden: req.body.isHidden,
         isDraft: req.body.isDraft,
         likes: req.body.likes,
-        comments: req.body,
+        comments: req.body.comments
       });
 
       await meme.save(function (error, meme) {
