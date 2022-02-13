@@ -6,8 +6,6 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser', );
 const logger = require('morgan');
 const cors = require('cors');
-const canvas = require('canvas');
-const Konva = require('konva/cmj').default;
 
 const userRouter = require('./routes/user.routes');
 const templateRouter = require('./routes/template.routes');
@@ -17,6 +15,14 @@ const privateRouter = require('./routes/private.routes');
 const mongoDB = require('./database/connection');
 
 const app = express();
+
+app.use((req, res, next) => {
+  // allow calling from different domains
+  res.set("Access-Control-Allow-Origin", "*");
+  // allow authorization header
+  res.set("Access-Control-Allow-Headers", "authorization");
+  next();
+});
 
 // allow all cross-origin requests
 app.use(cors());
