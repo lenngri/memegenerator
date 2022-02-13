@@ -12,8 +12,8 @@ import Slider from '@mui/material/Slider';
 const Download = () => {
   // Source: https://developer.mozilla.org/de/docs/Web/API/HTMLCanvasElement/toDataURL (08.01.2021)
   const [open, setOpen] = React.useState(false);
-  const stageRef = useStoreState((state) => state.stageRef);
-  const template = useStoreState((state) => state.template);
+  const stageRef = useStoreState((state) => state.editor.stageRef);
+  const editorState = useStoreState((state) => state.editor);
   const [sliderValue, setSliderValue] = React.useState(100);
 
   const handleClickOpen = () => {
@@ -27,12 +27,12 @@ const Download = () => {
   const downloadMeme = () => {
     var link = document.createElement('a');
     link.download = 'thismeme.jpg';
-    // console.log(stageRef.current.toJSON());
     link.href = stageRef.current.toDataURL({
       mimeType: 'image/jpeg',
       quality: sliderValue / 100,
     });
     link.click();
+    setOpen(false);
   };
 
   const marks = [
@@ -53,26 +53,27 @@ const Download = () => {
   return (
     <>
       <Button
-        disabled={!template ? true : false}
-        variant="contained"
+        disabled={!editorState.memeObject ? true : false}
+        variant='contained'
         onClick={handleClickOpen}
         startIcon={<DownloadIcon />}
+        sx={{ my: 1 }}
       >
         Download
       </Button>
       <Dialog
         open={open}
         onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+        aria-labelledby='alert-dialog-title'
+        aria-describedby='alert-dialog-description'
       >
-        <DialogTitle id="alert-dialog-title">{'Please select the quality in %.'}</DialogTitle>
+        <DialogTitle id='alert-dialog-title'>{'Please select the quality in %.'}</DialogTitle>
         <DialogContent>
           <Box width={300} sx={{ pt: 5, px: 5 }}>
             <Slider
               defaultValue={100}
-              aria-label="Default"
-              valueLabelDisplay="on"
+              aria-label='Default'
+              valueLabelDisplay='on'
               marks={marks}
               onChange={(e) => {
                 setSliderValue(e.target.value);
@@ -88,7 +89,6 @@ const Download = () => {
             onClick={(e) => {
               downloadMeme(e.target.value);
             }}
-            autoFocus
           >
             Download
           </Button>
