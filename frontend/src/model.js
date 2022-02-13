@@ -7,11 +7,6 @@ const model = {
   serverTemplates: [],
   serverMemes: [],
   sortingArgs: null,
-  retrieveMemesBody: {
-    isPrivate: 'false',
-    isHidden: 'false',
-    isDraft: 'false',
-  },
   userMemes: [],
   editor: {
     image: null,
