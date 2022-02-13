@@ -13,14 +13,40 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Logo from '../assets/BurritoLogo.png';
 import { useNavigate } from 'react-router-dom';
-import { useStoreActions } from 'easy-peasy';
+import { useStoreActions, useStoreState } from 'easy-peasy';
+import { Auth0Client } from '@auth0/auth0-spa-js';
 
 const pages = ['Editor', 'Overview', 'Logout'];
 
 const NavBar = () => {
+  const auth0Client = useStoreState((state) => state.auth0Client);
+  const setAuth0Client = useStoreActions((actions) => actions.setAuth0Client);
+  const setAuth0Data = useStoreActions((actions) => actions.setAuth0Data);
   const setLoggedIn = useStoreActions((actions) => actions.setLoggedIn);
+  const setToken = useStoreActions((actions) => actions.setToken);
+  const setUser = useStoreActions((actions) => actions.setUser);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const configureAuth0Client = () => {
+    console.log("configuring auth0Client")
+    const auth0Config = {
+      domain: 'dev-ttc1u0sj.us.auth0.com',
+      client_id: '4J1oZzOgZnhQhNzmoFWjXmZezUcRhuZ5',
+      audience: 'burrito-memes'
+    };
+    return new Auth0Client(auth0Config);
+  };
+
+  if(!auth0Client){
+   setAuth0Client(configureAuth0Client());
+  }
+
+  function useAuth0(){
+    console.log("using Auth0")
+    return {
+    handleLogOut,
+  }};
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -37,12 +63,29 @@ const NavBar = () => {
     setAnchorElUser(null);
   };
 
+  const handleLogOut = async () => {
+    try {
+      await auth0Client?.logout();
+      console.log("auth0 logout")
+      setToken(null);
+      console.log("token")
+      setUser(null);
+      console.log("user")
+      setLoggedIn(false);
+      console.log("log out")
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   let navigate = useNavigate();
 
   // const handleLogout = () => {
   //   logout;
   //   navigate("/login");
   // }
+
+  const auth0 = useAuth0()
 
   return (
     <AppBar position='static' style={{ background: '#000000' }}>
@@ -157,7 +200,7 @@ const NavBar = () => {
               <MenuItem
                 key='Logout'
                 onClick={() => {
-                  setLoggedIn(false);
+                  auth0.handleLogOut();
                 }}
               >
                 <Typography textAlign='center'>Logout</Typography>

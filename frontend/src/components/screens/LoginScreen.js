@@ -63,7 +63,6 @@ export default function LoginScreen() {
     console.log("using Auth0")
     return {
     auth0Login,
-    auth0Logout,
     loggedIn,
     auth0Data,
     token
@@ -71,36 +70,18 @@ export default function LoginScreen() {
 
   async function auth0Login () {
     try {
-      console.log("auth0 login running")
-      // Have Auth0 popup a login window and Wait for Auth0 to do the OIDC work for us.
+      // Have Auth0 popup a login window and Wait for Auth0 to do the OIDC
       await auth0Client?.loginWithPopup();
       // get Auth0 user data and store in state
       const userData = await auth0Client?.getUser();
-      setAuth0Data(userData)
-      const response = await axios.post(process.env.REACT_APP_BURL + '/api/user/external', auth0Data)
-      console.log(response.data)
+      // send request to backend to get corresponding user from DB or to create user
+      const response = await axios.post(process.env.REACT_APP_BURL + '/api/user/external', userData)
+      setUser(response.data)
       // get token from Auth0 Service and store in state
       const auth0Token = await auth0Client?.getTokenSilently();
       setToken(auth0Token)
-      // Update the state to represent that the user has logged in.
-      setLoggedIn(true);
-      console.log(token)
+      if(auth0Token) setLoggedIn(true);
     } catch (e) {
-      // If something goes wrong lets put it out to the console.
-      console.error(e);
-    }
-  }
-
-  function auth0Logout() {
-    try {
-      // Call the client to log the user out.
-      auth0Client?.logout();
-      // Update the state to represent the user is logged out.
-      setLoggedIn(false);
-      //setUserData("All Logged out");
-      //setGravatar("");
-    } catch (e) {
-      // If something goes wrong put it out to the console.
       console.error(e);
     }
   }
@@ -194,7 +175,7 @@ export default function LoginScreen() {
               <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
                 Sign In
               </Button>
-              <Button onClick={() => auth0.auth0Login()}>Log in with Social</Button>
+              <Button fullWidth variant='outlined' sx={{ mb: 2 }} onClick={() => auth0.auth0Login()}>Social Sign In</Button>
               <Grid container>
                 {/* <Grid item xs>
                   <Link href='#' variant='body2' onClick={() => navigate('/forgotpassword')}>

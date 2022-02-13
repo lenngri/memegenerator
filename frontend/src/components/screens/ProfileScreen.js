@@ -11,12 +11,37 @@ import PersonIcon from '@mui/icons-material/Person';
 import NavBar from '../NavBar';
 import MemeHistory from '../MemeHistory';
 import { useStoreState } from 'easy-peasy';
+import { Auth0Client } from '@auth0/auth0-spa-js';
 
 const theme = createTheme();
 
 export default function ProfileScreen() {
+  const auth0Client = useStoreState((state) => state.auth0Client);
   const setLoggedIn = useStoreActions((actions) => actions.setLoggedIn);
   const user = useStoreState((state) => state.userSession.user);
+  const setAuth0Client = useStoreActions((actions) => actions.setAuth0Client);
+  const setToken = useStoreActions((actions) => actions.setToken);
+  const setUser = useStoreActions((actions) => actions.setUser);
+
+  const configureAuth0Client = () => {
+    console.log("configuring auth0Client")
+    const auth0Config = {
+      domain: 'dev-ttc1u0sj.us.auth0.com',
+      client_id: '4J1oZzOgZnhQhNzmoFWjXmZezUcRhuZ5',
+      audience: 'burrito-memes'
+    };
+    return new Auth0Client(auth0Config);
+  };
+
+  if(!auth0Client){
+   setAuth0Client(configureAuth0Client());
+  }
+
+  function useAuth0(){
+    console.log("using Auth0")
+    return {
+    handleLogOut,
+  }};
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -27,6 +52,23 @@ export default function ProfileScreen() {
       password: data.get('password'),
     });
   };
+
+  const handleLogOut = async () => {
+    try {
+      await auth0Client?.logout();
+      console.log("auth0 logout")
+      setToken(null);
+      console.log("token")
+      setUser(null);
+      console.log("user")
+      setLoggedIn(false);
+      console.log("log out")
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const auth0 = useAuth0()
 
   return (
     <div>
@@ -89,7 +131,7 @@ export default function ProfileScreen() {
                   </Button> */}
                   <Button
                     onClick={() => {
-                      setLoggedIn(false);
+                      auth0.handleLogOut();
                     }}
                     type='submit'
                     fullWidth

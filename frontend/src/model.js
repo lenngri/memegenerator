@@ -18,7 +18,6 @@ const model = {
       isLoggedIn: false,
       user: null,
       token: null,
-      auth0Data: null,
     },
     { storage: localStorage }
   ),
@@ -84,10 +83,6 @@ const model = {
   setAuth0Client: action((state, auth0Config) => {
     state.auth0Client = auth0Config;
     console.log("New auth0Client set");
-  }),
-  setAuth0Data: action((state, userData) => {
-    state.userSession.auth0Data = userData;
-    console.log("New auth0Data set")
   })
 };
 
