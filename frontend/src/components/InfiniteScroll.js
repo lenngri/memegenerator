@@ -19,13 +19,11 @@ import CommentIcon from '@mui/icons-material/Comment';
 import Singleview from './Singleview';
 import axios from 'axios';
 import Votes from './Votes';
-import { CardHeader } from '@mui/material';
 
 function InfiniteScroller() {
   // use central state
   const setServerMemes = useStoreActions((actions) => actions.setServerMemes);
-  const serverMemes = useStoreState((actions) => actions.serverMemes);
-
+  const serverMemes = useStoreState((state) => state.serverMemes);
   // use local state
   const [openSingleView, setOpenSingleView] = useState(false);
   const [counter, setCounter] = useState(2);
@@ -35,6 +33,12 @@ function InfiniteScroller() {
   const { paramMemeID } = useParams();
   // initalize clipboard
   const clipboard = useClipboard();
+
+  const filterArgs = {
+    isPrivate: 'false',
+    isHidden: 'false',
+    isDraft: 'false',
+  };
 
   let baseURL;
   if (process.env.REACT_APP_BURL === '') baseURL = window.location.host;
@@ -59,7 +63,7 @@ function InfiniteScroller() {
   }, []);
 
   const fetchMemes = () => {
-    axios.get(process.env.REACT_APP_BURL + '/api/meme/retrieve').then((res) => {
+    axios.post(process.env.REACT_APP_BURL + '/api/meme/retrieve', filterArgs).then((res) => {
       setServerMemes(res.data.data.memes);
       setCounter(counter + 1);
       const _memes = res.data.data.memes.slice(0, counter);
@@ -67,6 +71,7 @@ function InfiniteScroller() {
     });
   };
 
+  // button actions
   const handleView = (index) => {
     console.log('Open meme with index in single view:', index);
     setMemeIndex(index);
