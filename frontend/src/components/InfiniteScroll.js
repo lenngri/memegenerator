@@ -16,16 +16,21 @@ import Divider from '@mui/material/Divider';
 import ShareIcon from '@mui/icons-material/Share';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import CommentIcon from '@mui/icons-material/Comment';
+import { Button } from '@mui/material';
 import Singleview from './Singleview';
 import axios from 'axios';
 import Votes from './Votes';
-import { CardHeader } from '@mui/material';
+import arraySort from 'array-sort';
 
 function InfiniteScroller() {
   // use central state
   const setServerMemes = useStoreActions((actions) => actions.setServerMemes);
-  const serverMemes = useStoreState((actions) => actions.serverMemes);
-
+  const serverMemes = useStoreState((state) => state.serverMemes);
+  const setRetrieveMemesBody = useStoreActions((actions) => actions.setRetrieveMemesBody);
+  const retrieveMemesBody = useStoreState((state) => state.retrieveMemesBody);
+  // const sortingArgs = useStoreState((state) => state.sortingArgs);
+  // const setSortingArgs = useStoreActions((actions) => actions.setSortingArgs);
+  const [sortingArgs, setSortingArgs] = useState(null);
   // use local state
   const [openSingleView, setOpenSingleView] = useState(false);
   const [counter, setCounter] = useState(2);
@@ -35,6 +40,10 @@ function InfiniteScroller() {
   const { paramMemeID } = useParams();
   // initalize clipboard
   const clipboard = useClipboard();
+
+  console.log('Rerender Infinite Scroll');
+  // console.log(sortingArgs);
+  console.log(retrieveMemesBody);
 
   let baseURL;
   if (process.env.REACT_APP_BURL === '') baseURL = window.location.host;
@@ -58,15 +67,21 @@ function InfiniteScroller() {
     //eslint-disable-next-line
   }, []);
 
-  const fetchMemes = () => {
-    axios.get(process.env.REACT_APP_BURL + '/api/meme/retrieve').then((res) => {
-      setServerMemes(res.data.data.memes);
-      setCounter(counter + 1);
-      const _memes = res.data.data.memes.slice(0, counter);
+  const fetchMemes = (noIncrease, sortingArgs) => {
+    axios.post(process.env.REACT_APP_BURL + '/api/meme/retrieve', retrieveMemesBody).then((res) => {
+      // console.log(res);
+      const sortedMemes = arraySort(res.data.data.memes, sortingArgs);
+      console.log(sortingArgs);
+      setServerMemes(sortedMemes);
+      // load more memes if noIncrease not defined
+      if (!noIncrease) setCounter(counter + 1);
+      if (!noIncrease) console.log('increased counter', counter);
+      const _memes = sortedMemes.slice(0, counter);
       setMemes(_memes);
     });
   };
 
+  // button actions
   const handleView = (index) => {
     console.log('Open meme with index in single view:', index);
     setMemeIndex(index);
@@ -78,6 +93,18 @@ function InfiniteScroller() {
     alert(`Link to share meme copied! \n ${window.location.origin + '/overview/' + id}`);
   };
 
+  // filter and sort actions
+  const handleChangeFilter = (key, value) => {
+    retrieveMemesBody[key] = value;
+    setRetrieveMemesBody(retrieveMemesBody);
+    fetchMemes(true);
+  };
+
+  const sortAlphabetically = (value) => {
+    setSortingArgs(value);
+    fetchMemes(true, value);
+  };
+
   return (
     <>
       <Container maxWidth='md'>
@@ -87,6 +114,12 @@ function InfiniteScroller() {
         <Typography variant='subtitle1' sx={{ mb: 2, textAlign: 'center' }}>
           Explore public memes on Burrito Memes!
         </Typography>
+        <Button variant='contained' onClick={() => handleChangeFilter('isDraft', true)}>
+          Show drafts
+        </Button>
+        <Button variant='contained' onClick={() => sortAlphabetically('title')}>
+          Sort after Title
+        </Button>
         <InfiniteScroll
           dataLength={memes.length - 1}
           next={fetchMemes}

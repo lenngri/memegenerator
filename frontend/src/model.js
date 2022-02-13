@@ -6,6 +6,13 @@ const model = {
   imgflipTemplates: [],
   serverTemplates: [],
   serverMemes: [],
+  sortingArgs: null,
+  retrieveMemesBody: {
+    isPrivate: 'false',
+    isHidden: 'false',
+    isDraft: 'false',
+  },
+  userMemes: [],
   editor: {
     image: null,
     templateObject: null,
@@ -33,8 +40,21 @@ const model = {
     actions.setServerTemplates(res.data);
     console.log('Fetched templates from server with status code:', res.status);
   }),
-  fetchServerMemes: thunk(async (actions) => {
-    const res = await axios.get(process.env.REACT_APP_BURL + '/api/meme/retrieve');
+  fetchServerMemes: thunk(async (actions, body) => {
+    let bodyToSend;
+    if (body === undefined)
+      bodyToSend = {
+        isPrivate: 'false',
+        isHidden: 'false',
+        isDraft: 'false',
+      };
+    else bodyToSend = body;
+    const res = await axios.post(process.env.REACT_APP_BURL + '/api/meme/retrieve', bodyToSend);
+    actions.setServerMemes(res.data.data.memes);
+    console.log('Fetched templates from server with status code:', res.status);
+  }),
+  fetchUserMemes: thunk(async (actions, body) => {
+    const res = await axios.post(process.env.REACT_APP_BURL + '/api/meme/retrieve', body);
     actions.setServerMemes(res.data.data.memes);
     console.log('Fetched templates from server with status code:', res.status);
   }),
@@ -48,6 +68,18 @@ const model = {
   }),
   setServerMemes: action((state, memes) => {
     state.serverMemes = memes;
+  }),
+  setSortingArgs: action((state, sortingArgs) => {
+    console.log(sortingArgs);
+    state.sortingArgs = sortingArgs;
+    console.log('sortingArgs updated.');
+  }),
+  setRetrieveMemesBody: action((state, body) => {
+    state.retrieveMemesBody = body;
+    console.log('retriveMemesBody updated.');
+  }),
+  setUserMemes: action((state, memes) => {
+    state.userMemes = memes;
   }),
   // editor state actions
   setEditorState: action((state, { image, templateObject, templateNew, memeObject }) => {
