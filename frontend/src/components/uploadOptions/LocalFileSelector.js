@@ -9,10 +9,12 @@ import { useStoreActions } from 'easy-peasy';
 import Alert from '@mui/material/Alert';
 import { generateTemplateObject } from '../../tools/generateTemplateObject';
 
-export default function LocalFileSelector({ ButtonText }) {
+export default function LocalFileSelector({ ButtonText, append }) {
   const user = useStoreState((state) => state.userSession.user);
   const setEditorState = useStoreActions((actions) => actions.setEditorState);
   const [open, setOpen] = React.useState(false);
+
+  console.log(append);
 
   const descriptionElementRef = React.useRef(null);
   React.useEffect(() => {
@@ -81,8 +83,16 @@ export default function LocalFileSelector({ ButtonText }) {
           <Button
             onClick={(e) => {
               if (preview) {
-                const templateObject = generateTemplateObject(user._id, 'localFile', image);
-                setEditorState({ image, templateObject, templateNew: true, memeObject: null });
+                const templateObject = generateTemplateObject(user._id, 'localFile');
+                if (!append) {
+                  setEditorState({ image, templateObject, templateNew: true, memeObject: null });
+                  console.log('append image');
+                } else
+                  setEditorState({
+                    appendImage: image,
+                    templateObject,
+                    templateNew: true,
+                  });
                 handleClose();
                 setAlert(false);
               } else {

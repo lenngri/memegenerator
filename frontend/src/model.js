@@ -8,6 +8,7 @@ const model = {
   serverMemes: [],
   editor: {
     image: null,
+    appendedImages: [],
     templateObject: null,
     memeObject: null,
     templateNew: null,
@@ -50,18 +51,23 @@ const model = {
     state.serverMemes = memes;
   }),
   // editor state actions
-  setEditorState: action((state, { image, templateObject, templateNew, memeObject }) => {
-    // set image
-    if (image !== undefined) state.editor.image = image;
-    // set templateObject
-    if (templateObject !== undefined) state.editor.templateObject = templateObject;
-    // set templateNew flag
-    if (templateNew !== undefined) state.editor.templateNew = templateNew;
-    // set memeObject
-    if (memeObject !== undefined) state.editor.memeObject = memeObject;
-    // Finished
-    console.log('Editor state updated.');
-  }),
+  setEditorState: action(
+    (state, { image, templateObject, templateNew, memeObject, appendImage }) => {
+      // set image
+      if (image !== undefined) state.editor.image = image;
+      // set templateObject
+      if (templateObject !== undefined) state.editor.templateObject = templateObject;
+      // set templateNew flag
+      if (templateNew !== undefined) state.editor.templateNew = templateNew;
+      // set memeObject
+      if (memeObject !== undefined) state.editor.memeObject = memeObject;
+      // set appended Images
+      if (appendImage !== undefined)
+        state.editor.image = [...state.editor.appendedImages, appendImage];
+      // Finished
+      console.log('Editor state updated.', appendImage);
+    }
+  ),
   setStageRef: action((state, stageRef) => {
     state.editor.stageRef = stageRef;
     console.log('New stageRef set.');

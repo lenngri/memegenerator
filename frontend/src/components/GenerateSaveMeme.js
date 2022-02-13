@@ -51,6 +51,16 @@ const GenerateSaveMeme = () => {
   const handleUploadMeme = async (generateServer) => {
     // check, whether the template is new
     if (editorState.templateNew) {
+      // if the template is new, get background of canvas as dataURL
+      const templateDataURL = stageRef.current.getLayers()[0].toDataURL({
+        mimeType: 'image/jpeg',
+        quality: 1.0,
+      });
+
+      // set the new dataURL to the templateObject
+      editorState.templateObject.template = templateDataURL;
+
+      // send the template to the server
       try {
         const templateResponse = await axios.post(
           process.env.REACT_APP_BURL + '/api/template/uploadSingle',

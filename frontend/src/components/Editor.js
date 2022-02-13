@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import { Button, TextField, Stack, Typography } from '@mui/material';
 import { CompactPicker } from 'react-color';
 import getAttributes from '../tools/getAttributes';
+import AppendImages from './uploadOptions/AppendImages';
 
 const C_WIDTH = 600;
 const C_HEIGHT = 600;
@@ -34,8 +35,9 @@ const Editor = () => {
 
   // load image from store
 
-  const { image, memeObject } = useStoreState((state) => state.editor);
-  console.log(canvasWidth, canvasHeight);
+  const { image, memeObject, appendImage } = useStoreState((state) => state.editor);
+  console.log(appendImage);
+  console.log(image);
   // if memeObject is available, load its state to the editor to continue editing
   useEffect(() => {
     if (image && memeObject) {
@@ -56,8 +58,6 @@ const Editor = () => {
       else setOutlined(false);
     }
   }, [image, memeObject]);
-
-  if (stageRef) console.log(stageRef.current);
 
   useEffect(() => {
     if (image) {
@@ -81,7 +81,6 @@ const Editor = () => {
     }
 
     setStageRef(stageRef);
-    console.log(stageRef.current);
   }, [image, setStageRef]);
 
   // Source for cursor event handling: https://konvajs.org/docs/styling/Mouse_Cursor.html (13.01.2022)
@@ -143,6 +142,8 @@ const Editor = () => {
                 <Layer>
                   <Rect width={canvasWidth} height={canvasHeight} fill='white'></Rect>
                   <Image image={image} width={editorDims.width} height={editorDims.height} />
+                </Layer>
+                <Layer>
                   <Text
                     id='caption'
                     x={topTextPosition ? topTextPosition.x : editorDims.width * 0.25}
@@ -289,13 +290,7 @@ const Editor = () => {
               type='number'
               onChange={(e) => setCanvasHeight(Number(e.target.value))}
             />
-            <Button
-              disabled={!image ? true : false}
-              variant='contained'
-              onClick={handleClearEditor}
-            >
-              Append Images
-            </Button>
+            <AppendImages />
           </Stack>
           <CompactPicker color={captionColor} onChange={(color) => setColor(color.hex)} />
         </Box>

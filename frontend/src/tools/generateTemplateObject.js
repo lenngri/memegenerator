@@ -1,8 +1,8 @@
-export const generateTemplateObject = (userID, source, img) => {
+export const generateTemplateObject = (userID, source) => {
   const templateObject = {
     userID: userID,
     source: source,
-    template: getDataUrl(img),
+    template: 'empty',
     description: 'default description',
     isPrivate: true,
   };

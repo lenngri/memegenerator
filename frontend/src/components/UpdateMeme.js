@@ -56,6 +56,7 @@ const UpdateMeme = () => {
   };
 
   const handleUpdateMeme = async () => {
+    // send the template to the server
     console.log('Updating meme with ID:', editorState.memeObject._id);
     sendMeme(editorState.templateObject._id);
 

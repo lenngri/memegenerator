@@ -1,10 +1,10 @@
 const getCaptions = (konvaObject) => {
-  const layer0Children = konvaObject.children[0].children;
+  const layer1Children = konvaObject.children[1].children;
   const captionsArray = [];
-  for (let i = 0; i < layer0Children.length; i++) {
-    if (layer0Children[i].className === 'Text') {
-      if (layer0Children[i].attrs.text === undefined) captionsArray.push('');
-      else captionsArray.push(layer0Children[i].attrs.text);
+  for (let i = 0; i < layer1Children.length; i++) {
+    if (layer1Children[i].className === 'Text') {
+      if (layer1Children[i].attrs.text === undefined) captionsArray.push('');
+      else captionsArray.push(layer1Children[i].attrs.text);
     }
   }
   return captionsArray;
