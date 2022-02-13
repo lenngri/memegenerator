@@ -24,10 +24,9 @@ const Votes = ({ meme }) => {
   };
 
   const calculateVoteScore = (votes) => {
-    // console.log(score);
     const upVotes = votes.filter((v) => v.value === 1).length;
     const downVotes = votes.filter((v) => v.value === -1).length;
-    console.log(`Calculating Votes: ${upVotes} - ${downVotes} = ${upVotes - downVotes}`);
+    // console.log(`Calculating Votes: ${upVotes} - ${downVotes} = ${upVotes - downVotes}`);
     setScore(upVotes - downVotes);
   };
 
@@ -48,19 +47,11 @@ const Votes = ({ meme }) => {
 
   return (
     <>
-      <IconButton
-        // disabled={voteStatus === 1 ? true : false}
-        color={voteStatus === 1 ? 'success' : undefined}
-        onClick={() => handleVote(1)}
-      >
+      <IconButton color={voteStatus === 1 ? 'success' : undefined} onClick={() => handleVote(1)}>
         <ThumbUpIcon />
       </IconButton>
       <Typography variant='h6'>{score}</Typography>
-      <IconButton
-        // disabled={voteStatus === -1 ? true : false}
-        color={voteStatus === -1 ? 'error' : undefined}
-        onClick={() => handleVote(-1)}
-      >
+      <IconButton color={voteStatus === -1 ? 'error' : undefined} onClick={() => handleVote(-1)}>
         <ThumbDownIcon />
       </IconButton>
     </>

@@ -133,9 +133,6 @@ const Singleview = ({ openSingleView, setOpenSingleView, memeIndex }) => {
                 >
                   Next
                 </Button>
-                {/* <Button color={'error'} onClick={handleClose}>
-              Close
-            </Button> */}
                 <Votes meme={serverMemes[shownIndex]} />
               </CardActions>
             </Card>

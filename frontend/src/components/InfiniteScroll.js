@@ -31,8 +31,6 @@ function InfiniteScroller() {
   // initalize clipboard
   const clipboard = useClipboard();
 
-  console.log('Rerender Overview');
-
   let baseURL;
   if (process.env.REACT_APP_BURL === '') baseURL = window.location.host;
   else baseURL = process.env.REACT_APP_BURL;
