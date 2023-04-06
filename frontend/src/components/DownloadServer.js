@@ -14,7 +14,7 @@ const DownloadServer = () => {
 
   const downloadMeme = () => {
     console.log('Download meme from:', baseURL + memeObject.filePath);
-    saveAs(baseURL + memeObject.filePath.substring(1, memeObject.filePath.length), 'yourmeme.jpg'); //TODO: remove substring
+    saveAs(baseURL + memeObject.filePath, 'yourmeme.jpg');
   };
 
   return (
